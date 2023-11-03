@@ -926,6 +926,25 @@ def train():
                     args=training_args,
                     **data_module)
 
+    
+    #Unfreezing vision
+    for name, param in model.named_parameters():
+        if "vision_tower" in name:
+            param.requires_grad = True
+            
+            
+    print(model)
+    for name, param in model.named_parameters():
+        print(name, param.requires_grad)
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(trainable)
+    
+    
+    
+    
+    exit()
+    
+
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
         trainer.train(resume_from_checkpoint=True)
     else:
