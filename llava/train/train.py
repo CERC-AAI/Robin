@@ -939,9 +939,6 @@ def train():
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(trainable)
     
-    
-    
-    
     exit()
     
 
