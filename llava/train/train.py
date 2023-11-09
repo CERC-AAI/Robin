@@ -35,7 +35,8 @@ from llava.model import *
 from llava.mm_utils import tokenizer_image_token
 
 from PIL import Image
-
+from llava.model.multimodal_encoder.clip_encoder import CLIPVisionTower
+from llava.model.multimodal_encoder.open_clip import OpenCLIPVisionTower
 
 local_rank = None
 
@@ -682,9 +683,16 @@ class LazySupervisedDataset(Dataset):
                         result.paste(pil_img, ((height - width) // 2, 0))
                         return result
                 image = expand2square(image, tuple(int(x*255) for x in processor.image_mean))
-                image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                if self.data_args.is_clip:
+                    image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                else:
+                    image = processor(image).unsqueeze(0)
             else:
-                image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                if self.data_args.is_clip:
+                    image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
+                else:
+                    image = processor(image).unsqueeze(0)
+
             sources = preprocess_multimodal(
                 copy.deepcopy([e["conversations"] for e in sources]),
                 self.data_args)
@@ -791,7 +799,14 @@ def train():
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
             )
+        elif 'mistral' in model_args.model_name_or_path:
+            model = LlavaMistralForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                **bnb_model_from_pretrained_args
+            )
         else:
+            # print(model_args)
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
@@ -878,9 +893,19 @@ def train():
         )
         
         vision_tower = model.get_vision_tower()
-        vision_tower.to(dtype=torch.bfloat16 if training_args.bf16 else torch.float16, device=training_args.device)
-
+        d_type = torch.bfloat16 if training_args.bf16 else torch.float16
+        vision_tower.to(dtype=d_type, device=training_args.device)
+        
         data_args.image_processor = vision_tower.image_processor
+        # check if type is OpenCLIPVisionTower or CLIPVisionTower and add param in config
+        if isinstance(vision_tower, OpenCLIPVisionTower):
+            data_args.is_clip = False
+            vision_tower.dtype = d_type
+            vision_tower.device = training_args.device
+        elif isinstance(vision_tower, CLIPVisionTower):
+            data_args.is_clip = True
+        else:
+            raise NotImplementedError
         data_args.is_multimodal = True
 
         model.config.image_aspect_ratio = data_args.image_aspect_ratio
@@ -926,21 +951,7 @@ def train():
                     args=training_args,
                     **data_module)
 
-    
-    #Unfreezing vision
-    for name, param in model.named_parameters():
-        if "vision_tower" in name:
-            param.requires_grad = True
-            
-            
-    print(model)
-    for name, param in model.named_parameters():
-        print(name, param.requires_grad)
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(trainable)
-    
-    exit()
-    
 
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
         trainer.train(resume_from_checkpoint=True)

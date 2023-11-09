@@ -23,11 +23,13 @@ class OpenCLIPVisionTower(nn.Module):
             # self.cfg_only = OpenCLIPVisionConfig.from_pretrained(self.vision_tower_name)
         
         self.hidden_size = 768
+        self.device = None
+        self.dtype = None
         
     def load_model(self):
         
         #So we need to run this code from OUTSIDE this code once before we can do this. I don't know why either.
-        self.vision_tower, self.image_processor = create_model_from_pretrained("hf-hub:timm/ViT-B-16-SigLIP", cache_dir = "./")
+        self.vision_tower, self.image_processor = create_model_from_pretrained("hf-hub:timm/ViT-B-16-SigLIP", cache_dir = "/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/siglip")
         self.vision_tower = self.vision_tower.visual
         
         #Need to make sure it has the attribute. If not, uhoh. Might need to modify code this also, depending.
@@ -57,24 +59,27 @@ class OpenCLIPVisionTower(nn.Module):
     def forward(self, images):
         
         if type(images) is list:
-            print("Why are you a list right now")
-            exit()
+            image_features = []
+            for image in images:
+                cls_token, image_forward_out = self.vision_tower(image.to(device=self.device, dtype=self.dtype).unsqueeze(0))
+                image_features.append(image_feature)
         else:#This should always be unsqueezed, if we have multiple items just stack them before this
-            image_features = model.encode_image(image)
+            cls_token, image_features = self.vision_tower(images.to(device=self.device, dtype=self.dtype))
+        cls_token = cls_token.unsqueeze(1)
+        image_features = torch.cat((cls_token, image_features), dim=1)
         return image_features
 
     @property
     def dummy_feature(self):#We want to get back dummy featrues for whatever reason... we need to know the output shape.
         return torch.zeros(1, self.hidden_size, device=self.device, dtype=self.dtype)
-        
 
-    @property
-    def dtype(self):
-        return self.vision_tower.dtype
+    # @property
+    # def dtype(self):
+    #     return next(self.vision_tower.parameters()).dtype
 
-    @property
-    def device(self):
-        return self.vision_tower.device
+    # @property
+    # def device(self):
+    #     return next(self.vision_tower.parameters()).device
 
     @property
     def config(self):
