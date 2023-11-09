@@ -1,0 +1,1457 @@
+[2023-11-08 21:51:49,537] [INFO] [real_accelerator.py:110:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2023-11-08 21:51:51,064] [WARNING] [runner.py:196:fetch_hostfile] Unable to find hostfile, will proceed with training with local resources only.
+[2023-11-08 21:51:51,064] [INFO] [runner.py:555:main] cmd = /opt/conda/bin/python -u -m deepspeed.launcher.launch --world_info=eyJsb2NhbGhvc3QiOiBbMF19 --master_addr=127.0.0.1 --master_port=29500 --enable_each_rank_log=None llava/train/train_mem.py --deepspeed ./scripts/zero2.json --model_name_or_path /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/vicuna-13b-v1.5 --version plain --data_path /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/blip/blip_laion_cc_sbu_558k.json --image_folder /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/blip/images --vision_tower /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/clip --mm_projector_type mlp2x_gelu --tune_mm_mlp_adapter True --mm_vision_select_layer -2 --mm_use_im_start_end False --mm_use_im_patch_token False --bf16 True --output_dir ./checkpoints/llava-v1.5-13b-pretrain --num_train_epochs 1 --per_device_train_batch_size 32 --per_device_eval_batch_size 4 --gradient_accumulation_steps 1 --evaluation_strategy no --save_strategy steps --save_steps 24000 --save_total_limit 1 --learning_rate 1e-3 --weight_decay 0. --warmup_ratio 0.03 --lr_scheduler_type cosine --logging_steps 1 --tf32 True --model_max_length 2048 --gradient_checkpointing True --dataloader_num_workers 8 --lazy_preprocess True --report_to wandb
+[2023-11-08 21:51:51,951] [INFO] [real_accelerator.py:110:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NV_LIBNCCL_DEV_PACKAGE=libnccl-dev=2.16.2-1+cuda11.8
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NV_LIBNCCL_DEV_PACKAGE_VERSION=2.16.2-1
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NCCL_VERSION=2.16.2-1
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NCCL_LIB_DIR=/lib
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NV_LIBNCCL_DEV_PACKAGE_NAME=libnccl-dev
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 HOROVOD_NCCL_HOME=
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NV_LIBNCCL_PACKAGE=libnccl2=2.16.2-1+cuda11.8
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NV_LIBNCCL_PACKAGE_NAME=libnccl2
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 NV_LIBNCCL_PACKAGE_VERSION=2.16.2-1
+[2023-11-08 21:51:53,464] [INFO] [launch.py:138:main] 0 HOROVOD_NCCL_LINK=
+[2023-11-08 21:51:53,464] [INFO] [launch.py:145:main] WORLD INFO DICT: {'localhost': [0]}
+[2023-11-08 21:51:53,464] [INFO] [launch.py:151:main] nnodes=1, num_local_procs=1, node_rank=0
+[2023-11-08 21:51:53,464] [INFO] [launch.py:162:main] global_rank_mapping=defaultdict(<class 'list'>, {'localhost': [0]})
+[2023-11-08 21:51:53,464] [INFO] [launch.py:163:main] dist_world_size=1
+[2023-11-08 21:51:53,464] [INFO] [launch.py:165:main] Setting CUDA_VISIBLE_DEVICES=0
+[2023-11-08 21:51:55,342] [INFO] [real_accelerator.py:110:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2023-11-08 21:51:55,992] [WARNING] [comm.py:152:init_deepspeed_backend] NCCL backend in DeepSpeed not yet implemented
+[2023-11-08 21:51:55,992] [INFO] [comm.py:594:init_distributed] cdb=None
+[2023-11-08 21:51:55,992] [INFO] [comm.py:625:init_distributed] Initializing TorchBackend in DeepSpeed with backend nccl
+ModelArguments(model_name_or_path='/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/vicuna-13b-v1.5', version='plain', freeze_backbone=False, tune_mm_mlp_adapter=True, vision_tower='/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/clip', mm_vision_select_layer=-2, pretrain_mm_mlp_adapter=None, mm_projector_type='mlp2x_gelu', mm_use_im_start_end=False, mm_use_im_patch_token=False, mm_vision_select_feature='patch')
+ModelArguments(model_name_or_path='/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/vicuna-13b-v1.5', version='plain', freeze_backbone=False, tune_mm_mlp_adapter=True, vision_tower='/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/clip', mm_vision_select_layer=-2, pretrain_mm_mlp_adapter=None, mm_projector_type='mlp2x_gelu', mm_use_im_start_end=False, mm_use_im_patch_token=False, mm_vision_select_feature='patch')
+Formatting inputs...Skip in lazy mode
+LlavaLlamaForCausalLM(
+  (model): LlavaLlamaModel(
+    (embed_tokens): Embedding(32000, 5120, padding_idx=0)
+    (layers): ModuleList(
+      (0-39): 40 x LlamaDecoderLayer(
+        (self_attn): LlamaAttention(
+          (q_proj): Linear(in_features=5120, out_features=5120, bias=False)
+          (k_proj): Linear(in_features=5120, out_features=5120, bias=False)
+          (v_proj): Linear(in_features=5120, out_features=5120, bias=False)
+          (o_proj): Linear(in_features=5120, out_features=5120, bias=False)
+          (rotary_emb): LlamaRotaryEmbedding()
+        )
+        (mlp): LlamaMLP(
+          (gate_proj): Linear(in_features=5120, out_features=13824, bias=False)
+          (up_proj): Linear(in_features=5120, out_features=13824, bias=False)
+          (down_proj): Linear(in_features=13824, out_features=5120, bias=False)
+          (act_fn): SiLUActivation()
+        )
+        (input_layernorm): LlamaRMSNorm()
+        (post_attention_layernorm): LlamaRMSNorm()
+      )
+    )
+    (norm): LlamaRMSNorm()
+    (vision_tower): CLIPVisionTower(
+      (vision_tower): CLIPVisionModel(
+        (vision_model): CLIPVisionTransformer(
+          (embeddings): CLIPVisionEmbeddings(
+            (patch_embedding): Conv2d(3, 1024, kernel_size=(14, 14), stride=(14, 14), bias=False)
+            (position_embedding): Embedding(577, 1024)
+          )
+          (pre_layrnorm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+          (encoder): CLIPEncoder(
+            (layers): ModuleList(
+              (0-23): 24 x CLIPEncoderLayer(
+                (self_attn): CLIPAttention(
+                  (k_proj): Linear(in_features=1024, out_features=1024, bias=True)
+                  (v_proj): Linear(in_features=1024, out_features=1024, bias=True)
+                  (q_proj): Linear(in_features=1024, out_features=1024, bias=True)
+                  (out_proj): Linear(in_features=1024, out_features=1024, bias=True)
+                )
+                (layer_norm1): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+                (mlp): CLIPMLP(
+                  (activation_fn): QuickGELUActivation()
+                  (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+                  (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+                )
+                (layer_norm2): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+              )
+            )
+          )
+          (post_layernorm): LayerNorm((1024,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+    (mm_projector): Sequential(
+      (0): Linear(in_features=1024, out_features=5120, bias=True)
+      (1): GELU(approximate='none')
+      (2): Linear(in_features=5120, out_features=5120, bias=True)
+    )
+  )
+  (lm_head): Linear(in_features=5120, out_features=32000, bias=False)
+)
+model.embed_tokens.weight False
+model.layers.0.self_attn.q_proj.weight False
+model.layers.0.self_attn.k_proj.weight False
+model.layers.0.self_attn.v_proj.weight False
+model.layers.0.self_attn.o_proj.weight False
+model.layers.0.mlp.gate_proj.weight False
+model.layers.0.mlp.up_proj.weight False
+model.layers.0.mlp.down_proj.weight False
+model.layers.0.input_layernorm.weight False
+model.layers.0.post_attention_layernorm.weight False
+model.layers.1.self_attn.q_proj.weight False
+model.layers.1.self_attn.k_proj.weight False
+model.layers.1.self_attn.v_proj.weight False
+model.layers.1.self_attn.o_proj.weight False
+model.layers.1.mlp.gate_proj.weight False
+model.layers.1.mlp.up_proj.weight False
+model.layers.1.mlp.down_proj.weight False
+model.layers.1.input_layernorm.weight False
+model.layers.1.post_attention_layernorm.weight False
+model.layers.2.self_attn.q_proj.weight False
+model.layers.2.self_attn.k_proj.weight False
+model.layers.2.self_attn.v_proj.weight False
+model.layers.2.self_attn.o_proj.weight False
+model.layers.2.mlp.gate_proj.weight False
+model.layers.2.mlp.up_proj.weight False
+model.layers.2.mlp.down_proj.weight False
+model.layers.2.input_layernorm.weight False
+model.layers.2.post_attention_layernorm.weight False
+model.layers.3.self_attn.q_proj.weight False
+model.layers.3.self_attn.k_proj.weight False
+model.layers.3.self_attn.v_proj.weight False
+model.layers.3.self_attn.o_proj.weight False
+model.layers.3.mlp.gate_proj.weight False
+model.layers.3.mlp.up_proj.weight False
+model.layers.3.mlp.down_proj.weight False
+model.layers.3.input_layernorm.weight False
+model.layers.3.post_attention_layernorm.weight False
+model.layers.4.self_attn.q_proj.weight False
+model.layers.4.self_attn.k_proj.weight False
+model.layers.4.self_attn.v_proj.weight False
+model.layers.4.self_attn.o_proj.weight False
+model.layers.4.mlp.gate_proj.weight False
+model.layers.4.mlp.up_proj.weight False
+model.layers.4.mlp.down_proj.weight False
+model.layers.4.input_layernorm.weight False
+model.layers.4.post_attention_layernorm.weight False
+model.layers.5.self_attn.q_proj.weight False
+model.layers.5.self_attn.k_proj.weight False
+model.layers.5.self_attn.v_proj.weight False
+model.layers.5.self_attn.o_proj.weight False
+model.layers.5.mlp.gate_proj.weight False
+model.layers.5.mlp.up_proj.weight False
+model.layers.5.mlp.down_proj.weight False
+model.layers.5.input_layernorm.weight False
+model.layers.5.post_attention_layernorm.weight False
+model.layers.6.self_attn.q_proj.weight False
+model.layers.6.self_attn.k_proj.weight False
+model.layers.6.self_attn.v_proj.weight False
+model.layers.6.self_attn.o_proj.weight False
+model.layers.6.mlp.gate_proj.weight False
+model.layers.6.mlp.up_proj.weight False
+model.layers.6.mlp.down_proj.weight False
+model.layers.6.input_layernorm.weight False
+model.layers.6.post_attention_layernorm.weight False
+model.layers.7.self_attn.q_proj.weight False
+model.layers.7.self_attn.k_proj.weight False
+model.layers.7.self_attn.v_proj.weight False
+model.layers.7.self_attn.o_proj.weight False
+model.layers.7.mlp.gate_proj.weight False
+model.layers.7.mlp.up_proj.weight False
+model.layers.7.mlp.down_proj.weight False
+model.layers.7.input_layernorm.weight False
+model.layers.7.post_attention_layernorm.weight False
+model.layers.8.self_attn.q_proj.weight False
+model.layers.8.self_attn.k_proj.weight False
+model.layers.8.self_attn.v_proj.weight False
+model.layers.8.self_attn.o_proj.weight False
+model.layers.8.mlp.gate_proj.weight False
+model.layers.8.mlp.up_proj.weight False
+model.layers.8.mlp.down_proj.weight False
+model.layers.8.input_layernorm.weight False
+model.layers.8.post_attention_layernorm.weight False
+model.layers.9.self_attn.q_proj.weight False
+model.layers.9.self_attn.k_proj.weight False
+model.layers.9.self_attn.v_proj.weight False
+model.layers.9.self_attn.o_proj.weight False
+model.layers.9.mlp.gate_proj.weight False
+model.layers.9.mlp.up_proj.weight False
+model.layers.9.mlp.down_proj.weight False
+model.layers.9.input_layernorm.weight False
+model.layers.9.post_attention_layernorm.weight False
+model.layers.10.self_attn.q_proj.weight False
+model.layers.10.self_attn.k_proj.weight False
+model.layers.10.self_attn.v_proj.weight False
+model.layers.10.self_attn.o_proj.weight False
+model.layers.10.mlp.gate_proj.weight False
+model.layers.10.mlp.up_proj.weight False
+model.layers.10.mlp.down_proj.weight False
+model.layers.10.input_layernorm.weight False
+model.layers.10.post_attention_layernorm.weight False
+model.layers.11.self_attn.q_proj.weight False
+model.layers.11.self_attn.k_proj.weight False
+model.layers.11.self_attn.v_proj.weight False
+model.layers.11.self_attn.o_proj.weight False
+model.layers.11.mlp.gate_proj.weight False
+model.layers.11.mlp.up_proj.weight False
+model.layers.11.mlp.down_proj.weight False
+model.layers.11.input_layernorm.weight False
+model.layers.11.post_attention_layernorm.weight False
+model.layers.12.self_attn.q_proj.weight False
+model.layers.12.self_attn.k_proj.weight False
+model.layers.12.self_attn.v_proj.weight False
+model.layers.12.self_attn.o_proj.weight False
+model.layers.12.mlp.gate_proj.weight False
+model.layers.12.mlp.up_proj.weight False
+model.layers.12.mlp.down_proj.weight False
+model.layers.12.input_layernorm.weight False
+model.layers.12.post_attention_layernorm.weight False
+model.layers.13.self_attn.q_proj.weight False
+model.layers.13.self_attn.k_proj.weight False
+model.layers.13.self_attn.v_proj.weight False
+model.layers.13.self_attn.o_proj.weight False
+model.layers.13.mlp.gate_proj.weight False
+model.layers.13.mlp.up_proj.weight False
+model.layers.13.mlp.down_proj.weight False
+model.layers.13.input_layernorm.weight False
+model.layers.13.post_attention_layernorm.weight False
+model.layers.14.self_attn.q_proj.weight False
+model.layers.14.self_attn.k_proj.weight False
+model.layers.14.self_attn.v_proj.weight False
+model.layers.14.self_attn.o_proj.weight False
+model.layers.14.mlp.gate_proj.weight False
+model.layers.14.mlp.up_proj.weight False
+model.layers.14.mlp.down_proj.weight False
+model.layers.14.input_layernorm.weight False
+model.layers.14.post_attention_layernorm.weight False
+model.layers.15.self_attn.q_proj.weight False
+model.layers.15.self_attn.k_proj.weight False
+model.layers.15.self_attn.v_proj.weight False
+model.layers.15.self_attn.o_proj.weight False
+model.layers.15.mlp.gate_proj.weight False
+model.layers.15.mlp.up_proj.weight False
+model.layers.15.mlp.down_proj.weight False
+model.layers.15.input_layernorm.weight False
+model.layers.15.post_attention_layernorm.weight False
+model.layers.16.self_attn.q_proj.weight False
+model.layers.16.self_attn.k_proj.weight False
+model.layers.16.self_attn.v_proj.weight False
+model.layers.16.self_attn.o_proj.weight False
+model.layers.16.mlp.gate_proj.weight False
+model.layers.16.mlp.up_proj.weight False
+model.layers.16.mlp.down_proj.weight False
+model.layers.16.input_layernorm.weight False
+model.layers.16.post_attention_layernorm.weight False
+model.layers.17.self_attn.q_proj.weight False
+model.layers.17.self_attn.k_proj.weight False
+model.layers.17.self_attn.v_proj.weight False
+model.layers.17.self_attn.o_proj.weight False
+model.layers.17.mlp.gate_proj.weight False
+model.layers.17.mlp.up_proj.weight False
+model.layers.17.mlp.down_proj.weight False
+model.layers.17.input_layernorm.weight False
+model.layers.17.post_attention_layernorm.weight False
+model.layers.18.self_attn.q_proj.weight False
+model.layers.18.self_attn.k_proj.weight False
+model.layers.18.self_attn.v_proj.weight False
+model.layers.18.self_attn.o_proj.weight False
+model.layers.18.mlp.gate_proj.weight False
+model.layers.18.mlp.up_proj.weight False
+model.layers.18.mlp.down_proj.weight False
+model.layers.18.input_layernorm.weight False
+model.layers.18.post_attention_layernorm.weight False
+model.layers.19.self_attn.q_proj.weight False
+model.layers.19.self_attn.k_proj.weight False
+model.layers.19.self_attn.v_proj.weight False
+model.layers.19.self_attn.o_proj.weight False
+model.layers.19.mlp.gate_proj.weight False
+model.layers.19.mlp.up_proj.weight False
+model.layers.19.mlp.down_proj.weight False
+model.layers.19.input_layernorm.weight False
+model.layers.19.post_attention_layernorm.weight False
+model.layers.20.self_attn.q_proj.weight False
+model.layers.20.self_attn.k_proj.weight False
+model.layers.20.self_attn.v_proj.weight False
+model.layers.20.self_attn.o_proj.weight False
+model.layers.20.mlp.gate_proj.weight False
+model.layers.20.mlp.up_proj.weight False
+model.layers.20.mlp.down_proj.weight False
+model.layers.20.input_layernorm.weight False
+model.layers.20.post_attention_layernorm.weight False
+model.layers.21.self_attn.q_proj.weight False
+model.layers.21.self_attn.k_proj.weight False
+model.layers.21.self_attn.v_proj.weight False
+model.layers.21.self_attn.o_proj.weight False
+model.layers.21.mlp.gate_proj.weight False
+model.layers.21.mlp.up_proj.weight False
+model.layers.21.mlp.down_proj.weight False
+model.layers.21.input_layernorm.weight False
+model.layers.21.post_attention_layernorm.weight False
+model.layers.22.self_attn.q_proj.weight False
+model.layers.22.self_attn.k_proj.weight False
+model.layers.22.self_attn.v_proj.weight False
+model.layers.22.self_attn.o_proj.weight False
+model.layers.22.mlp.gate_proj.weight False
+model.layers.22.mlp.up_proj.weight False
+model.layers.22.mlp.down_proj.weight False
+model.layers.22.input_layernorm.weight False
+model.layers.22.post_attention_layernorm.weight False
+model.layers.23.self_attn.q_proj.weight False
+model.layers.23.self_attn.k_proj.weight False
+model.layers.23.self_attn.v_proj.weight False
+model.layers.23.self_attn.o_proj.weight False
+model.layers.23.mlp.gate_proj.weight False
+model.layers.23.mlp.up_proj.weight False
+model.layers.23.mlp.down_proj.weight False
+model.layers.23.input_layernorm.weight False
+model.layers.23.post_attention_layernorm.weight False
+model.layers.24.self_attn.q_proj.weight False
+model.layers.24.self_attn.k_proj.weight False
+model.layers.24.self_attn.v_proj.weight False
+model.layers.24.self_attn.o_proj.weight False
+model.layers.24.mlp.gate_proj.weight False
+model.layers.24.mlp.up_proj.weight False
+model.layers.24.mlp.down_proj.weight False
+model.layers.24.input_layernorm.weight False
+model.layers.24.post_attention_layernorm.weight False
+model.layers.25.self_attn.q_proj.weight False
+model.layers.25.self_attn.k_proj.weight False
+model.layers.25.self_attn.v_proj.weight False
+model.layers.25.self_attn.o_proj.weight False
+model.layers.25.mlp.gate_proj.weight False
+model.layers.25.mlp.up_proj.weight False
+model.layers.25.mlp.down_proj.weight False
+model.layers.25.input_layernorm.weight False
+model.layers.25.post_attention_layernorm.weight False
+model.layers.26.self_attn.q_proj.weight False
+model.layers.26.self_attn.k_proj.weight False
+model.layers.26.self_attn.v_proj.weight False
+model.layers.26.self_attn.o_proj.weight False
+model.layers.26.mlp.gate_proj.weight False
+model.layers.26.mlp.up_proj.weight False
+model.layers.26.mlp.down_proj.weight False
+model.layers.26.input_layernorm.weight False
+model.layers.26.post_attention_layernorm.weight False
+model.layers.27.self_attn.q_proj.weight False
+model.layers.27.self_attn.k_proj.weight False
+model.layers.27.self_attn.v_proj.weight False
+model.layers.27.self_attn.o_proj.weight False
+model.layers.27.mlp.gate_proj.weight False
+model.layers.27.mlp.up_proj.weight False
+model.layers.27.mlp.down_proj.weight False
+model.layers.27.input_layernorm.weight False
+model.layers.27.post_attention_layernorm.weight False
+model.layers.28.self_attn.q_proj.weight False
+model.layers.28.self_attn.k_proj.weight False
+model.layers.28.self_attn.v_proj.weight False
+model.layers.28.self_attn.o_proj.weight False
+model.layers.28.mlp.gate_proj.weight False
+model.layers.28.mlp.up_proj.weight False
+model.layers.28.mlp.down_proj.weight False
+model.layers.28.input_layernorm.weight False
+model.layers.28.post_attention_layernorm.weight False
+model.layers.29.self_attn.q_proj.weight False
+model.layers.29.self_attn.k_proj.weight False
+model.layers.29.self_attn.v_proj.weight False
+model.layers.29.self_attn.o_proj.weight False
+model.layers.29.mlp.gate_proj.weight False
+model.layers.29.mlp.up_proj.weight False
+model.layers.29.mlp.down_proj.weight False
+model.layers.29.input_layernorm.weight False
+model.layers.29.post_attention_layernorm.weight False
+model.layers.30.self_attn.q_proj.weight False
+model.layers.30.self_attn.k_proj.weight False
+model.layers.30.self_attn.v_proj.weight False
+model.layers.30.self_attn.o_proj.weight False
+model.layers.30.mlp.gate_proj.weight False
+model.layers.30.mlp.up_proj.weight False
+model.layers.30.mlp.down_proj.weight False
+model.layers.30.input_layernorm.weight False
+model.layers.30.post_attention_layernorm.weight False
+model.layers.31.self_attn.q_proj.weight False
+model.layers.31.self_attn.k_proj.weight False
+model.layers.31.self_attn.v_proj.weight False
+model.layers.31.self_attn.o_proj.weight False
+model.layers.31.mlp.gate_proj.weight False
+model.layers.31.mlp.up_proj.weight False
+model.layers.31.mlp.down_proj.weight False
+model.layers.31.input_layernorm.weight False
+model.layers.31.post_attention_layernorm.weight False
+model.layers.32.self_attn.q_proj.weight False
+model.layers.32.self_attn.k_proj.weight False
+model.layers.32.self_attn.v_proj.weight False
+model.layers.32.self_attn.o_proj.weight False
+model.layers.32.mlp.gate_proj.weight False
+model.layers.32.mlp.up_proj.weight False
+model.layers.32.mlp.down_proj.weight False
+model.layers.32.input_layernorm.weight False
+model.layers.32.post_attention_layernorm.weight False
+model.layers.33.self_attn.q_proj.weight False
+model.layers.33.self_attn.k_proj.weight False
+model.layers.33.self_attn.v_proj.weight False
+model.layers.33.self_attn.o_proj.weight False
+model.layers.33.mlp.gate_proj.weight False
+model.layers.33.mlp.up_proj.weight False
+model.layers.33.mlp.down_proj.weight False
+model.layers.33.input_layernorm.weight False
+model.layers.33.post_attention_layernorm.weight False
+model.layers.34.self_attn.q_proj.weight False
+model.layers.34.self_attn.k_proj.weight False
+model.layers.34.self_attn.v_proj.weight False
+model.layers.34.self_attn.o_proj.weight False
+model.layers.34.mlp.gate_proj.weight False
+model.layers.34.mlp.up_proj.weight False
+model.layers.34.mlp.down_proj.weight False
+model.layers.34.input_layernorm.weight False
+model.layers.34.post_attention_layernorm.weight False
+model.layers.35.self_attn.q_proj.weight False
+model.layers.35.self_attn.k_proj.weight False
+model.layers.35.self_attn.v_proj.weight False
+model.layers.35.self_attn.o_proj.weight False
+model.layers.35.mlp.gate_proj.weight False
+model.layers.35.mlp.up_proj.weight False
+model.layers.35.mlp.down_proj.weight False
+model.layers.35.input_layernorm.weight False
+model.layers.35.post_attention_layernorm.weight False
+model.layers.36.self_attn.q_proj.weight False
+model.layers.36.self_attn.k_proj.weight False
+model.layers.36.self_attn.v_proj.weight False
+model.layers.36.self_attn.o_proj.weight False
+model.layers.36.mlp.gate_proj.weight False
+model.layers.36.mlp.up_proj.weight False
+model.layers.36.mlp.down_proj.weight False
+model.layers.36.input_layernorm.weight False
+model.layers.36.post_attention_layernorm.weight False
+model.layers.37.self_attn.q_proj.weight False
+model.layers.37.self_attn.k_proj.weight False
+model.layers.37.self_attn.v_proj.weight False
+model.layers.37.self_attn.o_proj.weight False
+model.layers.37.mlp.gate_proj.weight False
+model.layers.37.mlp.up_proj.weight False
+model.layers.37.mlp.down_proj.weight False
+model.layers.37.input_layernorm.weight False
+model.layers.37.post_attention_layernorm.weight False
+model.layers.38.self_attn.q_proj.weight False
+model.layers.38.self_attn.k_proj.weight False
+model.layers.38.self_attn.v_proj.weight False
+model.layers.38.self_attn.o_proj.weight False
+model.layers.38.mlp.gate_proj.weight False
+model.layers.38.mlp.up_proj.weight False
+model.layers.38.mlp.down_proj.weight False
+model.layers.38.input_layernorm.weight False
+model.layers.38.post_attention_layernorm.weight False
+model.layers.39.self_attn.q_proj.weight False
+model.layers.39.self_attn.k_proj.weight False
+model.layers.39.self_attn.v_proj.weight False
+model.layers.39.self_attn.o_proj.weight False
+model.layers.39.mlp.gate_proj.weight False
+model.layers.39.mlp.up_proj.weight False
+model.layers.39.mlp.down_proj.weight False
+model.layers.39.input_layernorm.weight False
+model.layers.39.post_attention_layernorm.weight False
+model.norm.weight False
+model.vision_tower.vision_tower.vision_model.embeddings.class_embedding False
+model.vision_tower.vision_tower.vision_model.embeddings.patch_embedding.weight False
+model.vision_tower.vision_tower.vision_model.embeddings.position_embedding.weight False
+model.vision_tower.vision_tower.vision_model.pre_layrnorm.weight False
+model.vision_tower.vision_tower.vision_model.pre_layrnorm.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.0.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.1.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.2.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.3.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.4.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.5.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.6.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.7.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.8.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.9.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.10.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.11.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.12.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.13.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.14.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.15.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.16.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.17.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.18.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.19.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.20.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.21.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.22.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.k_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.k_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.v_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.v_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.q_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.q_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.out_proj.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.self_attn.out_proj.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.layer_norm1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.layer_norm1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.mlp.fc1.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.mlp.fc1.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.mlp.fc2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.mlp.fc2.bias False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.layer_norm2.weight False
+model.vision_tower.vision_tower.vision_model.encoder.layers.23.layer_norm2.bias False
+model.vision_tower.vision_tower.vision_model.post_layernorm.weight False
+model.vision_tower.vision_tower.vision_model.post_layernorm.bias False
+model.mm_projector.0.weight True
+model.mm_projector.0.bias True
+model.mm_projector.2.weight True
+model.mm_projector.2.bias True
+lm_head.weight False
+Rank: 0 partition count [1, 1] and sizes[(31457280, False), (10240, False)] 
+{'loss': 7.4688, 'learning_rate': 1.9083969465648854e-06, 'epoch': 0.0}
+{'loss': 7.1875, 'learning_rate': 3.816793893129771e-06, 'epoch': 0.0}
+{'loss': 7.4375, 'learning_rate': 5.725190839694657e-06, 'epoch': 0.0}
+{'loss': 7.125, 'learning_rate': 7.633587786259541e-06, 'epoch': 0.0}
+{'loss': 7.0312, 'learning_rate': 9.541984732824428e-06, 'epoch': 0.0}
+{'loss': 6.2188, 'learning_rate': 1.1450381679389314e-05, 'epoch': 0.0}
+{'loss': 6.2188, 'learning_rate': 1.3358778625954198e-05, 'epoch': 0.0}
+{'loss': 5.8438, 'learning_rate': 1.5267175572519083e-05, 'epoch': 0.0}
+{'loss': 5.8125, 'learning_rate': 1.717557251908397e-05, 'epoch': 0.0}
+{'loss': 5.4688, 'learning_rate': 1.9083969465648855e-05, 'epoch': 0.0}
+{'loss': 5.2188, 'learning_rate': 2.099236641221374e-05, 'epoch': 0.0}
+{'loss': 5.2188, 'learning_rate': 2.2900763358778628e-05, 'epoch': 0.0}
+{'loss': 4.9688, 'learning_rate': 2.4809160305343512e-05, 'epoch': 0.0}
+{'loss': 4.9062, 'learning_rate': 2.6717557251908397e-05, 'epoch': 0.0}
+{'loss': 5.2188, 'learning_rate': 2.862595419847328e-05, 'epoch': 0.0}
+{'loss': 4.5625, 'learning_rate': 3.0534351145038166e-05, 'epoch': 0.0}
+{'loss': 4.9688, 'learning_rate': 3.2442748091603054e-05, 'epoch': 0.0}
+{'loss': 4.7188, 'learning_rate': 3.435114503816794e-05, 'epoch': 0.0}
+{'loss': 4.5, 'learning_rate': 3.625954198473282e-05, 'epoch': 0.0}
+{'loss': 4.5, 'learning_rate': 3.816793893129771e-05, 'epoch': 0.0}
+{'loss': 4.3125, 'learning_rate': 4.007633587786259e-05, 'epoch': 0.0}
+{'loss': 4.0312, 'learning_rate': 4.198473282442748e-05, 'epoch': 0.0}
+{'loss': 4.1562, 'learning_rate': 4.389312977099236e-05, 'epoch': 0.0}
+{'loss': 4.3125, 'learning_rate': 4.5801526717557256e-05, 'epoch': 0.0}
+{'loss': 4.3125, 'learning_rate': 4.7709923664122144e-05, 'epoch': 0.0}
+{'loss': 3.9688, 'learning_rate': 4.9618320610687025e-05, 'epoch': 0.0}
+{'loss': 4.5, 'learning_rate': 5.152671755725191e-05, 'epoch': 0.0}
+{'loss': 4.0625, 'learning_rate': 5.3435114503816794e-05, 'epoch': 0.0}
+{'loss': 3.9844, 'learning_rate': 5.534351145038168e-05, 'epoch': 0.0}
+{'loss': 4.125, 'learning_rate': 5.725190839694656e-05, 'epoch': 0.0}
+{'loss': 4.2812, 'learning_rate': 5.916030534351145e-05, 'epoch': 0.0}
+{'loss': 3.875, 'learning_rate': 6.106870229007633e-05, 'epoch': 0.0}
+{'loss': 3.9531, 'learning_rate': 6.297709923664122e-05, 'epoch': 0.0}
+{'loss': 3.8125, 'learning_rate': 6.488549618320611e-05, 'epoch': 0.0}
+{'loss': 4.0312, 'learning_rate': 6.6793893129771e-05, 'epoch': 0.0}
+{'loss': 3.9219, 'learning_rate': 6.870229007633588e-05, 'epoch': 0.0}
+{'loss': 4.0, 'learning_rate': 7.061068702290077e-05, 'epoch': 0.0}
+{'loss': 3.8281, 'learning_rate': 7.251908396946565e-05, 'epoch': 0.0}
+{'loss': 4.0938, 'learning_rate': 7.442748091603053e-05, 'epoch': 0.0}
+{'loss': 3.9688, 'learning_rate': 7.633587786259542e-05, 'epoch': 0.0}
+{'loss': 3.9062, 'learning_rate': 7.824427480916031e-05, 'epoch': 0.0}
+{'loss': 3.9531, 'learning_rate': 8.015267175572518e-05, 'epoch': 0.0}
+{'loss': 3.7812, 'learning_rate': 8.206106870229007e-05, 'epoch': 0.0}
+{'loss': 3.8125, 'learning_rate': 8.396946564885496e-05, 'epoch': 0.0}
+{'loss': 3.8125, 'learning_rate': 8.587786259541985e-05, 'epoch': 0.0}
+{'loss': 4.1562, 'learning_rate': 8.778625954198472e-05, 'epoch': 0.0}
+{'loss': 3.4844, 'learning_rate': 8.969465648854962e-05, 'epoch': 0.0}
+{'loss': 3.6094, 'learning_rate': 9.160305343511451e-05, 'epoch': 0.0}
+{'loss': 3.5938, 'learning_rate': 9.35114503816794e-05, 'epoch': 0.0}
+{'loss': 4.125, 'learning_rate': 9.541984732824429e-05, 'epoch': 0.0}
+{'loss': 3.5625, 'learning_rate': 9.732824427480916e-05, 'epoch': 0.0}
+{'loss': 3.7031, 'learning_rate': 9.923664122137405e-05, 'epoch': 0.0}
+{'loss': 3.5469, 'learning_rate': 0.00010114503816793894, 'epoch': 0.0}
+{'loss': 3.7812, 'learning_rate': 0.00010305343511450383, 'epoch': 0.0}
+{'loss': 3.625, 'learning_rate': 0.0001049618320610687, 'epoch': 0.0}
+{'loss': 3.7031, 'learning_rate': 0.00010687022900763359, 'epoch': 0.0}
+{'loss': 3.7344, 'learning_rate': 0.00010877862595419848, 'epoch': 0.0}
+{'loss': 3.6719, 'learning_rate': 0.00011068702290076336, 'epoch': 0.0}
+{'loss': 3.4688, 'learning_rate': 0.00011259541984732824, 'epoch': 0.0}
+{'loss': 3.5625, 'learning_rate': 0.00011450381679389313, 'epoch': 0.0}
+{'loss': 3.7812, 'learning_rate': 0.00011641221374045801, 'epoch': 0.0}
+{'loss': 3.5312, 'learning_rate': 0.0001183206106870229, 'epoch': 0.0}
+{'loss': 3.3281, 'learning_rate': 0.00012022900763358779, 'epoch': 0.0}
+{'loss': 3.6406, 'learning_rate': 0.00012213740458015266, 'epoch': 0.0}
+{'loss': 3.2969, 'learning_rate': 0.00012404580152671757, 'epoch': 0.0}
+{'loss': 3.0625, 'learning_rate': 0.00012595419847328244, 'epoch': 0.0}
+{'loss': 3.4531, 'learning_rate': 0.00012786259541984731, 'epoch': 0.0}
+{'loss': 3.4375, 'learning_rate': 0.00012977099236641222, 'epoch': 0.0}
+{'loss': 3.6094, 'learning_rate': 0.0001316793893129771, 'epoch': 0.0}
+{'loss': 3.5469, 'learning_rate': 0.000133587786259542, 'epoch': 0.0}
+{'loss': 3.5156, 'learning_rate': 0.00013549618320610687, 'epoch': 0.0}
+{'loss': 3.4375, 'learning_rate': 0.00013740458015267177, 'epoch': 0.0}
+{'loss': 3.25, 'learning_rate': 0.00013931297709923664, 'epoch': 0.0}
+{'loss': 3.4531, 'learning_rate': 0.00014122137404580154, 'epoch': 0.0}
+{'loss': 3.2812, 'learning_rate': 0.0001431297709923664, 'epoch': 0.0}
+{'loss': 3.4688, 'learning_rate': 0.0001450381679389313, 'epoch': 0.0}
+{'loss': 3.4062, 'learning_rate': 0.0001469465648854962, 'epoch': 0.0}
+{'loss': 3.2812, 'learning_rate': 0.00014885496183206107, 'epoch': 0.0}
+{'loss': 2.9844, 'learning_rate': 0.00015076335877862597, 'epoch': 0.0}
+{'loss': 3.2031, 'learning_rate': 0.00015267175572519084, 'epoch': 0.0}
+{'loss': 3.2031, 'learning_rate': 0.00015458015267175574, 'epoch': 0.0}
+{'loss': 3.2969, 'learning_rate': 0.00015648854961832062, 'epoch': 0.0}
+{'loss': 3.25, 'learning_rate': 0.0001583969465648855, 'epoch': 0.0}
+{'loss': 3.0156, 'learning_rate': 0.00016030534351145037, 'epoch': 0.0}
+{'loss': 3.0938, 'learning_rate': 0.00016221374045801527, 'epoch': 0.0}
+{'loss': 2.9531, 'learning_rate': 0.00016412213740458014, 'epoch': 0.0}
+{'loss': 3.1094, 'learning_rate': 0.00016603053435114505, 'epoch': 0.0}
+{'loss': 3.4531, 'learning_rate': 0.00016793893129770992, 'epoch': 0.01}
+{'loss': 3.3438, 'learning_rate': 0.00016984732824427482, 'epoch': 0.01}
+{'loss': 3.2812, 'learning_rate': 0.0001717557251908397, 'epoch': 0.01}
+{'loss': 3.1406, 'learning_rate': 0.0001736641221374046, 'epoch': 0.01}
+{'loss': 3.2344, 'learning_rate': 0.00017557251908396944, 'epoch': 0.01}
+{'loss': 3.1406, 'learning_rate': 0.00017748091603053435, 'epoch': 0.01}
+{'loss': 3.2812, 'learning_rate': 0.00017938931297709925, 'epoch': 0.01}
+{'loss': 3.2031, 'learning_rate': 0.00018129770992366412, 'epoch': 0.01}
+{'loss': 3.2656, 'learning_rate': 0.00018320610687022902, 'epoch': 0.01}
+{'loss': 3.4219, 'learning_rate': 0.0001851145038167939, 'epoch': 0.01}
+{'loss': 3.1719, 'learning_rate': 0.0001870229007633588, 'epoch': 0.01}
+{'loss': 3.0469, 'learning_rate': 0.00018893129770992367, 'epoch': 0.01}
+{'loss': 3.1406, 'learning_rate': 0.00019083969465648857, 'epoch': 0.01}
+{'loss': 2.9844, 'learning_rate': 0.00019274809160305342, 'epoch': 0.01}
+{'loss': 2.8125, 'learning_rate': 0.00019465648854961832, 'epoch': 0.01}
+{'loss': 3.1406, 'learning_rate': 0.0001965648854961832, 'epoch': 0.01}
+{'loss': 3.1875, 'learning_rate': 0.0001984732824427481, 'epoch': 0.01}
+{'loss': 2.9062, 'learning_rate': 0.00020038167938931297, 'epoch': 0.01}
+{'loss': 3.1875, 'learning_rate': 0.00020229007633587788, 'epoch': 0.01}
+{'loss': 3.125, 'learning_rate': 0.00020419847328244275, 'epoch': 0.01}
+{'loss': 3.1562, 'learning_rate': 0.00020610687022900765, 'epoch': 0.01}
+{'loss': 3.125, 'learning_rate': 0.00020801526717557253, 'epoch': 0.01}
+{'loss': 3.3906, 'learning_rate': 0.0002099236641221374, 'epoch': 0.01}
+{'loss': 3.3594, 'learning_rate': 0.00021183206106870227, 'epoch': 0.01}
+{'loss': 3.1406, 'learning_rate': 0.00021374045801526718, 'epoch': 0.01}
+{'loss': 3.125, 'learning_rate': 0.00021564885496183208, 'epoch': 0.01}
+{'loss': 3.0312, 'learning_rate': 0.00021755725190839695, 'epoch': 0.01}
+{'loss': 3.2188, 'learning_rate': 0.00021946564885496185, 'epoch': 0.01}
+{'loss': 2.8594, 'learning_rate': 0.00022137404580152673, 'epoch': 0.01}
+{'loss': 2.8906, 'learning_rate': 0.00022328244274809163, 'epoch': 0.01}
+{'loss': 2.8906, 'learning_rate': 0.00022519083969465648, 'epoch': 0.01}
+{'loss': 3.1094, 'learning_rate': 0.00022709923664122138, 'epoch': 0.01}
+{'loss': 3.1719, 'learning_rate': 0.00022900763358778625, 'epoch': 0.01}
+{'loss': 3.0625, 'learning_rate': 0.00023091603053435115, 'epoch': 0.01}
+{'loss': 3.0938, 'learning_rate': 0.00023282442748091603, 'epoch': 0.01}
+{'loss': 3.0625, 'learning_rate': 0.00023473282442748093, 'epoch': 0.01}
+{'loss': 3.0312, 'learning_rate': 0.0002366412213740458, 'epoch': 0.01}
+{'loss': 2.7656, 'learning_rate': 0.0002385496183206107, 'epoch': 0.01}
+{'loss': 2.9375, 'learning_rate': 0.00024045801526717558, 'epoch': 0.01}
+{'loss': 2.8906, 'learning_rate': 0.00024236641221374045, 'epoch': 0.01}
+{'loss': 2.8125, 'learning_rate': 0.00024427480916030533, 'epoch': 0.01}
+{'loss': 3.0938, 'learning_rate': 0.0002461832061068702, 'epoch': 0.01}
+{'loss': 2.7656, 'learning_rate': 0.00024809160305343513, 'epoch': 0.01}
+{'loss': 2.8438, 'learning_rate': 0.00025, 'epoch': 0.01}
+{'loss': 2.8281, 'learning_rate': 0.0002519083969465649, 'epoch': 0.01}
+{'loss': 3.0781, 'learning_rate': 0.0002538167938931298, 'epoch': 0.01}
+{'loss': 3.1406, 'learning_rate': 0.00025572519083969463, 'epoch': 0.01}
+{'loss': 3.0, 'learning_rate': 0.00025763358778625956, 'epoch': 0.01}
+{'loss': 3.2031, 'learning_rate': 0.00025954198473282443, 'epoch': 0.01}
+{'loss': 3.0156, 'learning_rate': 0.00026145038167938936, 'epoch': 0.01}
+{'loss': 3.0469, 'learning_rate': 0.0002633587786259542, 'epoch': 0.01}
+{'loss': 3.0312, 'learning_rate': 0.0002652671755725191, 'epoch': 0.01}
+{'loss': 3.0469, 'learning_rate': 0.000267175572519084, 'epoch': 0.01}
+{'loss': 2.875, 'learning_rate': 0.00026908396946564886, 'epoch': 0.01}
+{'loss': 3.2188, 'learning_rate': 0.00027099236641221373, 'epoch': 0.01}
+{'loss': 2.9531, 'learning_rate': 0.0002729007633587786, 'epoch': 0.01}
+{'loss': 2.9375, 'learning_rate': 0.00027480916030534353, 'epoch': 0.01}
+{'loss': 2.9062, 'learning_rate': 0.0002767175572519084, 'epoch': 0.01}
+{'loss': 2.8906, 'learning_rate': 0.0002786259541984733, 'epoch': 0.01}
+{'loss': 3.0312, 'learning_rate': 0.00028053435114503816, 'epoch': 0.01}
+{'loss': 2.7656, 'learning_rate': 0.0002824427480916031, 'epoch': 0.01}
+{'loss': 3.1094, 'learning_rate': 0.00028435114503816796, 'epoch': 0.01}
+{'loss': 2.75, 'learning_rate': 0.0002862595419847328, 'epoch': 0.01}
+{'loss': 3.125, 'learning_rate': 0.0002881679389312977, 'epoch': 0.01}
+{'loss': 2.4844, 'learning_rate': 0.0002900763358778626, 'epoch': 0.01}
+{'loss': 2.8125, 'learning_rate': 0.0002919847328244275, 'epoch': 0.01}
+{'loss': 2.7344, 'learning_rate': 0.0002938931297709924, 'epoch': 0.01}
+{'loss': 2.8594, 'learning_rate': 0.00029580152671755726, 'epoch': 0.01}
+{'loss': 2.5469, 'learning_rate': 0.00029770992366412214, 'epoch': 0.01}
+{'loss': 2.6875, 'learning_rate': 0.00029961832061068706, 'epoch': 0.01}
+{'loss': 2.7969, 'learning_rate': 0.00030152671755725194, 'epoch': 0.01}
+{'loss': 3.0, 'learning_rate': 0.00030343511450381676, 'epoch': 0.01}
+{'loss': 2.75, 'learning_rate': 0.0003053435114503817, 'epoch': 0.01}
+{'loss': 2.875, 'learning_rate': 0.00030725190839694656, 'epoch': 0.01}
+{'loss': 3.0625, 'learning_rate': 0.0003091603053435115, 'epoch': 0.01}
+{'loss': 2.8594, 'learning_rate': 0.0003110687022900763, 'epoch': 0.01}
+{'loss': 2.6406, 'learning_rate': 0.00031297709923664124, 'epoch': 0.01}
+{'loss': 2.6875, 'learning_rate': 0.0003148854961832061, 'epoch': 0.01}
+{'loss': 2.7812, 'learning_rate': 0.000316793893129771, 'epoch': 0.01}
+{'loss': 2.7969, 'learning_rate': 0.00031870229007633586, 'epoch': 0.01}
+{'loss': 3.0, 'learning_rate': 0.00032061068702290074, 'epoch': 0.01}
+{'loss': 2.6875, 'learning_rate': 0.00032251908396946566, 'epoch': 0.01}
+{'loss': 3.125, 'learning_rate': 0.00032442748091603054, 'epoch': 0.01}
+{'loss': 2.875, 'learning_rate': 0.00032633587786259547, 'epoch': 0.01}
+{'loss': 2.9844, 'learning_rate': 0.0003282442748091603, 'epoch': 0.01}
+{'loss': 3.0312, 'learning_rate': 0.0003301526717557252, 'epoch': 0.01}
+{'loss': 2.8594, 'learning_rate': 0.0003320610687022901, 'epoch': 0.01}
+{'loss': 2.75, 'learning_rate': 0.00033396946564885497, 'epoch': 0.01}
+{'loss': 2.7812, 'learning_rate': 0.00033587786259541984, 'epoch': 0.01}
+{'loss': 2.875, 'learning_rate': 0.0003377862595419847, 'epoch': 0.01}
+{'loss': 2.6406, 'learning_rate': 0.00033969465648854964, 'epoch': 0.01}
+{'loss': 2.9688, 'learning_rate': 0.0003416030534351145, 'epoch': 0.01}
+{'loss': 2.7031, 'learning_rate': 0.0003435114503816794, 'epoch': 0.01}
+{'loss': 2.5, 'learning_rate': 0.00034541984732824427, 'epoch': 0.01}
+{'loss': 2.6875, 'learning_rate': 0.0003473282442748092, 'epoch': 0.01}
+{'loss': 2.6406, 'learning_rate': 0.00034923664122137407, 'epoch': 0.01}
+{'loss': 2.75, 'learning_rate': 0.0003511450381679389, 'epoch': 0.01}
+{'loss': 2.8125, 'learning_rate': 0.0003530534351145038, 'epoch': 0.01}
+{'loss': 2.7031, 'learning_rate': 0.0003549618320610687, 'epoch': 0.01}
+{'loss': 2.5, 'learning_rate': 0.0003568702290076336, 'epoch': 0.01}
+{'loss': 2.75, 'learning_rate': 0.0003587786259541985, 'epoch': 0.01}
+{'loss': 2.7188, 'learning_rate': 0.00036068702290076337, 'epoch': 0.01}
+{'loss': 2.4062, 'learning_rate': 0.00036259541984732824, 'epoch': 0.01}
+{'loss': 2.5938, 'learning_rate': 0.00036450381679389317, 'epoch': 0.01}
+{'loss': 2.6719, 'learning_rate': 0.00036641221374045805, 'epoch': 0.01}
+{'loss': 2.8125, 'learning_rate': 0.00036832061068702287, 'epoch': 0.01}
+{'loss': 2.6406, 'learning_rate': 0.0003702290076335878, 'epoch': 0.01}
+{'loss': 2.7969, 'learning_rate': 0.00037213740458015267, 'epoch': 0.01}
+{'loss': 2.7344, 'learning_rate': 0.0003740458015267176, 'epoch': 0.01}
+{'loss': 2.5781, 'learning_rate': 0.0003759541984732824, 'epoch': 0.01}
+{'loss': 3.0, 'learning_rate': 0.00037786259541984735, 'epoch': 0.01}
+{'loss': 2.7344, 'learning_rate': 0.0003797709923664122, 'epoch': 0.01}
+{'loss': 2.6562, 'learning_rate': 0.00038167938931297715, 'epoch': 0.01}
+{'loss': 2.5938, 'learning_rate': 0.00038358778625954197, 'epoch': 0.01}
+{'loss': 2.625, 'learning_rate': 0.00038549618320610684, 'epoch': 0.01}
+{'loss': 2.4688, 'learning_rate': 0.00038740458015267177, 'epoch': 0.01}
+{'loss': 2.6094, 'learning_rate': 0.00038931297709923665, 'epoch': 0.01}
+{'loss': 2.7188, 'learning_rate': 0.0003912213740458015, 'epoch': 0.01}
+{'loss': 2.625, 'learning_rate': 0.0003931297709923664, 'epoch': 0.01}
+{'loss': 2.6719, 'learning_rate': 0.0003950381679389313, 'epoch': 0.01}
+{'loss': 2.6875, 'learning_rate': 0.0003969465648854962, 'epoch': 0.01}
+{'loss': 2.7031, 'learning_rate': 0.0003988549618320611, 'epoch': 0.01}
+{'loss': 2.4531, 'learning_rate': 0.00040076335877862595, 'epoch': 0.01}
+{'loss': 2.5469, 'learning_rate': 0.0004026717557251908, 'epoch': 0.01}
+{'loss': 2.5, 'learning_rate': 0.00040458015267175575, 'epoch': 0.01}
+{'loss': 2.7031, 'learning_rate': 0.0004064885496183206, 'epoch': 0.01}
+{'loss': 2.7812, 'learning_rate': 0.0004083969465648855, 'epoch': 0.01}
+{'loss': 2.6719, 'learning_rate': 0.0004103053435114504, 'epoch': 0.01}
+{'loss': 2.8281, 'learning_rate': 0.0004122137404580153, 'epoch': 0.01}
+{'loss': 2.875, 'learning_rate': 0.0004141221374045802, 'epoch': 0.01}
+{'loss': 2.3906, 'learning_rate': 0.00041603053435114505, 'epoch': 0.01}
+{'loss': 3.0938, 'learning_rate': 0.0004179389312977099, 'epoch': 0.01}
+{'loss': 2.6406, 'learning_rate': 0.0004198473282442748, 'epoch': 0.01}
+{'loss': 2.4844, 'learning_rate': 0.00042175572519083973, 'epoch': 0.01}
+{'loss': 2.5625, 'learning_rate': 0.00042366412213740455, 'epoch': 0.01}
+{'loss': 2.6094, 'learning_rate': 0.0004255725190839695, 'epoch': 0.01}
+{'loss': 2.4531, 'learning_rate': 0.00042748091603053435, 'epoch': 0.01}
+{'loss': 2.4844, 'learning_rate': 0.0004293893129770993, 'epoch': 0.01}
+{'loss': 2.6094, 'learning_rate': 0.00043129770992366415, 'epoch': 0.01}
+{'loss': 2.7344, 'learning_rate': 0.00043320610687022903, 'epoch': 0.01}
+{'loss': 2.75, 'learning_rate': 0.0004351145038167939, 'epoch': 0.01}
+{'loss': 2.5312, 'learning_rate': 0.0004370229007633588, 'epoch': 0.01}
+{'loss': 2.6094, 'learning_rate': 0.0004389312977099237, 'epoch': 0.01}
+{'loss': 2.8594, 'learning_rate': 0.0004408396946564885, 'epoch': 0.01}
+{'loss': 2.5312, 'learning_rate': 0.00044274809160305345, 'epoch': 0.01}
+{'loss': 2.5312, 'learning_rate': 0.00044465648854961833, 'epoch': 0.01}
+{'loss': 2.6094, 'learning_rate': 0.00044656488549618326, 'epoch': 0.01}
+{'loss': 2.5625, 'learning_rate': 0.0004484732824427481, 'epoch': 0.01}
+{'loss': 2.625, 'learning_rate': 0.00045038167938931295, 'epoch': 0.01}
+{'loss': 2.6562, 'learning_rate': 0.0004522900763358779, 'epoch': 0.01}
+{'loss': 2.5781, 'learning_rate': 0.00045419847328244275, 'epoch': 0.01}
+{'loss': 2.5938, 'learning_rate': 0.00045610687022900763, 'epoch': 0.01}
+{'loss': 2.5938, 'learning_rate': 0.0004580152671755725, 'epoch': 0.01}
+{'loss': 2.3906, 'learning_rate': 0.00045992366412213743, 'epoch': 0.01}
+{'loss': 2.5938, 'learning_rate': 0.0004618320610687023, 'epoch': 0.01}
+{'loss': 2.5938, 'learning_rate': 0.00046374045801526723, 'epoch': 0.01}
+{'loss': 2.3906, 'learning_rate': 0.00046564885496183206, 'epoch': 0.01}
+{'loss': 2.875, 'learning_rate': 0.00046755725190839693, 'epoch': 0.01}
+{'loss': 2.3906, 'learning_rate': 0.00046946564885496186, 'epoch': 0.01}
+{'loss': 2.6406, 'learning_rate': 0.00047137404580152673, 'epoch': 0.01}
+{'loss': 2.5781, 'learning_rate': 0.0004732824427480916, 'epoch': 0.01}
+{'loss': 2.5, 'learning_rate': 0.0004751908396946565, 'epoch': 0.01}
+{'loss': 2.7031, 'learning_rate': 0.0004770992366412214, 'epoch': 0.01}
+{'loss': 2.5156, 'learning_rate': 0.0004790076335877863, 'epoch': 0.01}
+{'loss': 2.4844, 'learning_rate': 0.00048091603053435116, 'epoch': 0.01}
+{'loss': 2.5625, 'learning_rate': 0.00048282442748091603, 'epoch': 0.01}
+{'loss': 2.6094, 'learning_rate': 0.0004847328244274809, 'epoch': 0.01}
+{'loss': 2.7031, 'learning_rate': 0.00048664122137404584, 'epoch': 0.01}
+{'loss': 2.6719, 'learning_rate': 0.0004885496183206107, 'epoch': 0.01}
+{'loss': 2.2031, 'learning_rate': 0.0004904580152671756, 'epoch': 0.01}
+{'loss': 2.4531, 'learning_rate': 0.0004923664122137404, 'epoch': 0.01}
+{'loss': 2.5156, 'learning_rate': 0.0004942748091603053, 'epoch': 0.01}
+{'loss': 2.3125, 'learning_rate': 0.0004961832061068703, 'epoch': 0.01}
+{'loss': 2.4844, 'learning_rate': 0.0004980916030534352, 'epoch': 0.01}
+{'loss': 2.6562, 'learning_rate': 0.0005, 'epoch': 0.02}
+{'loss': 2.8906, 'learning_rate': 0.0005019083969465648, 'epoch': 0.02}
+{'loss': 2.7656, 'learning_rate': 0.0005038167938931298, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0005057251908396947, 'epoch': 0.02}
+{'loss': 2.5, 'learning_rate': 0.0005076335877862596, 'epoch': 0.02}
+{'loss': 2.5469, 'learning_rate': 0.0005095419847328244, 'epoch': 0.02}
+{'loss': 2.5, 'learning_rate': 0.0005114503816793893, 'epoch': 0.02}
+{'loss': 2.2188, 'learning_rate': 0.0005133587786259543, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0005152671755725191, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0005171755725190839, 'epoch': 0.02}
+{'loss': 2.5625, 'learning_rate': 0.0005190839694656489, 'epoch': 0.02}
+{'loss': 2.5156, 'learning_rate': 0.0005209923664122137, 'epoch': 0.02}
+{'loss': 2.75, 'learning_rate': 0.0005229007633587787, 'epoch': 0.02}
+{'loss': 2.2656, 'learning_rate': 0.0005248091603053435, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0005267175572519084, 'epoch': 0.02}
+{'loss': 2.5938, 'learning_rate': 0.0005286259541984733, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.0005305343511450382, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.000532442748091603, 'epoch': 0.02}
+{'loss': 2.7031, 'learning_rate': 0.000534351145038168, 'epoch': 0.02}
+{'loss': 2.6094, 'learning_rate': 0.0005362595419847328, 'epoch': 0.02}
+{'loss': 2.5625, 'learning_rate': 0.0005381679389312977, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0005400763358778626, 'epoch': 0.02}
+{'loss': 2.5, 'learning_rate': 0.0005419847328244275, 'epoch': 0.02}
+{'loss': 2.2969, 'learning_rate': 0.0005438931297709924, 'epoch': 0.02}
+{'loss': 2.3438, 'learning_rate': 0.0005458015267175572, 'epoch': 0.02}
+{'loss': 2.5312, 'learning_rate': 0.0005477099236641222, 'epoch': 0.02}
+{'loss': 2.6094, 'learning_rate': 0.0005496183206106871, 'epoch': 0.02}
+{'loss': 2.25, 'learning_rate': 0.0005515267175572519, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.0005534351145038168, 'epoch': 0.02}
+{'loss': 2.3594, 'learning_rate': 0.0005553435114503816, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.0005572519083969466, 'epoch': 0.02}
+{'loss': 2.5781, 'learning_rate': 0.0005591603053435115, 'epoch': 0.02}
+{'loss': 2.5469, 'learning_rate': 0.0005610687022900763, 'epoch': 0.02}
+{'loss': 2.4844, 'learning_rate': 0.0005629770992366412, 'epoch': 0.02}
+{'loss': 2.2344, 'learning_rate': 0.0005648854961832062, 'epoch': 0.02}
+{'loss': 2.3438, 'learning_rate': 0.000566793893129771, 'epoch': 0.02}
+{'loss': 2.6094, 'learning_rate': 0.0005687022900763359, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0005706106870229007, 'epoch': 0.02}
+{'loss': 2.3906, 'learning_rate': 0.0005725190839694656, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0005744274809160306, 'epoch': 0.02}
+{'loss': 2.4062, 'learning_rate': 0.0005763358778625954, 'epoch': 0.02}
+{'loss': 2.5469, 'learning_rate': 0.0005782442748091603, 'epoch': 0.02}
+{'loss': 2.5469, 'learning_rate': 0.0005801526717557252, 'epoch': 0.02}
+{'loss': 2.3594, 'learning_rate': 0.0005820610687022901, 'epoch': 0.02}
+{'loss': 2.3125, 'learning_rate': 0.000583969465648855, 'epoch': 0.02}
+{'loss': 2.3438, 'learning_rate': 0.0005858778625954198, 'epoch': 0.02}
+{'loss': 2.3438, 'learning_rate': 0.0005877862595419848, 'epoch': 0.02}
+{'loss': 2.2969, 'learning_rate': 0.0005896946564885496, 'epoch': 0.02}
+{'loss': 2.3906, 'learning_rate': 0.0005916030534351145, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.0005935114503816795, 'epoch': 0.02}
+{'loss': 2.5469, 'learning_rate': 0.0005954198473282443, 'epoch': 0.02}
+{'loss': 2.2969, 'learning_rate': 0.0005973282442748091, 'epoch': 0.02}
+{'loss': 2.5312, 'learning_rate': 0.0005992366412213741, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.000601145038167939, 'epoch': 0.02}
+{'loss': 2.4375, 'learning_rate': 0.0006030534351145039, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0006049618320610687, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.0006068702290076335, 'epoch': 0.02}
+{'loss': 2.1562, 'learning_rate': 0.0006087786259541986, 'epoch': 0.02}
+{'loss': 2.4375, 'learning_rate': 0.0006106870229007634, 'epoch': 0.02}
+{'loss': 2.5938, 'learning_rate': 0.0006125954198473283, 'epoch': 0.02}
+{'loss': 2.2969, 'learning_rate': 0.0006145038167938931, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.000616412213740458, 'epoch': 0.02}
+{'loss': 2.4219, 'learning_rate': 0.000618320610687023, 'epoch': 0.02}
+{'loss': 2.2656, 'learning_rate': 0.0006202290076335878, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0006221374045801526, 'epoch': 0.02}
+{'loss': 2.5781, 'learning_rate': 0.0006240458015267175, 'epoch': 0.02}
+{'loss': 2.4062, 'learning_rate': 0.0006259541984732825, 'epoch': 0.02}
+{'loss': 2.2969, 'learning_rate': 0.0006278625954198474, 'epoch': 0.02}
+{'loss': 2.1094, 'learning_rate': 0.0006297709923664122, 'epoch': 0.02}
+{'loss': 2.7188, 'learning_rate': 0.000631679389312977, 'epoch': 0.02}
+{'loss': 2.3125, 'learning_rate': 0.000633587786259542, 'epoch': 0.02}
+{'loss': 2.2344, 'learning_rate': 0.0006354961832061069, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.0006374045801526717, 'epoch': 0.02}
+{'loss': 2.2969, 'learning_rate': 0.0006393129770992367, 'epoch': 0.02}
+{'loss': 2.2656, 'learning_rate': 0.0006412213740458015, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0006431297709923665, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.0006450381679389313, 'epoch': 0.02}
+{'loss': 2.2188, 'learning_rate': 0.0006469465648854961, 'epoch': 0.02}
+{'loss': 2.2188, 'learning_rate': 0.0006488549618320611, 'epoch': 0.02}
+{'loss': 2.5312, 'learning_rate': 0.0006507633587786259, 'epoch': 0.02}
+{'loss': 2.1094, 'learning_rate': 0.0006526717557251909, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.0006545801526717558, 'epoch': 0.02}
+{'loss': 2.5938, 'learning_rate': 0.0006564885496183206, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.0006583969465648855, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0006603053435114504, 'epoch': 0.02}
+{'loss': 2.1875, 'learning_rate': 0.0006622137404580153, 'epoch': 0.02}
+{'loss': 2.2969, 'learning_rate': 0.0006641221374045802, 'epoch': 0.02}
+{'loss': 2.25, 'learning_rate': 0.000666030534351145, 'epoch': 0.02}
+{'loss': 2.4219, 'learning_rate': 0.0006679389312977099, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.0006698473282442749, 'epoch': 0.02}
+{'loss': 2.5, 'learning_rate': 0.0006717557251908397, 'epoch': 0.02}
+{'loss': 2.1406, 'learning_rate': 0.0006736641221374046, 'epoch': 0.02}
+{'loss': 2.4844, 'learning_rate': 0.0006755725190839694, 'epoch': 0.02}
+{'loss': 2.3594, 'learning_rate': 0.0006774809160305345, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.0006793893129770993, 'epoch': 0.02}
+{'loss': 2.1406, 'learning_rate': 0.0006812977099236641, 'epoch': 0.02}
+{'loss': 2.0625, 'learning_rate': 0.000683206106870229, 'epoch': 0.02}
+{'loss': 2.25, 'learning_rate': 0.0006851145038167939, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.0006870229007633588, 'epoch': 0.02}
+{'loss': 2.1406, 'learning_rate': 0.0006889312977099237, 'epoch': 0.02}
+{'loss': 2.25, 'learning_rate': 0.0006908396946564885, 'epoch': 0.02}
+{'loss': 2.2188, 'learning_rate': 0.0006927480916030535, 'epoch': 0.02}
+{'loss': 2.2188, 'learning_rate': 0.0006946564885496184, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0006965648854961832, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.0006984732824427481, 'epoch': 0.02}
+{'loss': 2.4844, 'learning_rate': 0.000700381679389313, 'epoch': 0.02}
+{'loss': 2.1719, 'learning_rate': 0.0007022900763358778, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.0007041984732824428, 'epoch': 0.02}
+{'loss': 2.4062, 'learning_rate': 0.0007061068702290076, 'epoch': 0.02}
+{'loss': 2.4062, 'learning_rate': 0.0007080152671755726, 'epoch': 0.02}
+{'loss': 2.3594, 'learning_rate': 0.0007099236641221374, 'epoch': 0.02}
+{'loss': 2.25, 'learning_rate': 0.0007118320610687023, 'epoch': 0.02}
+{'loss': 2.4062, 'learning_rate': 0.0007137404580152672, 'epoch': 0.02}
+{'loss': 2.2031, 'learning_rate': 0.0007156488549618321, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.000717557251908397, 'epoch': 0.02}
+{'loss': 2.1719, 'learning_rate': 0.0007194656488549618, 'epoch': 0.02}
+{'loss': 2.5, 'learning_rate': 0.0007213740458015267, 'epoch': 0.02}
+{'loss': 2.3594, 'learning_rate': 0.0007232824427480917, 'epoch': 0.02}
+{'loss': 2.4219, 'learning_rate': 0.0007251908396946565, 'epoch': 0.02}
+{'loss': 2.3906, 'learning_rate': 0.0007270992366412213, 'epoch': 0.02}
+{'loss': 2.1562, 'learning_rate': 0.0007290076335877863, 'epoch': 0.02}
+{'loss': 2.4375, 'learning_rate': 0.0007309160305343512, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0007328244274809161, 'epoch': 0.02}
+{'loss': 2.0781, 'learning_rate': 0.0007347328244274809, 'epoch': 0.02}
+{'loss': 2.5, 'learning_rate': 0.0007366412213740457, 'epoch': 0.02}
+{'loss': 2.1875, 'learning_rate': 0.0007385496183206108, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0007404580152671756, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.0007423664122137404, 'epoch': 0.02}
+{'loss': 2.1562, 'learning_rate': 0.0007442748091603053, 'epoch': 0.02}
+{'loss': 2.4375, 'learning_rate': 0.0007461832061068703, 'epoch': 0.02}
+{'loss': 2.1094, 'learning_rate': 0.0007480916030534352, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.00075, 'epoch': 0.02}
+{'loss': 2.4219, 'learning_rate': 0.0007519083969465648, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0007538167938931298, 'epoch': 0.02}
+{'loss': 2.25, 'learning_rate': 0.0007557251908396947, 'epoch': 0.02}
+{'loss': 1.9609, 'learning_rate': 0.0007576335877862596, 'epoch': 0.02}
+{'loss': 2.1562, 'learning_rate': 0.0007595419847328244, 'epoch': 0.02}
+{'loss': 2.2344, 'learning_rate': 0.0007614503816793893, 'epoch': 0.02}
+{'loss': 2.2031, 'learning_rate': 0.0007633587786259543, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.0007652671755725191, 'epoch': 0.02}
+{'loss': 1.9062, 'learning_rate': 0.0007671755725190839, 'epoch': 0.02}
+{'loss': 2.3594, 'learning_rate': 0.0007690839694656489, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0007709923664122137, 'epoch': 0.02}
+{'loss': 2.0469, 'learning_rate': 0.0007729007633587787, 'epoch': 0.02}
+{'loss': 2.1719, 'learning_rate': 0.0007748091603053435, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0007767175572519084, 'epoch': 0.02}
+{'loss': 2.3906, 'learning_rate': 0.0007786259541984733, 'epoch': 0.02}
+{'loss': 2.4375, 'learning_rate': 0.0007805343511450382, 'epoch': 0.02}
+{'loss': 2.5156, 'learning_rate': 0.000782442748091603, 'epoch': 0.02}
+{'loss': 2.7656, 'learning_rate': 0.000784351145038168, 'epoch': 0.02}
+{'loss': 2.1719, 'learning_rate': 0.0007862595419847328, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.0007881679389312977, 'epoch': 0.02}
+{'loss': 2.4219, 'learning_rate': 0.0007900763358778626, 'epoch': 0.02}
+{'loss': 2.0938, 'learning_rate': 0.0007919847328244275, 'epoch': 0.02}
+{'loss': 2.25, 'learning_rate': 0.0007938931297709924, 'epoch': 0.02}
+{'loss': 2.3281, 'learning_rate': 0.0007958015267175572, 'epoch': 0.02}
+{'loss': 2.2344, 'learning_rate': 0.0007977099236641223, 'epoch': 0.02}
+{'loss': 2.4375, 'learning_rate': 0.0007996183206106871, 'epoch': 0.02}
+{'loss': 2.0, 'learning_rate': 0.0008015267175572519, 'epoch': 0.02}
+{'loss': 2.4062, 'learning_rate': 0.0008034351145038168, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0008053435114503816, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.0008072519083969466, 'epoch': 0.02}
+{'loss': 2.2031, 'learning_rate': 0.0008091603053435115, 'epoch': 0.02}
+{'loss': 2.4688, 'learning_rate': 0.0008110687022900763, 'epoch': 0.02}
+{'loss': 2.1406, 'learning_rate': 0.0008129770992366412, 'epoch': 0.02}
+{'loss': 2.4844, 'learning_rate': 0.0008148854961832062, 'epoch': 0.02}
+{'loss': 2.2812, 'learning_rate': 0.000816793893129771, 'epoch': 0.02}
+{'loss': 2.1719, 'learning_rate': 0.0008187022900763359, 'epoch': 0.02}
+{'loss': 2.5, 'learning_rate': 0.0008206106870229007, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0008225190839694656, 'epoch': 0.02}
+{'loss': 2.125, 'learning_rate': 0.0008244274809160306, 'epoch': 0.02}
+{'loss': 2.5469, 'learning_rate': 0.0008263358778625954, 'epoch': 0.02}
+{'loss': 2.4531, 'learning_rate': 0.0008282442748091604, 'epoch': 0.02}
+{'loss': 2.2031, 'learning_rate': 0.0008301526717557252, 'epoch': 0.02}
+{'loss': 2.375, 'learning_rate': 0.0008320610687022901, 'epoch': 0.02}
+{'loss': 2.2344, 'learning_rate': 0.000833969465648855, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0008358778625954198, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0008377862595419848, 'epoch': 0.03}
+{'loss': 2.0938, 'learning_rate': 0.0008396946564885496, 'epoch': 0.03}
+{'loss': 2.2969, 'learning_rate': 0.0008416030534351145, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.0008435114503816795, 'epoch': 0.03}
+{'loss': 2.25, 'learning_rate': 0.0008454198473282443, 'epoch': 0.03}
+{'loss': 2.2031, 'learning_rate': 0.0008473282442748091, 'epoch': 0.03}
+{'loss': 2.2031, 'learning_rate': 0.0008492366412213741, 'epoch': 0.03}
+{'loss': 2.4062, 'learning_rate': 0.000851145038167939, 'epoch': 0.03}
+{'loss': 2.0938, 'learning_rate': 0.0008530534351145039, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.0008549618320610687, 'epoch': 0.03}
+{'loss': 2.375, 'learning_rate': 0.0008568702290076335, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.0008587786259541986, 'epoch': 0.03}
+{'loss': 2.5, 'learning_rate': 0.0008606870229007634, 'epoch': 0.03}
+{'loss': 2.4219, 'learning_rate': 0.0008625954198473283, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0008645038167938931, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.0008664122137404581, 'epoch': 0.03}
+{'loss': 2.5625, 'learning_rate': 0.000868320610687023, 'epoch': 0.03}
+{'loss': 2.0156, 'learning_rate': 0.0008702290076335878, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.0008721374045801526, 'epoch': 0.03}
+{'loss': 2.5156, 'learning_rate': 0.0008740458015267176, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.0008759541984732825, 'epoch': 0.03}
+{'loss': 2.4219, 'learning_rate': 0.0008778625954198474, 'epoch': 0.03}
+{'loss': 2.5625, 'learning_rate': 0.0008797709923664122, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.000881679389312977, 'epoch': 0.03}
+{'loss': 2.3594, 'learning_rate': 0.000883587786259542, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.0008854961832061069, 'epoch': 0.03}
+{'loss': 2.4375, 'learning_rate': 0.0008874045801526717, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.0008893129770992367, 'epoch': 0.03}
+{'loss': 2.0938, 'learning_rate': 0.0008912213740458015, 'epoch': 0.03}
+{'loss': 1.9922, 'learning_rate': 0.0008931297709923665, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.0008950381679389313, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.0008969465648854962, 'epoch': 0.03}
+{'loss': 2.4531, 'learning_rate': 0.0008988549618320611, 'epoch': 0.03}
+{'loss': 1.9844, 'learning_rate': 0.0009007633587786259, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0009026717557251909, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.0009045801526717558, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.0009064885496183206, 'epoch': 0.03}
+{'loss': 2.25, 'learning_rate': 0.0009083969465648855, 'epoch': 0.03}
+{'loss': 2.3906, 'learning_rate': 0.0009103053435114504, 'epoch': 0.03}
+{'loss': 2.4219, 'learning_rate': 0.0009122137404580153, 'epoch': 0.03}
+{'loss': 1.9922, 'learning_rate': 0.0009141221374045802, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.000916030534351145, 'epoch': 0.03}
+{'loss': 2.2969, 'learning_rate': 0.0009179389312977099, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0009198473282442749, 'epoch': 0.03}
+{'loss': 2.3594, 'learning_rate': 0.0009217557251908397, 'epoch': 0.03}
+{'loss': 2.375, 'learning_rate': 0.0009236641221374046, 'epoch': 0.03}
+{'loss': 2.6562, 'learning_rate': 0.0009255725190839694, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.0009274809160305345, 'epoch': 0.03}
+{'loss': 2.5, 'learning_rate': 0.0009293893129770993, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.0009312977099236641, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.000933206106870229, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0009351145038167939, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.0009370229007633588, 'epoch': 0.03}
+{'loss': 2.4062, 'learning_rate': 0.0009389312977099237, 'epoch': 0.03}
+{'loss': 2.4688, 'learning_rate': 0.0009408396946564885, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.0009427480916030535, 'epoch': 0.03}
+{'loss': 2.4531, 'learning_rate': 0.0009446564885496184, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0009465648854961832, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.0009484732824427481, 'epoch': 0.03}
+{'loss': 2.5, 'learning_rate': 0.000950381679389313, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.0009522900763358778, 'epoch': 0.03}
+{'loss': 2.4375, 'learning_rate': 0.0009541984732824428, 'epoch': 0.03}
+{'loss': 2.4062, 'learning_rate': 0.0009561068702290076, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.0009580152671755726, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.0009599236641221374, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.0009618320610687023, 'epoch': 0.03}
+{'loss': 2.2031, 'learning_rate': 0.0009637404580152672, 'epoch': 0.03}
+{'loss': 2.1562, 'learning_rate': 0.0009656488549618321, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.000967557251908397, 'epoch': 0.03}
+{'loss': 2.4531, 'learning_rate': 0.0009694656488549618, 'epoch': 0.03}
+{'loss': 2.5469, 'learning_rate': 0.0009713740458015267, 'epoch': 0.03}
+{'loss': 2.0625, 'learning_rate': 0.0009732824427480917, 'epoch': 0.03}
+{'loss': 2.25, 'learning_rate': 0.0009751908396946565, 'epoch': 0.03}
+{'loss': 1.9531, 'learning_rate': 0.0009770992366412213, 'epoch': 0.03}
+{'loss': 2.0469, 'learning_rate': 0.0009790076335877862, 'epoch': 0.03}
+{'loss': 2.2969, 'learning_rate': 0.0009809160305343512, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.000982824427480916, 'epoch': 0.03}
+{'loss': 2.3594, 'learning_rate': 0.0009847328244274808, 'epoch': 0.03}
+{'loss': 2.0938, 'learning_rate': 0.0009866412213740457, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.0009885496183206107, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.0009904580152671756, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0009923664122137405, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.0009942748091603052, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.0009961832061068704, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.000998091603053435, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.001, 'epoch': 0.03}
+{'loss': 2.4531, 'learning_rate': 0.0009999999913793162, 'epoch': 0.03}
+{'loss': 2.0312, 'learning_rate': 0.0009999999655172654, 'epoch': 0.03}
+{'loss': 2.2969, 'learning_rate': 0.0009999999224138483, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0009999998620690664, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.000999999784482922, 'epoch': 0.03}
+{'loss': 2.1562, 'learning_rate': 0.0009999996896554175, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0009999995775865562, 'epoch': 0.03}
+{'loss': 2.1094, 'learning_rate': 0.0009999994482763422, 'epoch': 0.03}
+{'loss': 2.1406, 'learning_rate': 0.0009999993017247794, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0009999991379318737, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.0009999989568976301, 'epoch': 0.03}
+{'loss': 2.25, 'learning_rate': 0.000999998758622055, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.0009999985431051555, 'epoch': 0.03}
+{'loss': 2.4375, 'learning_rate': 0.0009999983103469385, 'epoch': 0.03}
+{'loss': 2.4219, 'learning_rate': 0.0009999980603474124, 'epoch': 0.03}
+{'loss': 2.375, 'learning_rate': 0.0009999977931065857, 'epoch': 0.03}
+{'loss': 2.4375, 'learning_rate': 0.000999997508624468, 'epoch': 0.03}
+{'loss': 2.25, 'learning_rate': 0.0009999972069010686, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.000999996887936398, 'epoch': 0.03}
+{'loss': 1.9844, 'learning_rate': 0.0009999965517304673, 'epoch': 0.03}
+{'loss': 2.3906, 'learning_rate': 0.0009999961982832882, 'epoch': 0.03}
+{'loss': 2.625, 'learning_rate': 0.0009999958275948725, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.0009999954396652335, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.0009999950344943842, 'epoch': 0.03}
+{'loss': 2.0938, 'learning_rate': 0.0009999946120823387, 'epoch': 0.03}
+{'loss': 2.4375, 'learning_rate': 0.0009999941724291115, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.0009999937155347179, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.0009999932413991737, 'epoch': 0.03}
+{'loss': 2.5, 'learning_rate': 0.000999992750022495, 'epoch': 0.03}
+{'loss': 2.0781, 'learning_rate': 0.0009999922414046986, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.0009999917155458027, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0009999911724458248, 'epoch': 0.03}
+{'loss': 2.1719, 'learning_rate': 0.000999990612104784, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0009999900345226994, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.0009999894396995911, 'epoch': 0.03}
+{'loss': 2.2031, 'learning_rate': 0.0009999888276354795, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.0009999881983303858, 'epoch': 0.03}
+{'loss': 2.375, 'learning_rate': 0.0009999875517843315, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.000999986887997339, 'epoch': 0.03}
+{'loss': 2.3594, 'learning_rate': 0.0009999862069694312, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.0009999855087006319, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.0009999847931909645, 'epoch': 0.03}
+{'loss': 2.375, 'learning_rate': 0.000999984060440454, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.000999983310449126, 'epoch': 0.03}
+{'loss': 2.2969, 'learning_rate': 0.0009999825432170058, 'epoch': 0.03}
+{'loss': 2.2969, 'learning_rate': 0.0009999817587441203, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0009999809570304962, 'epoch': 0.03}
+{'loss': 2.3594, 'learning_rate': 0.0009999801380761615, 'epoch': 0.03}
+{'loss': 2.2188, 'learning_rate': 0.0009999793018811442, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.0009999784484454734, 'epoch': 0.03}
+{'loss': 2.5156, 'learning_rate': 0.000999977577769178, 'epoch': 0.03}
+{'loss': 2.25, 'learning_rate': 0.0009999766898522884, 'epoch': 0.03}
+{'loss': 1.9297, 'learning_rate': 0.000999975784694835, 'epoch': 0.03}
+{'loss': 2.4375, 'learning_rate': 0.0009999748622968496, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.0009999739226583635, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.000999972965779409, 'epoch': 0.03}
+{'loss': 2.3125, 'learning_rate': 0.0009999719916600194, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.000999971000300228, 'epoch': 0.03}
+{'loss': 2.1406, 'learning_rate': 0.0009999699917000696, 'epoch': 0.03}
+{'loss': 1.8047, 'learning_rate': 0.000999968965859578, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.0009999679227787894, 'epoch': 0.03}
+{'loss': 2.2344, 'learning_rate': 0.0009999668624577395, 'epoch': 0.03}
+{'loss': 2.4062, 'learning_rate': 0.0009999657848964647, 'epoch': 0.03}
+{'loss': 2.5781, 'learning_rate': 0.0009999646900950023, 'epoch': 0.03}
+{'loss': 2.125, 'learning_rate': 0.0009999635780533903, 'epoch': 0.03}
+{'loss': 2.375, 'learning_rate': 0.0009999624487716666, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.0009999613022498703, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.000999960138488041, 'epoch': 0.03}
+{'loss': 2.0781, 'learning_rate': 0.0009999589574862188, 'epoch': 0.03}
+{'loss': 2.2656, 'learning_rate': 0.0009999577592444443, 'epoch': 0.03}
+{'loss': 2.1094, 'learning_rate': 0.0009999565437627592, 'epoch': 0.03}
+{'loss': 2.5781, 'learning_rate': 0.000999955311041205, 'epoch': 0.03}
+{'loss': 2.1875, 'learning_rate': 0.0009999540610798245, 'epoch': 0.03}
+{'loss': 2.1719, 'learning_rate': 0.0009999527938786606, 'epoch': 0.03}
+{'loss': 2.1406, 'learning_rate': 0.000999951509437757, 'epoch': 0.03}
+{'loss': 2.0625, 'learning_rate': 0.0009999502077571581, 'epoch': 0.03}
+{'loss': 2.4062, 'learning_rate': 0.0009999488888369089, 'epoch': 0.03}
+{'loss': 1.9844, 'learning_rate': 0.0009999475526770545, 'epoch': 0.03}
+{'loss': 2.1562, 'learning_rate': 0.000999946199277641, 'epoch': 0.03}
+{'loss': 2.3438, 'learning_rate': 0.0009999448286387158, 'epoch': 0.03}
+{'loss': 2.4062, 'learning_rate': 0.0009999434407603253, 'epoch': 0.03}
+{'loss': 2.3281, 'learning_rate': 0.0009999420356425178, 'epoch': 0.03}
+{'loss': 2.4844, 'learning_rate': 0.0009999406132853415, 'epoch': 0.03}
+{'loss': 2.2812, 'learning_rate': 0.0009999391736888457, 'epoch': 0.03}
+[2023-11-08 23:34:28,229] [INFO] [launch.py:315:sigkill_handler] Killing subprocess 1478
+[2023-11-08 23:34:28,690] [INFO] [launch.py:324:sigkill_handler] Main process received SIGINT, exiting
