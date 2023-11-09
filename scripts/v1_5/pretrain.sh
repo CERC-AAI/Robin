@@ -2,11 +2,11 @@
 
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/vicuna-13b-v1.5 \
+    --model_name_or_path ./hf/vicuna-13b-v1.5 \
     --version plain \
-    --data_path /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/blip/blip_laion_cc_sbu_558k.json \
-    --image_folder /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/blip/images \
-    --vision_tower /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/siglip \
+    --data_path ./datasets/blip/blip_laion_cc_sbu_558k.json \
+    --image_folder ./datasets/blip/images \
+    --vision_tower ./hf/siglip \
     --mm_projector_type mlp2x_gelu \
     --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \

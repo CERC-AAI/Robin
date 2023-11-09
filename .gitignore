@@ -1,5 +1,11 @@
-# This is a (symlink to a) working dir to store datasets, etc
+# (Symlink to a) working dir to store official Llava datasets
 playground
+
+# (Symlink to a) dir to store models
+hf
+
+# (Symlink to a) dir to store extra datasets
+datasets
 
 
 # Python

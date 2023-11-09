@@ -29,7 +29,7 @@ class OpenCLIPVisionTower(nn.Module):
     def load_model(self):
         
         #So we need to run this code from OUTSIDE this code once before we can do this. I don't know why either.
-        self.vision_tower, self.image_processor = create_model_from_pretrained("hf-hub:timm/ViT-B-16-SigLIP", cache_dir = "/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/siglip")
+        self.vision_tower, self.image_processor = create_model_from_pretrained("hf-hub:timm/ViT-B-16-SigLIP", cache_dir = "./hf/siglip")
         self.vision_tower = self.vision_tower.visual
         
         #Need to make sure it has the attribute. If not, uhoh. Might need to modify code this also, depending.

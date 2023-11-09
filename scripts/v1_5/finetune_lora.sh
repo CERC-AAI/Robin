@@ -3,12 +3,12 @@
 deepspeed llava/train/train_mem.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/vicuna-13b-v1.5 \
+    --model_name_or_path ./hf/vicuna-13b-v1.5 \
     --version v1 \
-    --data_path /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/llava_v1_5_mix665k.json \
-    --image_folder /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data \
-    --vision_tower /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/siglip \
-    --pretrain_mm_mlp_adapter /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/kshitij/robin_llava/checkpoints/vicuna_siglip_pretrain/mm_projector.bin \
+    --data_path ./playground/data/llava_v1_5_mix665k.json \
+    --image_folder ./playground/data \
+    --vision_tower ./hf/siglip \
+    --pretrain_mm_mlp_adapter ./checkpoints/vicuna_siglip_pretrain/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
