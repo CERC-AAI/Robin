@@ -106,6 +106,7 @@ class TrainingArguments(transformers.TrainingArguments):
     lora_bias: str = "none"
     mm_projector_lr: Optional[float] = None
     group_by_modality_length: bool = field(default=False)
+    finetune_ve: bool =  False
 
 
 def maybe_zero_3(param, ignore_status=False, name=None):
@@ -806,7 +807,7 @@ def train():
                 **bnb_model_from_pretrained_args
             )
         else:
-            # print(model_args)
+            print(model_args)
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
@@ -862,6 +863,7 @@ def train():
             padding_side="right"
         )
     else:
+        #print(model_args.model_name_or_path)
         tokenizer = transformers.AutoTokenizer.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,
@@ -887,6 +889,8 @@ def train():
             conversation_lib.default_conversation = conversation_lib.conv_templates["vicuna_v1"]
 
     if model_args.vision_tower is not None:
+        print(model_args)
+        
         model.get_model().initialize_vision_modules(
             model_args=model_args,
             fsdp=training_args.fsdp
@@ -951,8 +955,17 @@ def train():
                     args=training_args,
                     **data_module)
 
-    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
-
+    #Training happens here...
+    
+    # convert_model(model.layers)
+    
+    if training_args.finetune_ve:
+        for name, param in model.base_model.model.model.vision_tower.named_parameters():#Only needs to be this ridiculous with lora... sigh
+            param.requires_grad = True
+    print(model)
+    for name, param in model.named_parameters():
+        print(name, param.requires_grad)
+    
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
         trainer.train(resume_from_checkpoint=True)
     else:
