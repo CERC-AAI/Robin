@@ -23,8 +23,7 @@ class OpenCLIPVisionTower(nn.Module):
             exit()
             # self.cfg_only = OpenCLIPVisionConfig.from_pretrained(self.vision_tower_name)
         
-        self.cfg = open_clip.factory.get_model_config(self.vision_tower_name)
-        self.hidden_size = self.cfg.embed_dim
+        self.hidden_size = 1152 if "SO400M" in self.vision_tower_name else 768  # TODO: this is a hack, we should read this from config.embed_dim
 
         self.device = None
         self.dtype = None
