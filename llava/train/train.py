@@ -869,7 +869,6 @@ def train():
             cache_dir=training_args.cache_dir,
             model_max_length=training_args.model_max_length,
             padding_side="right",
-            use_fast=False,
         )
 
     if model_args.version == "v0":
