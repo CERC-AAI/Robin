@@ -6,7 +6,7 @@ deepspeed llava/train/train_mem.py \
     --version plain \
     --data_path ./datasets/blip/blip_laion_cc_sbu_558k.json \
     --image_folder ./datasets/blip/images \
-    --vision_tower ./hf/siglip \
+    --vision_tower ./hf/siglip/models--timm--ViT-B-16-SigLIP \
     --mm_projector_type mlp2x_gelu \
     --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \

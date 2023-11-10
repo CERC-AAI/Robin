@@ -6,7 +6,7 @@ deepspeed llava/train/train_mem.py \
     --version plain \
     --data_path ./playground/data/llava_v1_5_mix665k.json \
     --image_folder ./playground/data \
-    --vision_tower ./hf/siglip \
+    --vision_tower ./hf/siglip/models--timm--ViT-B-16-SigLIP \
     --pretrain_mm_mlp_adapter ./checkpoints/vicuna-7b_siglip_pretrain/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
