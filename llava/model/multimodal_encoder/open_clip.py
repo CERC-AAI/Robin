@@ -23,7 +23,7 @@ class OpenCLIPVisionTower(nn.Module):
             exit()
             # self.cfg_only = OpenCLIPVisionConfig.from_pretrained(self.vision_tower_name)
         
-        self.cfg = open_clip.factor.get_model_config(self.vision_tower_name)
+        self.cfg = open_clip.factory.get_model_config(self.vision_tower_name)
         self.hidden_size = self.cfg.embed_dim
 
         self.device = None
