@@ -3,6 +3,7 @@ import torch.nn.functional as F
 from urllib.request import urlopen
 from PIL import Image
 from open_clip import create_model_from_pretrained, get_tokenizer # works on open-clip-torch>=2.23.0, timm>=0.9.8
+import open_clip
 from torch import nn
 
 class OpenCLIPVisionTower(nn.Module):
@@ -22,14 +23,16 @@ class OpenCLIPVisionTower(nn.Module):
             exit()
             # self.cfg_only = OpenCLIPVisionConfig.from_pretrained(self.vision_tower_name)
         
-        self.hidden_size = 768
+        self.cfg = open_clip.factor.get_model_config(self.vision_tower_name)
+        self.hidden_size = self.cfg.embed_dim
+
         self.device = None
         self.dtype = None
         
     def load_model(self):
         
         #So we need to run this code from OUTSIDE this code once before we can do this. I don't know why either.
-        print("VISION TOWER:", self.vision_tower_name)
+        # print("VISION TOWER:", self.vision_tower_name)
         self.vision_tower, self.image_processor = create_model_from_pretrained(self.vision_tower_name)
         
         self.vision_tower = self.vision_tower.visual
