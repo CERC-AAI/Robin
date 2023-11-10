@@ -21,6 +21,7 @@ dependencies = [
     "requests", "httpx==0.24.0", "uvicorn", "fastapi",
     "einops==0.6.1", "einops-exts==0.0.4", "timm==0.9.10",
     "open_clip_torch==2.23.0",
+    "flash-attn==2.3.3",
 ]
 
 [project.optional-dependencies]
