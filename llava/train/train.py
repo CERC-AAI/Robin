@@ -669,6 +669,7 @@ class LazySupervisedDataset(Dataset):
             image_file = self.list_data_dict[i]['image']
             image_folder = self.data_args.image_folder
             processor = self.data_args.image_processor
+            
             image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
             if self.data_args.image_aspect_ratio == 'pad':
                 def expand2square(pil_img, background_color):
@@ -683,7 +684,10 @@ class LazySupervisedDataset(Dataset):
                         result = Image.new(pil_img.mode, (height, height), background_color)
                         result.paste(pil_img, ((height - width) // 2, 0))
                         return result
-                image = expand2square(image, tuple(int(x*255) for x in processor.image_mean))
+
+                image_mean = getattr(processor, "image_mean", (0.48145466, 0.4578275, 0.40821073))
+                image = expand2square(image, tuple(int(x*255) for x in image_mean))
+
                 if self.data_args.is_clip:
                     image = processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
                 else:
