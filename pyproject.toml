@@ -19,9 +19,14 @@ dependencies = [
     "pydantic<2,>=1", "markdown2[all]", "numpy", "scikit-learn==1.2.2",
     "gradio==3.35.2", "gradio_client==0.2.9",
     "requests", "httpx==0.24.0", "uvicorn", "fastapi",
-    "einops==0.6.1", "einops-exts==0.0.4", "timm==0.9.10",
-    "open_clip_torch==2.23.0",
+    "einops==0.6.1", "einops-exts==0.0.4",
     "flash-attn==2.3.3",
+
+    # "open_clip_torch==2.23.0",
+    "open_clip_torch @ git+https://github.com/rmst/open-clip.git@01f8200c02c79f582d1189eda88e7459ac1994fe",
+    
+    # "timm==0.9.10",
+    "timm @ git+https://github.com/rmst/pytorch-image-models.git@2eea97d64bbe2abc9c75b19380d7fbdb22c872f2"
 ]
 
 [project.optional-dependencies]
