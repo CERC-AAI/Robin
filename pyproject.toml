@@ -20,7 +20,7 @@ dependencies = [
     "gradio==3.35.2", "gradio_client==0.2.9",
     "requests", "httpx==0.24.0", "uvicorn", "fastapi",
     "einops==0.6.1", "einops-exts==0.0.4", "timm==0.6.13",
-    "open-clip @ git+https://github.com/mlfoundations/open_clip.git@91923dfc376afb9d44577a0c9bd0930389349438",
+    "open_clip_torch @ git+https://github.com/mlfoundations/open_clip.git@91923dfc376afb9d44577a0c9bd0930389349438",
 ]
 
 [project.optional-dependencies]
