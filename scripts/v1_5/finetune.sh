@@ -3,10 +3,10 @@
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path ./hf/vicuna-7b \
-    --version plain \
+    --version v1 \
     --data_path ./playground/data/llava_v1_5_mix665k.json \
     --image_folder ./playground/data \
-    --vision_tower ./hf/siglip/models--timm--ViT-B-16-SigLIP \
+    --vision_tower hf-hub:timm/ViT-SO400M-14-SigLIP-384 \
     --pretrain_mm_mlp_adapter ./checkpoints/vicuna-7b_siglip_pretrain/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
