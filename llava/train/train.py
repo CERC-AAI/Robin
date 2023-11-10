@@ -685,6 +685,7 @@ class LazySupervisedDataset(Dataset):
                         result.paste(pil_img, ((height - width) // 2, 0))
                         return result
 
+                # TODO: Simon: we probably shouldn't hardcode this default value
                 image_mean = getattr(processor, "image_mean", (0.48145466, 0.4578275, 0.40821073))
                 image = expand2square(image, tuple(int(x*255) for x in image_mean))
 
@@ -716,7 +717,9 @@ class LazySupervisedDataset(Dataset):
             data_dict['image'] = image
         elif self.data_args.is_multimodal:
             # image does not exist in the data, but the model is multimodal
-            crop_size = self.data_args.image_processor.crop_size
+
+            # TODO: Simon: we shouldn't hardcode this default value
+            crop_size = getattr(self.data_args.image_processor, 'crop_size', dict(width=384, height=384))
             data_dict['image'] = torch.zeros(3, crop_size['height'], crop_size['width'])
         return data_dict
 
