@@ -815,7 +815,6 @@ def train():
             )
         else:
             # print(model_args)
-            print('\n\n\nYOOOYOOO\nnYOOOYOOO\nnYOOOYOOO\nnYOOOYOOO\n\n\n')
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,

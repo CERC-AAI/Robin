@@ -37,7 +37,7 @@ train = ["deepspeed==0.12.2", "ninja", "wandb"]
 "Bug Tracker" = "https://github.com/haotian-liu/LLaVA/issues"
 
 [tool.setuptools.packages.find]
-exclude = ["assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
+exclude = ["checkpoints*", "datasets*", "hf*", "assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
 
 [tool.wheel]
-exclude = ["assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
+exclude = ["checkpoints*", "datasets*", "hf*", "assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
