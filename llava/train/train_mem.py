@@ -13,10 +13,6 @@ os.environ['WANDB_DIR'] = '.'  # TODO: is this really necessary?
 # os.environ['HF_DATASETS_OFFLINE'] = '1'
 # os.environ['MIOPEN_CUSTOM_CACHE_DIR'] = os.environ['MIOPEN_USER_DB_PATH']
 
-# from llava.train.llama_flash_attn_monkey_patch import replace_llama_attn_with_flash_attn
-
-# replace_llama_attn_with_flash_attn()
-
 from llava.train.train import train
 
 if __name__ == "__main__":
