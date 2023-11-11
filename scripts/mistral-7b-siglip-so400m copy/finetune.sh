@@ -1,14 +1,13 @@
 #!/bin/bash
 
 deepspeed llava/train/train_mem.py \
-    --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path teknium/OpenHermes-2.5-Mistral-7B \
+    --model_name_or_path mistralai/Mistral-7B-v0.1 \
     --version v1 \
     --data_path ./playground/data/llava_v1_5_mix665k.json \
     --image_folder ./playground/data \
     --vision_tower hf-hub:timm/ViT-SO400M-14-SigLIP-384 \
-    --pretrain_mm_mlp_adapter "$(ls -d ./checkpoints/mistral-7b-oh-siglip-so400m-pretrain/checkpoint-* | tail -n 1)/mm_projector.bin" \
+    --pretrain_mm_mlp_adapter "$(ls -d ./checkpoints/mistral-7b-siglip-so400m-pretrain/checkpoint-* | tail -n 1)/mm_projector.bin" \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
@@ -16,7 +15,7 @@ deepspeed llava/train/train_mem.py \
     --image_aspect_ratio pad \
     --group_by_modality_length True \
     --bf16 True \
-    --output_dir ./checkpoints/mistral-7b-oh-siglip-so400m-finetune-lora \
+    --output_dir ./checkpoints/mistral-7b-siglip-so400m-finetune \
     --num_train_epochs 1 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 4 \
@@ -25,7 +24,7 @@ deepspeed llava/train/train_mem.py \
     --save_strategy "steps" \
     --save_steps 100 \
     --save_total_limit 5 \
-    --learning_rate 2e-4 \
+    --learning_rate 4e-6 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \

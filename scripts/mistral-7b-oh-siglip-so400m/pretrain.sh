@@ -2,7 +2,7 @@
 
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path hf-hub:teknium/OpenHermes-2.5-Mistral-7B \
+    --model_name_or_path teknium/OpenHermes-2.5-Mistral-7B \
     --version plain \
     --data_path ./datasets/blip/blip_laion_cc_sbu_558k.json \
     --image_folder ./datasets/blip/images \
