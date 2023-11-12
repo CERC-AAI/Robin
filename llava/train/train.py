@@ -975,14 +975,26 @@ def train():
     for name, param in model.named_parameters():
         print(name, param.requires_grad)
     
+    
+    import glob
+    checkpoints = sorted(glob.glob(f"{training_args.output_dir}/checkpoint-*"))
 
-    if not training_args.only_save_model:
-        if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
+    if training_args.only_save_model:
+        assert checkpoints, f"no checkpoints in {training_args.output_dir} to save model from"
+        print(checkpoints)
+        from transformers.integrations.deepspeed import deepspeed_load_checkpoint
+        print(f"loading model from {checkpoints[-1]}")
+        # deepspeed_load_checkpoint(trainer.model_wrapped, checkpoints[-1])
+        trainer._load_from_checkpoint(checkpoints[-1])
+
+    else:
+        if checkpoints:
             trainer.train(resume_from_checkpoint=True)
         else:
             trainer.train()
 
 
+    print("saving model")
     trainer.save_state()
 
     model.config.use_cache = True
