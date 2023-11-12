@@ -23,11 +23,7 @@ setup(
         exclude=["checkpoints*", "datasets*", "hf*", "assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
     ),
     install_requires=[
-				"setuptools",
-				"packaging",
-				"wheel",
-
-        "torch==2.0.1", 
+	    "torch==2.0.1", 
         "torchvision==0.15.2",
         "transformers==4.35.0", 
         "tokenizers==0.14.1", 
