@@ -28,6 +28,9 @@ def expand2square(pil_img, background_color):
 def process_images(images, image_processor, model_cfg):
     image_aspect_ratio = getattr(model_cfg, "image_aspect_ratio", None)
     new_images = []
+    
+    #Hardcoded because reasons.
+    image_mean = (0.48145466, 0.4578275, 0.40821073)
     if image_aspect_ratio == 'pad':
         for image in images:
 
