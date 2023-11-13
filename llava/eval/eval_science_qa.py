@@ -42,6 +42,8 @@ if __name__ == "__main__":
     base_dir = args.base_dir
     split_indices = json.load(open(os.path.join(base_dir, "pid_splits.json")))[args.split]
     problems = json.load(open(os.path.join(base_dir, "problems.json")))
+    
+    print("Prediction file", args.result_file)
     predictions = [json.loads(line) for line in open(args.result_file)]
     predictions = {pred['question_id']: pred for pred in predictions}
     split_problems = {idx: problems[idx] for idx in split_indices}
