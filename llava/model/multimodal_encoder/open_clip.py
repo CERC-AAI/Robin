@@ -19,9 +19,7 @@ class OpenCLIPVisionTower(nn.Module):
         if not delay_load:
             self.load_model()
         else:
-            print("not implemented")
-            exit()
-            # self.cfg_only = OpenCLIPVisionConfig.from_pretrained(self.vision_tower_name)
+            pass
         
         self.hidden_size = 1152 if "SO400M" in self.vision_tower_name else 768  # TODO: this is a hack, we should read this from config.embed_dim
 
@@ -34,6 +32,7 @@ class OpenCLIPVisionTower(nn.Module):
         # print("VISION TOWER:", self.vision_tower_name)
         self.vision_tower, self.image_processor = create_model_from_pretrained(self.vision_tower_name)
         
+
         self.vision_tower = self.vision_tower.visual
         
         #Need to make sure it has the attribute. If not, uhoh. Might need to modify code this also, depending.
@@ -47,8 +46,7 @@ class OpenCLIPVisionTower(nn.Module):
         
     def feature_select(self, image_forward_outs):
         
-        print("not implemented")
-        exit()
+        assert False, ("not implemented")
         
         image_features = image_forward_outs.hidden_states[self.select_layer]
         if self.select_feature == 'patch':

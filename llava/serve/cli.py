@@ -25,10 +25,13 @@ def load_image(image_file):
 
 
 def main(args):
+    print("llava cli")
     # Model
     disable_torch_init()
 
     model_name = get_model_name_from_path(args.model_path)
+
+    print('start load model')
     tokenizer, model, image_processor, context_len = load_pretrained_model(args.model_path, args.model_base, model_name, args.load_8bit, args.load_4bit, device=args.device)
 
     if 'llama-2' in model_name.lower():
@@ -51,13 +54,20 @@ def main(args):
     else:
         roles = conv.roles
 
+
+    print("model loaded")
+
     image = load_image(args.image_file)
+    print("image loaded")
+
     # Similar operation in model_worker.py
     image_tensor = process_images([image], image_processor, args)
     if type(image_tensor) is list:
         image_tensor = [image.to(model.device, dtype=torch.float16) for image in image_tensor]
     else:
         image_tensor = image_tensor.to(model.device, dtype=torch.float16)
+
+    print("image tensor loaded")
 
     while True:
         try:
