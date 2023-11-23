@@ -10,6 +10,6 @@ CM=vicuna_v1  # this is the standard in llava and what we've trained with
 
 python -m llava.serve.cli \
     --conv-mode $CM \
-    --model-path ~/ws/trained_models/mistral-7b-oh-siglip-so400m-finetune-lora \
+    --model-path agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora \
     --model-base teknium/OpenHermes-2.5-Mistral-7B \
     --image-file $IMG

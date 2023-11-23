@@ -1,3 +1,16 @@
+### Install for functional HF setup and test
+```Shell
+git clone git@github.com:AGI-Collective/robin_llava.git
+checkout simon
+huggingface-cli login
+python3.10 -m venv venv
+. venv/bin/activate
+pip install --upgrade pip
+pip install -e .
+chmod +x scripts/mistral-7b-oh-siglip-so400m/cli.sh
+./scripts/mistral-7b-oh-siglip-so400m/cli.sh
+```
+
 # 🌋 LLaVA: Large Language and Vision Assistant
 
 *Visual instruction tuning towards large language and vision models with GPT-4 level capabilities.*

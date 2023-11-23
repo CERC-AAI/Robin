@@ -5,11 +5,13 @@ IMG="https://images.ctfassets.net/lzny33ho1g45/6FwyRiw9nZDf9rgwIN4zPC/b7e248b756
 # IMG="https://media.geeksforgeeks.org/wp-content/uploads/20200611183120/1406-7.png"  # equation (it can't do it)
 
 python -m llava.serve.cli \
-    --conv-mode vicuna_v1 \
-    --model-path ~/ws/trained_models/vicuna-7b-clip-finetune-lora \
-    --model-base ./hf/vicuna-7b \
+    --model-path agi-collective/vicuna-7b-clip-finetune-lora \
+    --model-base lmsys/vicuna-7b-v1.5 \
     --max-new-tokens 2000 \
     --image-file $IMG
+
+# Argument removed during HF tests (would not work with)
+    # --conv-mode vicuna_v1 \
 
 # python -m llava.serve.cli \
 #     --conv-mode vicuna_v1 \
