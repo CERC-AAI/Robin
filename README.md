@@ -1,7 +1,7 @@
 ### Install for functional HF setup and test
 ```Shell
 git clone git@github.com:AGI-Collective/robin_llava.git
-checkout simon
+checkout simon_HF_integration
 huggingface-cli login
 python3.10 -m venv venv
 . venv/bin/activate
