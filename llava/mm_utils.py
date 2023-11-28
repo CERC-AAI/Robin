@@ -56,16 +56,13 @@ def process_images(images, image_processor, model_cfg):
 def process_images_easy(images, image_processor, image_aspect_ratio):
     new_images = []
     
-    #Hardcoded because reasons.
     image_mean = (0.48145466, 0.4578275, 0.40821073)
     if image_aspect_ratio == 'pad':
         for image in images:
 
-            # TODO: Simon: don't hardcode image mean, also this is duplicated code with train.py
             image_mean = getattr(image_processor, "image_mean", (0.48145466, 0.4578275, 0.40821073))
             image = expand2square(image, tuple(int(x*255) for x in image_mean))
 
-            # TODO: Simon this is nasty, we need a more unified interface here
             if hasattr(image_processor, "preprocess"):
                 image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
             else:

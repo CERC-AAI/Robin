@@ -965,13 +965,11 @@ def train():
                     args=training_args,
                     **data_module)
 
-    #Training happens here...
-    
-    # convert_model(model.layers)
-    
+
     if training_args.finetune_ve:
-        for name, param in model.base_model.model.model.vision_tower.named_parameters():#Only needs to be this ridiculous with lora... sigh
+        for name, param in model.base_model.model.model.vision_tower.named_parameters():#This is required for lora, and training without lora will not work on this line.
             param.requires_grad = True
+    
     print(model)
     for name, param in model.named_parameters():
         print(name, param.requires_grad)

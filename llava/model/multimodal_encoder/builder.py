@@ -7,7 +7,6 @@ def build_vision_tower(vision_tower_cfg, **kwargs):
     is_absolute_path_exists = os.path.exists(vision_tower)
     
     
-    #  Absolutely terrible.
     if "siglip" in str(vision_tower) or "SigLIP" in str(vision_tower):
         return OpenCLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
     else:

@@ -58,8 +58,6 @@ class RobinLavaPipeline:
 
         # Similar operation in model_worker.py
         
-        #This could also be done without padding, but we don't support that yet
-        #TODO FIX
         image_tensor = process_images_easy([image], image_processor, "pad")
         if type(image_tensor) is list:
             image_tensor = [image.to(self.model.device, dtype=torch.float16) for image in image_tensor]
@@ -72,9 +70,6 @@ class RobinLavaPipeline:
     
     def __call__(self, messages):
         
-        #We expect messages to take the form of a list of dict, containing 'role' and 'content'
-        #It contains USER and ASSISTANT only.
-        #First message can be whatever.
         for message in messages:
             role = message["role"]
             if role != "USER" and role != "ASSISTANT":
@@ -82,7 +77,6 @@ class RobinLavaPipeline:
                 exit()
             content = message["content"]
         
-        #If the length of messages > 1, then we have a history we need to append..
         
         #First message
         inp = messages[0]["content"]
@@ -90,16 +84,13 @@ class RobinLavaPipeline:
             inp = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + inp
         else:
             inp = DEFAULT_IMAGE_TOKEN + '\n' + inp
-        # self.conv.append_message(self.conv.roles[0], inp)
         self.conv.append_message(messages[0]["role"], inp)
         self.image = None
         messages.pop(0)
-        #We typically assume that follows the format of User, then assistant..
+        #We typically assume that follows the format of User, then assistant.
         for message in messages:
             self.conv.append_message(message["role"], message["content"])
-        
-        
-        
+            
         #At the very end, we expect to see a user, so we add the empty assistant.
         self.conv.append_message(self.conv.roles[1], None)
             
@@ -112,7 +103,7 @@ class RobinLavaPipeline:
         stopping_criteria = KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)
         streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
     
-        #TODO why
+        #TODO 
         blockPrint()
         with torch.inference_mode():
             output_ids = self.model.generate(
@@ -130,21 +121,4 @@ class RobinLavaPipeline:
         self.conv.messages[-1][-1] = outputs
         return self.conv.messages
 
-#Hermes mistral
-model_path = "/home/dkaplan/Documents/LiClipse Workspace/robin_llava/models/trained_models/mistral-7b-oh-siglip-so400m-finetune-lora"
-model_base = "teknium/OpenHermes-2.5-Mistral-7B"
-image_file = "https://images.ctfassets.net/lzny33ho1g45/6FwyRiw9nZDf9rgwIN4zPC/b7e248b756f6e0e83d33a2a19f29558b/full-page-screenshots-in-chrome-03-developer-menu-screenshot.png"
 
-
-#Vicuna testing siglip
-model_path = "/home/dkaplan/Documents/LiClipse Workspace/robin_llava/models/trained_models/vicuna-7b-siglip-so400m-finetune-lora"
-model_base = "lmsys/vicuna-7b-v1.5"
-
-
-pipe = RobinLavaPipeline(model_path=model_path, model_base=model_base, device = "cuda", image_file=image_file, load_8bit=False)
-messages = [
-    {"role":"USER","content":"What's in the image?"},
-    {"role":"ASSISTANT","content":"The image features a computer screen displaying a website with a blog post. The blog post is about using a screen shot tool, and it provides instructions on how to capture a screen shot."},
-    {"role":"USER","content":"What color is the image?"}]
-
-print(pipe(messages))

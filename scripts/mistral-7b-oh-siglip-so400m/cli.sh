@@ -4,7 +4,6 @@ IMG="https://images.ctfassets.net/lzny33ho1g45/6FwyRiw9nZDf9rgwIN4zPC/b7e248b756
 # IMG="https://pbs.twimg.com/media/F-XUy09WMAA8SWC?format=png"  # meme
 # IMG="https://media.geeksforgeeks.org/wp-content/uploads/20200611183120/1406-7.png"  # equation (it can't do it)
 
-# CM=mpt  # technically this should be used with open hermes, it will answer fine but repeat itself in a retarted way
 CM=vicuna_v1  # this is the standard in llava and what we've trained with
 
 

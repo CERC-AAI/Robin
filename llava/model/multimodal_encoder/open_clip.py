@@ -28,14 +28,12 @@ class OpenCLIPVisionTower(nn.Module):
         
     def load_model(self):
         
-        #So we need to run this code from OUTSIDE this code once before we can do this. I don't know why either.
-        # print("VISION TOWER:", self.vision_tower_name)
+        
         self.vision_tower, self.image_processor = create_model_from_pretrained(self.vision_tower_name)
         
 
         self.vision_tower = self.vision_tower.visual
         
-        #Need to make sure it has the attribute. If not, uhoh. Might need to modify code this also, depending.
         self.vision_tower.trunk.output_tokens = True
         
         self.vision_tower.requires_grad_(False)
