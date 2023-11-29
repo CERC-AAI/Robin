@@ -1,4 +1,5 @@
 # Llava-Mistral
+This is a fork of [github.com/haotian-liu/llava](https://github.com/haotian-liu/llava) to work with Mistral-type language models and OpenCLIP-SigLIP visual encoders. This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective (specifically Kshitij Gupta, Daniel and Alexis) and Simon Ramstedt and with computing resources from [Hessian AI](https://hessian.ai/).
 
 ### Install
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
@@ -56,4 +57,4 @@ For training details see the `pretrain.sh` and `finetune_lora.sh` scripts inside
 
 
 ### Acknowledgements 
-We would like to thank Hessian-AI for providing us with access to 8-16 A100 GPUs for a few weeks
+We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their free tech support.
