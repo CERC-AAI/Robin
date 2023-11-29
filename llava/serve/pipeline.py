@@ -48,14 +48,14 @@ class LlavaMistralPipeline:
     
         model_name = get_model_name_from_path(self.model_path)
 
-        self.tokenizer, self.model, image_processor, context_len = load_pretrained_model(self.model_path, self.model_base, model_name, self.load_8bit, self.load_4bit, device=self.device)
+        self.tokenizer, self.model, self.image_processor, context_len = load_pretrained_model(self.model_path, self.model_base, model_name, self.load_8bit, self.load_4bit, device=self.device)
         
 
     def _load_image_tensor(self, image_file):
         image = load_image(image_file)
 
         # Similar operation in model_worker.py
-        image_tensor = process_images_easy([image], image_processor, "pad")
+        image_tensor = process_images_easy([image], self.image_processor, "pad")
         if type(image_tensor) is list:
             image_tensor = [image.to(self.model.device, dtype=torch.float16) for image in image_tensor]
         else:
@@ -66,7 +66,7 @@ class LlavaMistralPipeline:
     
     def __call__(self, messages):
         conv = conv_templates['vicuna_v1'].copy()
-        assert conv.roles == ["USER", "ASSISTANT"]
+        assert conv.roles == ('USER', 'ASSISTANT')
 
         # First message
         assert messages[0]["role"] == "USER"
@@ -119,4 +119,22 @@ class LlavaMistralPipeline:
 
         return [*messages, {"role": "ASSISTANT", "content": outputs}]
 
+#Hermes mistral
+model_path = "/home/dkaplan/Documents/LiClipse Workspace/robin_llava/models/trained_models/mistral-7b-oh-siglip-so400m-finetune-lora"
+model_base = "teknium/OpenHermes-2.5-Mistral-7B"
+image_file = "https://images.ctfassets.net/lzny33ho1g45/6FwyRiw9nZDf9rgwIN4zPC/b7e248b756f6e0e83d33a2a19f29558b/full-page-screenshots-in-chrome-03-developer-menu-screenshot.png"
 
+
+#Vicuna testing siglip
+model_path = "/home/dkaplan/Documents/LiClipse Workspace/robin_llava/models/trained_models/vicuna-7b-siglip-so400m-finetune-lora"
+
+model_base = "lmsys/vicuna-7b-v1.5"
+
+
+pipe = LlavaMistralPipeline(model_path=model_path, model_base=model_base, device = "cuda", load_8bit=False)
+messages = [
+    {"role":"USER","content":"What's in the image?","image":image_file},
+    {"role":"ASSISTANT","content":"The image features a computer screen displaying a website with a blog post. The blog post is about using a screen shot tool, and it provides instructions on how to capture a screen shot."},
+    {"role":"USER","content":"What color is the image?"}]
+
+print(pipe(messages))
