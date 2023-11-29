@@ -24,17 +24,11 @@ def load_image(image_file):
 
 import sys, os
 
-# Disable
-def blockPrint():
-    sys.stdout = open(os.devnull, 'w')
 
-# Restore
-def enablePrint():
-    sys.stdout = sys.__stdout__
+
+class LlavaMistralPipeline:
     
-class RobinLavaPipeline:
-    
-    def __init__(self, model_path, model_base, device, image_file, load_8bit = False, load_4bit = False, temperature = .2, max_new_tokens = 512):
+    def __init__(self, model_path, model_base, device="cuda", load_8bit=False, load_4bit=False, temperature=.2, max_new_tokens=512):
         
         self.model_path = model_path
         self.model_base = model_base
@@ -44,81 +38,85 @@ class RobinLavaPipeline:
         self.device = device
         self.temperature = temperature
         self.max_new_tokens = max_new_tokens
-        #Sure why not
+
+        # TODO: Simon: make this work reliably
+        if load_4bit or load_8bit:
+            print("WARNING: 4bit or 8bit models might not work as expected")
+
+        # Sure why not
         disable_torch_init()
     
         model_name = get_model_name_from_path(self.model_path)
 
         self.tokenizer, self.model, image_processor, context_len = load_pretrained_model(self.model_path, self.model_base, model_name, self.load_8bit, self.load_4bit, device=self.device)
         
-        self.conv = conv_templates['vicuna_v1'].copy()
-        self.roles = self.conv.roles
 
+    def _load_image_tensor(self, image_file):
         image = load_image(image_file)
 
         # Similar operation in model_worker.py
-        
         image_tensor = process_images_easy([image], image_processor, "pad")
         if type(image_tensor) is list:
             image_tensor = [image.to(self.model.device, dtype=torch.float16) for image in image_tensor]
         else:
             image_tensor = image_tensor.to(self.model.device, dtype=torch.float16)
         
-        self.image = image
-        self.image_tensor = image_tensor
+        return image_tensor
 
     
     def __call__(self, messages):
-        
-        for message in messages:
-            role = message["role"]
-            if role != "USER" and role != "ASSISTANT":
-                print("Only USER and ASSISTANT roles are supported, exiting")
-                exit()
-            content = message["content"]
-        
-        
-        #First message
+        conv = conv_templates['vicuna_v1'].copy()
+        assert conv.roles == ["USER", "ASSISTANT"]
+
+        # First message
+        assert messages[0]["role"] == "USER"
         inp = messages[0]["content"]
         if self.model.config.mm_use_im_start_end:
             inp = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + inp
         else:
             inp = DEFAULT_IMAGE_TOKEN + '\n' + inp
-        self.conv.append_message(messages[0]["role"], inp)
-        self.image = None
-        messages.pop(0)
-        #We typically assume that follows the format of User, then assistant.
-        for message in messages:
-            self.conv.append_message(message["role"], message["content"])
+
+        # TODO: Simon: handle no image case
+        assert "image" in messages[0], 'First message needs to have an image url'
+        image_tensor = self._load_image_tensor(messages[0]["image"])
+
+        conv.append_message("USER", inp)
+
+
+        # Remaining messages
+        # We typically assume that follows the format of user, then assistant.
+        for message in messages[1:]:
+            assert message["role"] in ["USER", "ASSISTANT"], f"Only USER and ASSISTANT roles are supported, got {message['role']}"
+            conv.append_message(message["role"], message["content"])
             
-        #At the very end, we expect to see a user, so we add the empty assistant.
-        self.conv.append_message(self.conv.roles[1], None)
+        # At the very end, we expect to see a user, so we add the empty assistant.
+        conv.append_message("ASSISTANT", None)
             
             
-        prompt = self.conv.get_prompt()
+        prompt = conv.get_prompt()
     
         input_ids = tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).to(self.device)
-        stop_str = self.conv.sep if self.conv.sep_style != SeparatorStyle.TWO else self.conv.sep2
+
+        # For vicuna_v1, stop_str == "</s>"
+        stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
         keywords = [stop_str]
+
         stopping_criteria = KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)
-        streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
-    
-        #TODO 
-        blockPrint()
+
         with torch.inference_mode():
             output_ids = self.model.generate(
                 input_ids,
-                images=self.image_tensor,
+                images=image_tensor,
                 do_sample=True,
                 temperature=self.temperature,
                 max_new_tokens=self.max_new_tokens,
-                streamer=streamer,
+                # streamer=streamer,
                 use_cache=True,
                 stopping_criteria=[stopping_criteria])
-        enablePrint()
         
         outputs = self.tokenizer.decode(output_ids[0, input_ids.shape[1]:]).strip()
-        self.conv.messages[-1][-1] = outputs
-        return self.conv.messages
+        # conv.messages[-1][-1] = outputs
+
+        return [*messages, {"role": "ASSISTANT", "content": outputs}]
 
 

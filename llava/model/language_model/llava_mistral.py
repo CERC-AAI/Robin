@@ -42,9 +42,10 @@ class LlavaMistralForCausalLM(MistralForCausalLM, LlavaMetaForCausalLM):
     config_class = LlavaConfig
 
     def __init__(self, config):
+        # init using the super class of MistralForCausalLM
         super(MistralForCausalLM, self).__init__(config)
         self.model = LlavaMistralModel(config)
-
+        self.vocab_size = config.vocab_size
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing

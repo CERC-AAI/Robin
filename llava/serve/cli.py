@@ -25,7 +25,8 @@ def load_image(image_file):
 
 
 def main(args):
-    print("llava cli")
+    print("Llava CLI")
+
     # Model
     disable_torch_init()
 
@@ -33,25 +34,8 @@ def main(args):
 
     tokenizer, model, image_processor, context_len = load_pretrained_model(args.model_path, args.model_base, model_name, args.load_8bit, args.load_4bit, device=args.device)
 
-    if 'llama-2' in model_name.lower():
-        conv_mode = "llava_llama_2"
-    elif "v1" in model_name.lower():
-        conv_mode = "llava_v1"
-    elif "mpt" in model_name.lower():
-        conv_mode = "mpt"
-    else:
-        conv_mode = "llava_v0"
-
-    if args.conv_mode is not None and conv_mode != args.conv_mode:
-        print('[WARNING] the auto inferred conversation mode is {}, while `--conv-mode` is {}, using {}'.format(conv_mode, args.conv_mode, args.conv_mode))
-    else:
-        args.conv_mode = conv_mode
-
     conv = conv_templates[args.conv_mode].copy()
-    if "mpt" in model_name.lower():
-        roles = ('user', 'assistant')
-    else:
-        roles = conv.roles
+    roles = conv.roles
 
 
     image = load_image(args.image_file)
@@ -116,11 +100,11 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, default="facebook/opt-350m")
-    parser.add_argument("--model-base", type=str, default=None)
+    parser.add_argument("--model-path", type=str, default="agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora")
+    parser.add_argument("--model-base", type=str, default="teknium/OpenHermes-2.5-Mistral-7B")
     parser.add_argument("--image-file", type=str, required=True)
     parser.add_argument("--device", type=str, default="cuda")
-    parser.add_argument("--conv-mode", type=str, default=None)
+    parser.add_argument("--conv-mode", type=str, default="vicuna_v1")
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--max-new-tokens", type=int, default=512)
     parser.add_argument("--load-8bit", action="store_true")
