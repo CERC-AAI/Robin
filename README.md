@@ -1,8 +1,4 @@
-# Robin-LLaVA
-
-**A LLaVA-fork enabling the Mistral-7B & Open-Hermes-2.5 language models to process images**
-
-This repo and the associated models were created in collaboration between the [Robin team at AGI-Collective](#team) and [Simon Ramstedt](https://simonramstedt.com/), with computing resources from [Hessian-AI](https://hessian.ai/) and [OLCF](https://www.olcf.ornl.gov/).
+# Robin
 
 The Robin Effort: We study different components and methods to merge pretrained vision and language models with the goal to build better visual understanding models. 
 
