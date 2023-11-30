@@ -83,7 +83,7 @@ The image features a wooden dock extending out into a large body of water. The d
 There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
 
 ### Example 2
-![]([https://llava-vl.github.io/static/images/view.jpg](https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360))
+![]([https://llava-vl.github.io/static/images/view.jpg](https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360)
 **User:** What is written in this image?
 
 **Llava7b:**
