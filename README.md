@@ -94,12 +94,7 @@ The magnets in the image are of different colors and placed next to each other. 
 In the image, there are two magnets placed on a gray background, one with a green stripe and the other with a blue stripe. Since the magnets have opposite colors, they will attract each other due to their magnetic properties. The magnets are aligned in a way that their magnetic poles are facing each other, which causes them to be attracted to one another. This phenomenon is known as the magnetic attraction between two oppositely charged magnets.
 
 ### Example 3
-Collie image:
-What's in this image?
-**Llava7b:**
-The image features a large, fluffy dog with a mix of brown and white fur sitting on a sidewalk. The dog is looking at the camera, possibly posing for a picture. The scene takes place in front of a brick wall, giving the impression of a residential area.
-**HermesSiglip (Ours):**
-The image features a large, brown and white dog sitting on a sidewalk. The dog is looking up at the camera, creating a friendly and approachable atmosphere. The dog is positioned near the center of the scene, with a brick wall in the background. The sidewalk is lined with grass, adding a natural touch to the setting.
+![](https://github.com/AGI-Collective/Robin-LLaVA/blob/robin-main/images/ILSVRC2012_val_00000003.JPEG)
 
 What's in this image? Describe in detail.
 **Llava7b:**
