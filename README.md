@@ -11,7 +11,7 @@ The Robin Effort: We study different components and methods to merge pretrained 
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
 
 ```bash
-pip install git+ssh://git@github.com/agi-collective/robin_llava.git
+pip install git+ssh://git@github.com/agi-collective/robin-llava.git
 ```
 
 Note that currently Robin-LlaVA inference requires a Nvidia GPU with 24GB+ since CPU inference and quantized inference don't work reliably yet. Training was done on a machine with 8 x A100 80GB Nvidia GPUs provided by [Hessian-AI](https://hessian.ai/).
