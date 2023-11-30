@@ -6,7 +6,7 @@ This repo and the accociated finetuned models were created in a collaboration be
 
 The Robin Effort: The aim of this effort is to study different components when merging pretrained vision and language models and build sota vision understanding models. 
 
-As part of the first milestone we study different pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), and fuirther improve capapbilties by finetuning the vision encoder. 
+As part of the first milestone we study different pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), and further improve capapbilties by finetuning the vision encoder. 
 
 ### Install
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
@@ -109,6 +109,6 @@ In the background, there is a car parked further away, and a person can be seen 
 The image features a brown and white dog sitting on a sidewalk near a brick wall. The dog is looking at the camera, creating a friendly and approachable atmosphere. The dog appears to be a collie, which is a breed known for its long fur and fluffy appearance. The dog is sitting on the sidewalk, occupying a significant portion of the scene, and seems to be enjoying its time outdoors.
 
 ### Acknowledgements 
-We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support.
+We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support. We would also like to thank Oak Ridge Leadership Computing Facility (OLCF), the DOE Office of Science User Facility. Prelimnary experiments were conducted on the INCITE compute grant on Summit supercomputer supported under Contract DE-AC05-00OR22725. This grant was awarded to AAI CERC lab for their Scalable Foundation Models for Transferrable Generalist AI project.
 
  <a style="" src=""><img style="" src="https://hessian.ai/wp-content/themes/hessianai/img/hessian-ai-logo.svg"></img></a>
