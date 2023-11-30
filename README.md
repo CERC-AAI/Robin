@@ -115,7 +115,7 @@ The image features a brown and white dog sitting on a sidewalk near a brick wall
 ## Limitations
 For the Open-Hermes-2.5-based model we switched away from the ChatML chat template and back to the Llava default Vicuna chat template. The benchmarks and example results below show that this worked fine but we do believe that we can achieve even better performance and usability by retraining the model with ChatML.
 
-#### Contributors:
+### Contributors:
 **Robin Team @ AGI-Collective**: Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish
 
 **Simon Ramstedt**: https://simonramstedt.com/
