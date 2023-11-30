@@ -67,9 +67,9 @@ Evaluations were done using the a subset of the evaluation suite in https://gith
 ## Training
 For training details see the `pretrain.sh` and `finetune_lora.sh` scripts inside `scripts/*/`. The training code is for information purposes only and we won't be able help people debug problems with it for this preliminary release. More rigorous and less rushed and messy training scripts will be released in the future.
 
-# Examples
-## Example 1
-![](https://llava-vl.github.io/static/images/view.jpg)
+## Examples
+<img src="https://llava-vl.github.io/static/images/view.jpg" width=50%></img>
+
 **User:** What's in this image?
 
 **Llava7b:**
@@ -87,8 +87,8 @@ In the background, there are mountains visible, adding to the beauty of the land
 The image features a wooden dock extending out into a large body of water. The dock is surrounded by a serene landscape, with a mountain visible in the background. The water appears calm and inviting, creating a peaceful atmosphere.
 There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
 
-## Example 2
-![](https://scienceqa-webdemo.s3.us-west-1.amazonaws.com/extra/5727/image.png)
+---
+<img src="https://scienceqa-webdemo.s3.us-west-1.amazonaws.com/extra/5727/image.png" width=50%></img>
 
 **User:** Will these magnets attract or repel each other?
 
@@ -99,7 +99,7 @@ The magnets in the image are of different colors and placed next to each other. 
 In the image, there are two magnets placed on a gray background, one with a green stripe and the other with a blue stripe. Since the magnets have opposite colors, they will attract each other due to their magnetic properties. The magnets are aligned in a way that their magnetic poles are facing each other, which causes them to be attracted to one another. This phenomenon is known as the magnetic attraction between two oppositely charged magnets.
 
 ## Example 3
-![](https://github.com/AGI-Collective/Robin-LLaVA/blob/robin-main/images/ILSVRC2012_val_00000003.JPEG)
+<img src="https://github.com/AGI-Collective/Robin-LLaVA/blob/robin-main/images/ILSVRC2012_val_00000003.JPEG" width=50%></img>
 
 **User:** `What's in this image? Describe in detail.`
 
