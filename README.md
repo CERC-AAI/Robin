@@ -63,7 +63,7 @@ Evaluations were done using the a subset of the evaluation suite in https://gith
 ### Training
 For training details see the `pretrain.sh` and `finetune_lora.sh` scripts inside `scripts/*/`. The training code is for information purposes only and we won't be able help people debug problems with it for this preliminary release. More rigorous and less rushed and messy training scripts will be released in the future.
 
-### Example
+### Example 1
 ![](https://llava-vl.github.io/static/images/view.jpg)
 **User:** What's in this image?
 
@@ -82,6 +82,15 @@ In the background, there are mountains visible, adding to the beauty of the land
 The image features a wooden dock extending out into a large body of water. The dock is surrounded by a serene landscape, with a mountain visible in the background. The water appears calm and inviting, creating a peaceful atmosphere.
 There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
 
+### Example 2
+![]([https://llava-vl.github.io/static/images/view.jpg](https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360))
+**User:** What is written in this image?
+
+**Llava7b:**
+The words "No one grows ketchup like Heinz" are written in this image.</s>
+
+ **HermesSiglip (Ours):**
+In this image, the words "No one grows ketchup like Heinz" are written on the side of a bottle, which is a Heinz ketchup bottle.
 
 ### Acknowledgements 
 We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support.
