@@ -117,6 +117,7 @@ The image features a brown and white dog sitting on a sidewalk near a brick wall
 
 ## Contributors:
 **Robin Team @ AGI-Collective**: Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish
+
 **Simon Ramstedt**: https://simonramstedt.com/
 
 ### Acknowledgements 
