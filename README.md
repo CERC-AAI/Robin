@@ -2,7 +2,7 @@
 
 The Robin Effort: We study different components and methods to merge pretrained vision and language models with the goal to build better visual understanding models. 
 
-As part of this first milestone and release we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and [SigLIP](https://huggingface.co/timm/ViT-SO400M-14-SigLIP-384)), further improving capabilities by finetuning the vision encoder. 
+As part of this first milestone and [release](https://github.com/AGI-Collective/Robin/releases/tag/llava-mistral) we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and [SigLIP](https://huggingface.co/timm/ViT-SO400M-14-SigLIP-384)), further improving capabilities by finetuning the vision encoder. 
 
 ## Installation
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
