@@ -83,7 +83,7 @@ The image features a wooden dock extending out into a large body of water. The d
 There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
 
 ### Example 2
-![]([https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360](https://scienceqa-webdemo.s3.us-west-1.amazonaws.com/extra/5727/image.png))
+![]([https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360](https://scienceqa-webdemo.s3.us-west-1.amazonaws.com/extra/5727/image.png)
 
 **User:** Will these magnets attract or repel each other?
 
