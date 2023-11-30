@@ -1,6 +1,6 @@
 # Robin-Llava
 
-**[Llava](https://github.com/haotian-liu/llava)-fork give Mistral/Open-Hermes-2.5 language models to process images**
+**[Llava](https://github.com/haotian-liu/llava)-fork enabling Mistral/Open-Hermes-2.5 language models to process images**
 
 This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective and Simon Ramstedt, with computing resources from [Hessian AI](https://hessian.ai/).
 
