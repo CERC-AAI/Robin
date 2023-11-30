@@ -4,9 +4,9 @@
 
 This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective and Simon Ramstedt, with computing resources from [Hessian-AI](https://hessian.ai/).
 
-The Robin Effort: The aim of this effort is to study different components when merging pretrained vision and language models and build sota vision understanding models. 
+The Robin Effort: The goal of this effort is to study the different components we can use when merging pretrained vision and language models, and to build SoTA visual understanding models.
 
-As part of the first milestone we study different pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), and further improve capapbilties by finetuning the vision encoder. 
+As part of the first milestone we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), further improving capabilties by finetuning the vision encoder. 
 
 ### Requirements
 At the moment inference requires a Nvidia GPU with 24GB. CPU and quantized inference don't work reliably yet. Training was done on a machine with 8 x A100 80GB Nvidia GPUs provided by [Hessian-AI](https://hessian.ai/)
