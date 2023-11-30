@@ -37,6 +37,10 @@ messages = pipe(messages)
 ```
 
 ### Available models
+We use the following components: 
+- Base LLM: We explore using Mistral and OpenHermes-2.5
+- Base Vision Model: We use the SigLIP model which gives stronger performance on vision benchmarks compared to CLIP 
+- We finetune the Vision Encoder hoping the next token prediction loss helps further improves the vision capabilities of the pretrained vision encoder
 
 | Model                                                              | Base                              | GQA   | SQA Text | SQA Image |
 | ------------------------------------------------------------------ | --------------------------------- | ----- | -------- | --------- |
