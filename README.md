@@ -83,17 +83,6 @@ The image features a wooden dock extending out into a large body of water. The d
 There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
 
 ### Example 2
-![](https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360)
-
-**User:** What is written in this image?
-
-**Llava7b:**
-The words "No one grows ketchup like Heinz" are written in this image.
-
- **HermesSiglip (Ours):**
-In this image, the words "No one grows ketchup like Heinz" are written on the side of a bottle, which is a Heinz ketchup bottle.
-
-### Example 3
 ![]([https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360](https://scienceqa-webdemo.s3.us-west-1.amazonaws.com/extra/5727/image.png))
 
 **User:** Will these magnets attract or repel each other?
