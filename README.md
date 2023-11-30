@@ -1,5 +1,8 @@
 # Robin-Llava
-This is a fork of [github.com/haotian-liu/llava](https://github.com/haotian-liu/llava) to work with Mistral-type language models and OpenCLIP-SigLIP visual encoders. This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective (specifically Kshitij Gupta, Daniel and Alexis) and Simon Ramstedt and with computing resources from [Hessian AI](https://hessian.ai/).
+
+**[Llava](https://github.com/haotian-liu/llava)-fork give Mistral/Open-Hermes-2.5 language models to process images**
+
+This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective and Simon Ramstedt, with computing resources from [Hessian AI](https://hessian.ai/).
 
 ### Install
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
@@ -77,3 +80,5 @@ There are no people or boats visible in the scene, adding to the tranquility of 
 
 ### Acknowledgements 
 We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their free tech support.
+
+ <a style="" src=""><img style="" src="https://hessian.ai/wp-content/themes/hessianai/img/hessian-ai-logo.svg"></img></a>
