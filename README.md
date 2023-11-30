@@ -97,9 +97,11 @@ In the image, there are two magnets placed on a gray background, one with a gree
 ![](https://github.com/AGI-Collective/Robin-LLaVA/blob/robin-main/images/ILSVRC2012_val_00000003.JPEG)
 
 What's in this image? Describe in detail.
+
 **Llava7b:**
 The image features a large, fluffy dog with a mix of brown and white fur, sitting on a sidewalk. The dog appears to be a Collie, and it is looking at the camera. The dog is positioned near a brick wall, which adds a contrasting element to the scene.
 In the background, there is a car parked further away, and a person can be seen standing near the car. The overall atmosphere of the image is calm and serene, with the dog being the main focus of the scene.
+
 **HermesSiglip (Ours):**
 The image features a brown and white dog sitting on a sidewalk near a brick wall. The dog is looking at the camera, creating a friendly and approachable atmosphere. The dog appears to be a collie, which is a breed known for its long fur and fluffy appearance. The dog is sitting on the sidewalk, occupying a significant portion of the scene, and seems to be enjoying its time outdoors.
 
