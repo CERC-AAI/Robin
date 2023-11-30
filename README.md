@@ -6,10 +6,10 @@ This repo and the associated models were created in collaboration between the Ro
 
 The Robin Effort: The goal of this effort is to study the different components we can use when merging pretrained vision and language models, and to build SoTA visual understanding models.
 
-As part of the first milestone we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), further improving capabilties by finetuning the vision encoder. 
+As part of the first milestone we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), further improving capabilities by finetuning the vision encoder. 
 
 
-### Install
+## Installation
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
 
 ```bash
@@ -18,7 +18,7 @@ pip install git+ssh://git@github.com/agi-collective/robin_llava.git
 
 Note that currently Robin-LlaVA inference requires a Nvidia GPU with 24GB+ since CPU inference and quantized inference don't work reliably yet. Training was done on a machine with 8 x A100 80GB Nvidia GPUs provided by [Hessian-AI](https://hessian.ai/).
 
-### Run interactive command line interface
+## Run interactive command line interface
 ```bash
 python -m llava.serve.cli \
     --model-path agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora \
@@ -26,7 +26,7 @@ python -m llava.serve.cli \
     --image-file https://llava-vl.github.io/static/images/view.jpg
 ```
 
-### Use as library
+## Use as library
 ```python
 from llava.serve.pipeline import LlavaMistralPipeline
 
@@ -43,10 +43,10 @@ messages = pipe(messages)
 # {"role": "ASSISTANT", "content": ...}
 ```
 
-### Available models
+## Available models
 We use the following components: 
-- Base LLM: We explore using Vicuna, Mistral and OpenHermes-2.5
-- Base Vision Model: We use the SigLIP model since it gives stronger performance on vision benchmarks compared to CLIP 
+- **Base LLM**: We explore using Vicuna, Mistral and OpenHermes-2.5
+- **Base Vision Model**: We use the SigLIP model since it gives stronger performance on vision benchmarks compared to CLIP 
 - We finetune the Vision Encoder hoping the next token prediction loss helps further improves the vision capabilities of the pretrained vision encoder
 
 | Model                                                              | Base                              | GQA   | SQA Text | SQA Image |
@@ -62,17 +62,18 @@ We use the following components:
 (best 7B model results **highlighted**)
 
 
-### Evaluations
+## Evaluations
 Evaluations were done using the a subset of the evaluation suite in https://github.com/haotian-liu/llava. More evaluations including both vision language and language only benchmarks coming soon!
 
 
-### Training
+## Training
 For training details see the `pretrain.sh` and `finetune_lora.sh` scripts inside `scripts/*/`. The training code is for information purposes only and we won't be able help people debug problems with it for this preliminary release. More rigorous and less rushed and messy training scripts will be released in the future.
 
-### Limitations
+## Limitations
 For the Open-Hermes-2.5-based model we switched away from the ChatML chat template and back to the Llava default Vicuna chat template. The benchmarks and example results below show that this worked fine but we do believe that we can achieve even better performance and usability by retraining the model with ChatML.
- 
-### Example 1
+
+# Examples
+## Example 1
 ![](https://llava-vl.github.io/static/images/view.jpg)
 **User:** What's in this image?
 
@@ -82,7 +83,7 @@ The image features a pier extending out over a large body of water, likely a lak
 **HermesSiglip (Ours):**
 The image features a wooden pier extending out into a large body of water. The pier is surrounded by a serene and calm lake, providing a peaceful atmosphere. The pier appears to be empty, with no people or boats visible in the scene. The water is calm and still, creating a tranquil environment for those who visit the pier.
 
-**User:** Desribe this image in detail:
+**User:** Describe this image in detail:
 
 **Llava7b:**
 In the background, there are mountains visible, adding to the beauty of the landscape. The pier appears to be a popular spot for relaxation and enjoying the view, as there are several people scattered around the area, some closer to the water and others further away.
@@ -91,7 +92,7 @@ In the background, there are mountains visible, adding to the beauty of the land
 The image features a wooden dock extending out into a large body of water. The dock is surrounded by a serene landscape, with a mountain visible in the background. The water appears calm and inviting, creating a peaceful atmosphere.
 There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
 
-### Example 2
+## Example 2
 ![](https://scienceqa-webdemo.s3.us-west-1.amazonaws.com/extra/5727/image.png)
 
 **User:** Will these magnets attract or repel each other?
@@ -102,10 +103,10 @@ The magnets in the image are of different colors and placed next to each other. 
  **HermesSiglip (Ours):**
 In the image, there are two magnets placed on a gray background, one with a green stripe and the other with a blue stripe. Since the magnets have opposite colors, they will attract each other due to their magnetic properties. The magnets are aligned in a way that their magnetic poles are facing each other, which causes them to be attracted to one another. This phenomenon is known as the magnetic attraction between two oppositely charged magnets.
 
-### Example 3
+## Example 3
 ![](https://github.com/AGI-Collective/Robin-LLaVA/blob/robin-main/images/ILSVRC2012_val_00000003.JPEG)
 
-What's in this image? Describe in detail.
+**User:** `What's in this image? Describe in detail.`
 
 **Llava7b:**
 The image features a large, fluffy dog with a mix of brown and white fur, sitting on a sidewalk. The dog appears to be a Collie, and it is looking at the camera. The dog is positioned near a brick wall, which adds a contrasting element to the scene.
