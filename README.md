@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-# Robin-Llava
-This is a fork of [github.com/haotian-liu/llava](https://github.com/haotian-liu/llava) to work with Mistral-type language models and OpenCLIP-SigLIP visual encoders. This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective (specifically Kshitij Gupta, Daniel and Alexis) and Simon Ramstedt and with computing resources from [Hessian AI](https://hessian.ai/).
-
-### Install
-Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
-
-=======
 # Robin-LLaVA
 
 **A LLaVA-fork enabling the Mistral-7B & Open-Hermes-2.5 language models to process images**
@@ -18,7 +10,6 @@ The Robin Effort: We study different components and methods to merge pretrained 
 ## Installation
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
 
->>>>>>> 2ed6d361cbe06f9c5b8b86715f41baf3ecef940b
 ```bash
 pip install git+ssh://git@github.com/agi-collective/robin_llava.git
 ```
@@ -50,25 +41,6 @@ messages = pipe(messages)
 # {"role": "ASSISTANT", "content": ...}
 ```
 
-<<<<<<< HEAD
-### Available models
-
-| Model                                                              | Base                              | GQA   | SQA Text | SQA Image | VQAT  |
-| ------------------------------------------------------------------ | --------------------------------- | ----- | -------- | --------- | ----- |
-| liuhaotian/llava-v1.5-7b                                           | lmsys/vicuna-7b-v1.5              | 62    | 70.43    | 66.8      | 58.2  |
-| liuhaotian/llava-v1.5-13b                                          | lmsys/vicuna-7b-v1.5              | 63.3  |          | 71.6      | 61.3  |
-| agi-collective/vicuna-7b-clip-finetune-lora                        | lmsys/vicuna-7b-v1.5              | **62.04** | 70.86    | 68.72     | **57.53** |
-| agi-collective/vicuna-7b-siglip-so400m-finetune-lora               | lmsys/vicuna-7b-v1.5              | 56.79 | 68.76    | 67.48     | 53.14 |
-| agi-collective/mistral-7b-siglip-so400m-finetune-lora              | mistralai/Mistral-7B-v0.1         | 49.44 | 73.66    | 68.57     | 45.01 |
-| agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora           | teknium/OpenHermes-2.5-Mistral-7B | 54.48 | **79.56**    | **74.22**     | 52.69 |
-| agi-collective/mistral-7b-oh-siglip-so400m-frozen-ve-finetune-lora | teknium/OpenHermes-2.5-Mistral-7B | 53.59 | 78.17    | 72.73     | 53.29 |
-
-(best 7B model results **highlighted**)
-
-
-### Evaluations
-Evaluations were done using the a subset of the evaluation suite in https://github.com/haotian-liu/llava
-=======
 ## Available models
 We use the following components: 
 - **Base LLM**: We explore using Vicuna, Mistral and OpenHermes-2.5
@@ -86,7 +58,6 @@ We use the following components:
 | [agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora](https://huggingface.co/agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora)           | teknium/OpenHermes-2.5-Mistral-7B | 54.48 | **79.56**    | **74.22**     |
 
 (best 7B model results **highlighted**)
->>>>>>> 2ed6d361cbe06f9c5b8b86715f41baf3ecef940b
 
 
 ## Evaluations
@@ -96,30 +67,6 @@ Evaluations were done using the a subset of the evaluation suite in https://gith
 ## Training
 For training details see the `pretrain.sh` and `finetune_lora.sh` scripts inside `scripts/*/`. The training code is for information purposes only and we won't be able help people debug problems with it for this preliminary release. More rigorous and less rushed and messy training scripts will be released in the future.
 
-<<<<<<< HEAD
-### Example
-![](https://llava-vl.github.io/static/images/view.jpg)
-**User:** What's in this image?
-
-**Llava7b:**
-The image features a pier extending out over a large body of water, likely a lake. The pier is made of wood and has a bench at the end, providing a place for people to sit and enjoy the view. The water appears calm and serene, making it an ideal spot for relaxation.
-
-**HermesSiglip (Ours):**
-The image features a wooden pier extending out into a large body of water. The pier is surrounded by a serene and calm lake, providing a peaceful atmosphere. The pier appears to be empty, with no people or boats visible in the scene. The water is calm and still, creating a tranquil environment for those who visit the pier.
-
-**User:** Desribe this image in detail:
-
-**Llava7b:**
-In the background, there are mountains visible, adding to the beauty of the landscape. The pier appears to be a popular spot for relaxation and enjoying the view, as there are several people scattered around the area, some closer to the water and others further away.
-
-**HermesSiglip (Ours):**
-The image features a wooden dock extending out into a large body of water. The dock is surrounded by a serene landscape, with a mountain visible in the background. The water appears calm and inviting, creating a peaceful atmosphere.
-There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
-
-
-### Acknowledgements 
-We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their free tech support.
-=======
 # Examples
 ## Example 1
 ![](https://llava-vl.github.io/static/images/view.jpg)
@@ -175,4 +122,3 @@ We would like to thank Hessian-AI for providing us with free access to 8-16 A100
  <a style="" src=""><img style="" src="https://hessian.ai/wp-content/themes/hessianai/img/hessian-ai-logo.svg"></img></a>
  
  <a style="" src=""><img style="width: 40%; height: auto;" src="https://www.olcf.ornl.gov/wp-content/uploads/2016/07/olcf_retina_logo.png"></img></a>
->>>>>>> 2ed6d361cbe06f9c5b8b86715f41baf3ecef940b
