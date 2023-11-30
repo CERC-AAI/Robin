@@ -4,6 +4,10 @@
 
 This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective and Simon Ramstedt, with computing resources from [Hessian AI](https://hessian.ai/).
 
+The Robin Effort: The aim of this effort is to study different components when merging pretrained vision and language models and build sota vision understanding models. 
+
+As part of the first milestone we study different pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), and fuirther improve capapbilties by finetuning the vision encoder. 
+
 ### Install
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
 
@@ -52,12 +56,11 @@ We use the following components:
 | agi-collective/mistral-7b-oh-siglip-so400m-frozen-ve-finetune-lora | teknium/OpenHermes-2.5-Mistral-7B | 53.59 | 78.17    | 72.73     |
 | agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora           | teknium/OpenHermes-2.5-Mistral-7B | 54.48 | **79.56**    | **74.22**     |
 
-
 (best 7B model results **highlighted**)
 
 
 ### Evaluations
-Evaluations were done using the a subset of the evaluation suite in https://github.com/haotian-liu/llava
+Evaluations were done using the a subset of the evaluation suite in https://github.com/haotian-liu/llava. More evaluations including both vision language and language only benchmarks coming soon!
 
 
 ### Training
