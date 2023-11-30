@@ -66,6 +66,9 @@ Evaluations were done using the a subset of the evaluation suite in https://gith
 ### Training
 For training details see the `pretrain.sh` and `finetune_lora.sh` scripts inside `scripts/*/`. The training code is for information purposes only and we won't be able help people debug problems with it for this preliminary release. More rigorous and less rushed and messy training scripts will be released in the future.
 
+### Limitations
+For the Open-Hermes-2.5-based model we switched away from the ChatML chat template and back to the Llava default Vicuna chat template. The benchmarks and example results below show that this worked fine but we do believe that we can achieve even better performance and usability by retraining the model with ChatML.
+ 
 ### Example 1
 ![](https://llava-vl.github.io/static/images/view.jpg)
 **User:** What's in this image?
