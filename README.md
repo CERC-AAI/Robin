@@ -93,6 +93,16 @@ The words "No one grows ketchup like Heinz" are written in this image.
  **HermesSiglip (Ours):**
 In this image, the words "No one grows ketchup like Heinz" are written on the side of a bottle, which is a Heinz ketchup bottle.
 
+### Example 3
+![]([https://pbs.twimg.com/media/GAL3KpGaAAAwNUg?format=jpg&name=360x360](https://scienceqa-webdemo.s3.us-west-1.amazonaws.com/extra/5727/image.png))
+
+**User:** Will these magnets attract or repel each other?
+
+**Llava7b:**
+The magnets in the image are of different colors and placed next to each other. It is not possible to determine their polarity from the image alone, so it is not possible to definitively say whether they will attract or repel each other. The behavior of magnets depends on their polarity and the orientation of their magnetic fields. To determine their interaction, one would need to observe the magnets in a more controlled environment, such as a magnetic field tester or a magnetic compass.
+
+ **HermesSiglip (Ours):**
+In the image, there are two magnets placed on a gray background, one with a green stripe and the other with a blue stripe. Since the magnets have opposite colors, they will attract each other due to their magnetic properties. The magnets are aligned in a way that their magnetic poles are facing each other, which causes them to be attracted to one another. This phenomenon is known as the magnetic attraction between two oppositely charged magnets.
 
 ### Acknowledgements 
 We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support.
