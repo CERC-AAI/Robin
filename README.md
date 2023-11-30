@@ -4,9 +4,7 @@
 
 This repo and the associated models were created in collaboration between the [Robin team at AGI-Collective](#team) and [Simon Ramstedt](https://simonramstedt.com/), with computing resources from [Hessian-AI](https://hessian.ai/) and [OLCF](https://www.olcf.ornl.gov/).
 
-The Robin Effort: The goal of this effort is to study the different components we can use when merging pretrained vision and language models, and to build SoTA visual understanding models.
-
-As part of the first milestone we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), further improving capabilities by finetuning the vision encoder. 
+The Robin Effort: We study different components and methods to merge pretrained vision and language models with the goal to build better visual understanding models. As part of this first milestone we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), further improving capabilities by finetuning the vision encoder. 
 
 
 ## Installation
