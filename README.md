@@ -107,8 +107,8 @@ The image features a brown and white dog sitting on a sidewalk near a brick wall
 ## Limitations
 For the Open-Hermes-2.5-based model we switched away from the ChatML chat template and back to the Llava default Vicuna chat template. The benchmarks and example results below show that this worked fine but we do believe that we can achieve even better performance and usability by retraining the model with ChatML.
 
-## <a name="team"></a>AGI-Collective - Robin Team
-Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish
+## <a name="team"></a>AGI-Collective - Robin Team (Alphabetical Order)
+Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish (PI)
 
 ## Acknowledgements 
 We would like to thank Hessian-AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support. We would also like to thank Oak Ridge Leadership Computing Facility (OLCF), the DOE Office of Science User Facility. Prelimnary experiments were conducted on the INCITE compute grant on Summit supercomputer supported under Contract DE-AC05-00OR22725. This grant was awarded to AAI CERC lab for their Scalable Foundation Models for Transferrable Generalist AI project. This work was in collaboration with representatives from EleutherAI. The code in this repo is based on [github.com/haotian-liu/LLaVA](https://github.com/haotian-liu/LLaVA).
