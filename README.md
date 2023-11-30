@@ -62,7 +62,7 @@ For training details see the `pretrain.sh` and `finetune_lora.sh` scripts inside
 **Llava7b:**
 The image features a pier extending out over a large body of water, likely a lake. The pier is made of wood and has a bench at the end, providing a place for people to sit and enjoy the view. The water appears calm and serene, making it an ideal spot for relaxation.
 
-**HermesSiglip:**
+**HermesSiglip (Ours):**
 The image features a wooden pier extending out into a large body of water. The pier is surrounded by a serene and calm lake, providing a peaceful atmosphere. The pier appears to be empty, with no people or boats visible in the scene. The water is calm and still, creating a tranquil environment for those who visit the pier.
 
 **User:** Desribe this image in detail:
@@ -70,7 +70,7 @@ The image features a wooden pier extending out into a large body of water. The p
 **Llava7b:**
 In the background, there are mountains visible, adding to the beauty of the landscape. The pier appears to be a popular spot for relaxation and enjoying the view, as there are several people scattered around the area, some closer to the water and others further away.
 
-**HermesSiglip:**
+**HermesSiglip (Ours):**
 The image features a wooden dock extending out into a large body of water. The dock is surrounded by a serene landscape, with a mountain visible in the background. The water appears calm and inviting, creating a peaceful atmosphere.
 There are no people or boats visible in the scene, adding to the tranquility of the setting. The dock itself is wooden and appears to be well-maintained, providing a perfect spot for relaxation or fishing
 
