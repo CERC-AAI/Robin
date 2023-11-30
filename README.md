@@ -1,6 +1,6 @@
 # Robin-LLaVA
 
-**A LLaVA-fork enabling Mistral & Open-Hermes-2.5 language models to process images**
+**A LLaVA-fork enabling the Mistral-7B & Open-Hermes-2.5 language models to process images**
 
 This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective and Simon Ramstedt, with computing resources from [Hessian-AI](https://hessian.ai/).
 
@@ -8,8 +8,6 @@ The Robin Effort: The goal of this effort is to study the different components w
 
 As part of the first milestone we study the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and SigLIP), further improving capabilties by finetuning the vision encoder. 
 
-### Requirements
-At the moment inference requires a Nvidia GPU with 24GB. CPU and quantized inference don't work reliably yet. Training was done on a machine with 8 x A100 80GB Nvidia GPUs provided by [Hessian-AI](https://hessian.ai/)
 
 ### Install
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
@@ -17,6 +15,8 @@ Ideally install into an empty venv (`python -m venv venv && source venv/bin/acti
 ```bash
 pip install git+ssh://git@github.com/agi-collective/robin_llava.git
 ```
+
+Note that currently Robin-LlaVA inference requires a Nvidia GPU with 24GB+ since CPU inference and quantized inference don't work reliably yet. Training was done on a machine with 8 x A100 80GB Nvidia GPUs provided by [Hessian-AI](https://hessian.ai/).
 
 ### Run interactive command line interface
 ```bash
