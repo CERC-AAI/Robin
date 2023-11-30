@@ -87,6 +87,7 @@ class LlavaMistralPipeline:
         # We typically assume that follows the format of user, then assistant.
         for message in messages[1:]:
             assert message["role"] in ["USER", "ASSISTANT"], f"Only USER and ASSISTANT roles are supported, got {message['role']}"
+            assert "image" not in message, "Images can only be in the first user message"
             conv.append_message(message["role"], message["content"])
             
         # At the very end, we expect to see a user, so we add the empty assistant.
