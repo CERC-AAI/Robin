@@ -2,7 +2,7 @@
 
 **A LLaVA-fork enabling the Mistral-7B & Open-Hermes-2.5 language models to process images**
 
-This repo and the associated models were created in collaboration between the Robin team at AGI-Collective and Simon Ramstedt, with computing resources from [Hessian-AI](https://hessian.ai/) and [OLCF](https://www.olcf.ornl.gov/).
+This repo and the associated models were created in collaboration between the [Robin team at AGI-Collective](#team) and [Simon Ramstedt](https://simonramstedt.com/), with computing resources from [Hessian-AI](https://hessian.ai/) and [OLCF](https://www.olcf.ornl.gov/).
 
 The Robin Effort: The goal of this effort is to study the different components we can use when merging pretrained vision and language models, and to build SoTA visual understanding models.
 
@@ -115,12 +115,10 @@ The image features a brown and white dog sitting on a sidewalk near a brick wall
 ## Limitations
 For the Open-Hermes-2.5-based model we switched away from the ChatML chat template and back to the Llava default Vicuna chat template. The benchmarks and example results below show that this worked fine but we do believe that we can achieve even better performance and usability by retraining the model with ChatML.
 
-### Contributors:
-**Robin Team @ AGI-Collective**: Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish
+## <a name="team"></a>AGI-Collective - Robin Team
+Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish
 
-**Simon Ramstedt**: https://simonramstedt.com/
-
-### Acknowledgements 
+## Acknowledgements 
 We would like to thank Hessian-AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support. We would also like to thank Oak Ridge Leadership Computing Facility (OLCF), the DOE Office of Science User Facility. Prelimnary experiments were conducted on the INCITE compute grant on Summit supercomputer supported under Contract DE-AC05-00OR22725. This grant was awarded to AAI CERC lab for their Scalable Foundation Models for Transferrable Generalist AI project. This work was in collaboration with representatives from EleutherAI. The code in this repo is based on [github.com/haotian-liu/LLaVA](https://github.com/haotian-liu/LLaVA).
 
  <a style="" src=""><img style="" src="https://hessian.ai/wp-content/themes/hessianai/img/hessian-ai-logo.svg"></img></a>
