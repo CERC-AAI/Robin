@@ -2,7 +2,7 @@
 
 **A LLaVA-fork enabling the Mistral-7B & Open-Hermes-2.5 language models to process images**
 
-This repo and the associated models were created in collaboration between the Robin team at AGI-Collective (Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish) and Simon Ramstedt, with computing resources from [Hessian-AI](https://hessian.ai/) and [OLCF](https://www.olcf.ornl.gov/).
+This repo and the associated models were created in collaboration between the Robin team at AGI-Collective and Simon Ramstedt, with computing resources from [Hessian-AI](https://hessian.ai/) and [OLCF](https://www.olcf.ornl.gov/).
 
 The Robin Effort: The goal of this effort is to study the different components we can use when merging pretrained vision and language models, and to build SoTA visual understanding models.
 
@@ -114,6 +114,10 @@ In the background, there is a car parked further away, and a person can be seen 
 
 **HermesSiglip (Ours):**
 The image features a brown and white dog sitting on a sidewalk near a brick wall. The dog is looking at the camera, creating a friendly and approachable atmosphere. The dog appears to be a collie, which is a breed known for its long fur and fluffy appearance. The dog is sitting on the sidewalk, occupying a significant portion of the scene, and seems to be enjoying its time outdoors.
+
+Contributors:
+Robin Team @ AGI-Collective: Alexis Roger, Andrew R Williams, Daniel Kaplan, Edwin Fennell, George Adamopoulos, Kshitij Gupta, Prateek Humane, Quentin Anthony, Rishika Bhagwatkar, Sun Qi, Yuchen Lu, Irina Rish
+Simon Ramstedt: https://simonramstedt.com/
 
 ### Acknowledgements 
 We would like to thank Hessian-AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support. We would also like to thank Oak Ridge Leadership Computing Facility (OLCF), the DOE Office of Science User Facility. Prelimnary experiments were conducted on the INCITE compute grant on Summit supercomputer supported under Contract DE-AC05-00OR22725. This grant was awarded to AAI CERC lab for their Scalable Foundation Models for Transferrable Generalist AI project. This work was in collaboration with representatives from EleutherAI. The code in this repo is based on [github.com/haotian-liu/LLaVA](https://github.com/haotian-liu/LLaVA).
