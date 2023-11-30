@@ -1,11 +1,11 @@
-# Llava-Mistral
+# Robin-Llava
 This is a fork of [github.com/haotian-liu/llava](https://github.com/haotian-liu/llava) to work with Mistral-type language models and OpenCLIP-SigLIP visual encoders. This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective (specifically Kshitij Gupta, Daniel and Alexis) and Simon Ramstedt and with computing resources from [Hessian AI](https://hessian.ai/).
 
 ### Install
 Ideally install into an empty venv (`python -m venv venv && source venv/bin/activate`)
 
 ```bash
-pip install git+ssh://git@github.com/agi-collective/llava_mistral.git
+pip install git+ssh://git@github.com/agi-collective/robin_llava.git
 ```
 
 ### Run interactive command line interface
