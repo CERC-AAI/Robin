@@ -61,7 +61,7 @@ We use the following components:
 
 
 ## Evaluations
-Evaluations were done using the a subset of the evaluation suite in https://github.com/haotian-liu/llava. More evaluations including both vision language and language only benchmarks coming soon!
+Evaluations were done using the a subset of the evaluation suite in https://github.com/haotian-liu/llava. Prelimnary evaluations and interactions display lesser hallucincation, more detailed descriptions and better visual reasoning. More evaluations including both vision language and language only benchmarks coming soon!
 
 
 ## Training
