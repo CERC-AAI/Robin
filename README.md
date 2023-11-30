@@ -93,6 +93,21 @@ The magnets in the image are of different colors and placed next to each other. 
  **HermesSiglip (Ours):**
 In the image, there are two magnets placed on a gray background, one with a green stripe and the other with a blue stripe. Since the magnets have opposite colors, they will attract each other due to their magnetic properties. The magnets are aligned in a way that their magnetic poles are facing each other, which causes them to be attracted to one another. This phenomenon is known as the magnetic attraction between two oppositely charged magnets.
 
+### Example 3
+Collie image:
+What's in this image?
+**Llava7b:**
+The image features a large, fluffy dog with a mix of brown and white fur sitting on a sidewalk. The dog is looking at the camera, possibly posing for a picture. The scene takes place in front of a brick wall, giving the impression of a residential area.
+**HermesSiglip (Ours):**
+The image features a large, brown and white dog sitting on a sidewalk. The dog is looking up at the camera, creating a friendly and approachable atmosphere. The dog is positioned near the center of the scene, with a brick wall in the background. The sidewalk is lined with grass, adding a natural touch to the setting.
+
+What's in this image? Describe in detail.
+**Llava7b:**
+The image features a large, fluffy dog with a mix of brown and white fur, sitting on a sidewalk. The dog appears to be a Collie, and it is looking at the camera. The dog is positioned near a brick wall, which adds a contrasting element to the scene.
+In the background, there is a car parked further away, and a person can be seen standing near the car. The overall atmosphere of the image is calm and serene, with the dog being the main focus of the scene.
+**HermesSiglip (Ours):**
+The image features a brown and white dog sitting on a sidewalk near a brick wall. The dog is looking at the camera, creating a friendly and approachable atmosphere. The dog appears to be a collie, which is a breed known for its long fur and fluffy appearance. The dog is sitting on the sidewalk, occupying a significant portion of the scene, and seems to be enjoying its time outdoors.
+
 ### Acknowledgements 
 We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support.
 
