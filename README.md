@@ -1,6 +1,6 @@
-# Robin-Llava
+# Robin-LLaVA
 
-**[Llava](https://github.com/haotian-liu/llava)-fork enabling Mistral & Open-Hermes-2.5 language models to process images**
+**A LLaVA-fork enabling Mistral & Open-Hermes-2.5 language models to process images**
 
 This repo and the accociated finetuned models were created in a collaboration between the AGI-Collective and Simon Ramstedt, with computing resources from [Hessian-AI](https://hessian.ai/).
 
@@ -115,7 +115,7 @@ In the background, there is a car parked further away, and a person can be seen 
 The image features a brown and white dog sitting on a sidewalk near a brick wall. The dog is looking at the camera, creating a friendly and approachable atmosphere. The dog appears to be a collie, which is a breed known for its long fur and fluffy appearance. The dog is sitting on the sidewalk, occupying a significant portion of the scene, and seems to be enjoying its time outdoors.
 
 ### Acknowledgements 
-We would like to thank Hessian-AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support. We would also like to thank Oak Ridge Leadership Computing Facility (OLCF), the DOE Office of Science User Facility. Prelimnary experiments were conducted on the INCITE compute grant on Summit supercomputer supported under Contract DE-AC05-00OR22725. This grant was awarded to AAI CERC lab for their Scalable Foundation Models for Transferrable Generalist AI project.
+We would like to thank Hessian-AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support. We would also like to thank Oak Ridge Leadership Computing Facility (OLCF), the DOE Office of Science User Facility. Prelimnary experiments were conducted on the INCITE compute grant on Summit supercomputer supported under Contract DE-AC05-00OR22725. This grant was awarded to AAI CERC lab for their Scalable Foundation Models for Transferrable Generalist AI project. The code in this repo is based on [github.com/haotian-liu/LLaVA](https://github.com/haotian-liu/LLaVA).
 
  <a style="" src=""><img style="" src="https://hessian.ai/wp-content/themes/hessianai/img/hessian-ai-logo.svg"></img></a>
  <a style="" src=""><img style="width: 40%; height: auto;" src="https://www.olcf.ornl.gov/wp-content/uploads/2016/07/olcf_retina_logo.png"></img></a>
