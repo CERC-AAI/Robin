@@ -59,6 +59,7 @@ We use the following components:
 
 (best 7B model results **highlighted**)
 
+More models coming soon!
 
 ## Evaluations
 Evaluations were done using the a subset of the evaluation suite in https://github.com/haotian-liu/llava. Preliminary evaluations and interactions display lesser hallucincation, more detailed descriptions and better visual reasoning. More evaluations including both vision language and language only benchmarks coming soon!
