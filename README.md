@@ -115,4 +115,4 @@ The image features a brown and white dog sitting on a sidewalk near a brick wall
 We would like to thank Hessian AI for providing us with free access to 8-16 A100 GPUs for a few weeks and to Florian and Patrick at Hessian AI for their support. We would also like to thank Oak Ridge Leadership Computing Facility (OLCF), the DOE Office of Science User Facility. Prelimnary experiments were conducted on the INCITE compute grant on Summit supercomputer supported under Contract DE-AC05-00OR22725. This grant was awarded to AAI CERC lab for their Scalable Foundation Models for Transferrable Generalist AI project.
 
  <a style="" src=""><img style="" src="https://hessian.ai/wp-content/themes/hessianai/img/hessian-ai-logo.svg"></img></a>
- <a style="" src=""><img style="" src="https://www.olcf.ornl.gov/wp-content/uploads/2016/07/olcf_retina_logo.png"></img></a>
+ <a style="" src=""><img style="width: 40%; height: auto;" src="https://www.olcf.ornl.gov/wp-content/uploads/2016/07/olcf_retina_logo.png"></img></a>
