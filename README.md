@@ -1,4 +1,4 @@
-# Robin - Visual Understanding Models
+# Robin - Visual Language Models
 
 The Robin Effort: We study different components and methods to merge pretrained vision and language models with the goal to build better visual understanding models. 
 
