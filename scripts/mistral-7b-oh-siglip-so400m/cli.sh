@@ -7,7 +7,7 @@ IMG="https://images.ctfassets.net/lzny33ho1g45/6FwyRiw9nZDf9rgwIN4zPC/b7e248b756
 CM=vicuna_v1  # this is the standard in llava and what we've trained with
 
 
-python -m llava.serve.cli \
+python -m robin.serve.cli \
     --conv-mode $CM \
     --model-path agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora \
     --model-base teknium/OpenHermes-2.5-Mistral-7B \

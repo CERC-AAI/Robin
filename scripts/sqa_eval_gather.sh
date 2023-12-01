@@ -11,7 +11,7 @@ for idx in $(seq 0 $((CHUNKS-1))); do
   cat "./test_llava-13b-chunk${idx}.jsonl" >> "$output_file"
 done
 
-python llava/eval/eval_science_qa.py \
+python robin.eval/eval_science_qa.py \
     --base-dir ~/haotian/datasets/ScienceQA/data/scienceqa \
     --result-file ./test_llava-13b.jsonl \
     --output-file ./test_llava-13b_output.json \

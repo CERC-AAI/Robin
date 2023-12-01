@@ -32,7 +32,7 @@ You may evaluate this with multiple GPUs, and concatenate the generated jsonl fi
 (a) Generate LLaVA responses on ScienceQA dataset
 
 ```Shell
-python -m llava.eval.model_vqa_science \
+python -m robin.eval.model_vqa_science \
     --model-path liuhaotian/llava-lcs558k-scienceqa-vicuna-13b-v1.3 \
     --question-file /path/to/ScienceQA/data/scienceqa/llava_test_QCM-LEA.json \
     --image-folder /path/to/ScienceQA/data/scienceqa/images/test \
@@ -50,4 +50,4 @@ python eval_science_qa.py \
     --output-result vqa/results/ScienceQA/test_llava-13b_result.json \
 ```
 
-For reference, we attach our prediction file [`test_sqa_llava_lcs_558k_sqa_12e_vicuna_v1_3_13b.json`](https://github.com/haotian-liu/LLaVA/blob/main/llava/eval/table/results/test_sqa_llava_lcs_558k_sqa_12e_vicuna_v1_3_13b.json) and [`test_sqa_llava_13b_v0.json`](https://github.com/haotian-liu/LLaVA/blob/main/llava/eval/table/results/test_sqa_llava_13b_v0.json) for comparison when reproducing our results, as well as for further analysis in detail.
+For reference, we attach our prediction file [`test_sqa_llava_lcs_558k_sqa_12e_vicuna_v1_3_13b.json`](https://github.com/haotian-liu/LLaVA/blob/main/robin.eval/table/results/test_sqa_llava_lcs_558k_sqa_12e_vicuna_v1_3_13b.json) and [`test_sqa_llava_13b_v0.json`](https://github.com/haotian-liu/LLaVA/blob/main/robin.eval/table/results/test_sqa_llava_13b_v0.json) for comparison when reproducing our results, as well as for further analysis in detail.

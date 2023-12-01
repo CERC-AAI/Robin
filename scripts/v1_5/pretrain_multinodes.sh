@@ -23,7 +23,7 @@ bash /lustre/orion/csc538/proj-shared/froniter_write_hostfile.sh
 cd $TRAIN_PATH
 
 deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
-    $TRAIN_PATH/llava/train/train_mem.py \
+    $TRAIN_PATH/robin/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path lmsys/vicuna-7b-v1.5 \
     --version plain \

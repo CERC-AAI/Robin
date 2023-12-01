@@ -1,6 +1,6 @@
 import argparse
-from llava.model.builder import load_pretrained_model
-from llava.mm_utils import get_model_name_from_path
+from robin.model.builder import load_pretrained_model
+from robin.mm_utils import get_model_name_from_path
 
 
 def merge_lora(args):

@@ -4,7 +4,7 @@ This is an initial guide on how to replace the LLMs, visual encoders, etc. with 
 
 ## LLM
 
-It is quite simple to swap out LLaMA to any other LLMs.  You can refer to our implementation of [`llava_llama.py`](https://raw.githubusercontent.com/haotian-liu/LLaVA/main/llava/model/language_model/llava_llama.py) for an example of how to replace the LLM.
+It is quite simple to swap out LLaMA to any other LLMs.  You can refer to our implementation of [`llava_llama.py`](https://raw.githubusercontent.com/haotian-liu/LLaVA/main/robin/model/language_model/llava_llama.py) for an example of how to replace the LLM.
 
 Although it may seem that it still needs ~100 lines of code, most of them are copied from the original `llama.py` from HF.  The only part that is different is to insert some lines for processing the multimodal inputs.
 
@@ -16,5 +16,5 @@ These are basically all the changes you need to make to replace the LLM.
 
 ## Visual Encoder
 
-You can check out [`clip_encoder.py`](https://github.com/haotian-liu/LLaVA/blob/main/llava/model/multimodal_encoder/clip_encoder.py) on how we implement the CLIP visual encoder.
+You can check out [`clip_encoder.py`](https://github.com/haotian-liu/LLaVA/blob/main/robin/model/multimodal_encoder/clip_encoder.py) on how we implement the CLIP visual encoder.
 
