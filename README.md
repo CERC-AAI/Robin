@@ -1,6 +1,6 @@
 # Robin - Visual Language Models
 
-The Robin Effort: We study different components and methods to merge pretrained vision and language models with the goal to build better visual understanding models. 
+The Robin Effort: We study different components and methods to merge pretrained vision and language models with the goal to build better visual language models. 
 
 As part of this [first milestone](https://github.com/AGI-Collective/Robin/releases/tag/LLaVA-Mistral), we release this **LLaVA-fork enabling the Mistral-7B & Open-Hermes-2.5 language models to process images**. We combine the pretrained LLMs (Vicuna, Mistral and OpenHermes 2.5) and Vision models (CLIP and [SigLIP](https://huggingface.co/timm/ViT-SO400M-14-SigLIP-384)), further improving capabilities by finetuning the vision encoder. 
 
