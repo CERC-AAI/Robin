@@ -5,8 +5,10 @@ import sys
 sys.path.append('.')  # TODO: is this really necessary?
 import os
 
-os.environ['WANDB_DIR'] = f'/lustre/orion/csc538/scratch/{os.getlogin()}/wandb_cache'
-os.environ['MIOPEN_USER_DB_PATH'] = f'/lustre/orion/csc538/scratch/{os.getlogin()}/miopen'
+username = os.environ.get('USER')
+
+os.environ['WANDB_DIR'] = f'/lustre/orion/csc538/scratch/{username}/wandb_cache'
+os.environ['MIOPEN_USER_DB_PATH'] = f'/lustre/orion/csc538/scratch/{username}/miopen'
 os.environ['TRANSFORMERS_CACHE'] = '/lustre/orion/csc538/proj-shared/hf_cache'
 os.environ['WANDB_MODE'] = 'offline'
 os.environ['TRANSFORMERS_OFFLINE'] = '1'

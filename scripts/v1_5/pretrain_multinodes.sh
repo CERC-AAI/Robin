@@ -11,7 +11,7 @@
 
 module load rocm/5.4.3
 
-source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin2
+source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
 
 TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
 CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/llava-v1.5-7b

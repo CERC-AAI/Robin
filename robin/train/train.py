@@ -40,6 +40,7 @@ from robin.model.multimodal_encoder.open_clip import OpenCLIPVisionTower
 
 local_rank = None
 
+USE_FLASH_ATTN_2 = False
 
 def rank0_print(*args):
     if local_rank == 0:
@@ -812,7 +813,7 @@ def train():
             model = LlavaMistralForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
-                use_flash_attention_2 = True,
+                use_flash_attention_2 = USE_FLASH_ATTN_2,
                 **bnb_model_from_pretrained_args
             )
         else:
@@ -821,7 +822,7 @@ def train():
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args,
-                use_flash_attention_2 = True,
+                use_flash_attention_2 = USE_FLASH_ATTN_2,
             )
     else:
         model = transformers.LlamaForCausalLM.from_pretrained(
