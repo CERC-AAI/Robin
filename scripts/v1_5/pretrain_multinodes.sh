@@ -1,35 +1,41 @@
 #!/bin/bash
 
 #SBATCH -A CSC538
-#SBATCH -J llava 
-#SBATCH -o %x-%j.out
-#SBATCH -e %x-%j.err
+#SBATCH -J robin 
+#SBATCH -o /lustre/orion/csc538/scratch/$(whoami)/job_logs/%x-%j.out
+#SBATCH -e /lustre/orion/csc538/scratch/$(whoami)/job_logs/%x-%j.err
 #SBATCH -t 2:00:00
 #SBATCH -p batch
 #SBATCH -N 4
 # load rocm for AMD GPU and write hostfile for distribute environment discovery for Deepspeed
 
-module load rocm/5.6.0
+module load rocm/5.4.3
 
-TRAIN_PATH=/ccs/home/lfsm/froniter_workspace/LLaVA
-CHECKPOINT_PATH=/lustre/orion/csc538/scratch/lfsm/llava_checkpoints/llava-v1.5-7b-pretrain
+source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin2
+
+TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
+CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/llava-v1.5-7b
 DATA_PATH=/lustre/orion/csc538/proj-shared/llava_pretrain
 
-# clean the miopen cache before run.
-rm -rf /lustre/orion/csc538/scratch/lfsm/miopoen/*
+MODEL=lmsys/vicuna-7b-v1.5
+VISION=openai/clip-vit-large-patch14-336
 
-bash /lustre/orion/csc538/proj-shared/froniter_write_hostfile.sh
+# clean the miopen cache before run.
+rm -rf /lustre/orion/csc538/scratch/$(whoami)/miopen/*
+
+bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
 
 cd $TRAIN_PATH
 
-deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
+#deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
+deepspeed \
     $TRAIN_PATH/robin/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path lmsys/vicuna-7b-v1.5 \
+    --model_name_or_path $MODEL \
     --version plain \
     --data_path $DATA_PATH/blip_laion_cc_sbu_558k.json \
     --image_folder $DATA_PATH/images \
-    --vision_tower openai/clip-vit-large-patch14-336 \
+    --vision_tower $VISION \
     --mm_projector_type mlp2x_gelu \
     --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \

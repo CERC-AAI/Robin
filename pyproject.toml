@@ -22,7 +22,7 @@ dependencies = [
     "gradio==3.35.2", "gradio_client==0.2.9",
     "requests", "httpx==0.24.0", "uvicorn", "fastapi",
     "einops==0.6.1", "einops-exts==0.0.4",
-    "flash-attn==2.3.3",
+    #"flash-attn==2.3.3",
 
     # "open_clip_torch==2.23.0",
     "open_clip_torch @ git+https://github.com/rmst/open-clip.git@01f8200c02c79f582d1189eda88e7459ac1994fe",
