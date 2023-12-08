@@ -90,7 +90,7 @@ fi
 cd $BASE_DIR
 git clone https://github.com/AGI-Collective/robin
 cd robin
-pip install --upgrade pip
+git checkout Frontier
 pip install -e ".[train]"
 pip uninstall bitsandbytes 
 
