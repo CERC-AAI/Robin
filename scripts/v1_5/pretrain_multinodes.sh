@@ -2,11 +2,12 @@
 
 #SBATCH -A CSC538
 #SBATCH -J robin 
-#SBATCH -o /lustre/orion/csc538/scratch/$(whoami)/job_logs/%x-%j.out
-#SBATCH -e /lustre/orion/csc538/scratch/$(whoami)/job_logs/%x-%j.err
+#SBATCH -o /lustre/orion/csc538/scratch/%u/job_logs/%x-%j.out
+#SBATCH -e /lustre/orion/csc538/scratch/%u/job_logs/%x-%j.err
 #SBATCH -t 2:00:00
 #SBATCH -p batch
 #SBATCH -N 4
+
 # load rocm for AMD GPU and write hostfile for distribute environment discovery for Deepspeed
 
 module load rocm/5.4.3
@@ -17,7 +18,7 @@ TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
 CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/llava-v1.5-7b
 DATA_PATH=/lustre/orion/csc538/proj-shared/llava_pretrain
 
-MODEL=lmsys/vicuna-7b-v1.5
+MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
 VISION=openai/clip-vit-large-patch14-336
 
 # clean the miopen cache before run.
@@ -36,6 +37,7 @@ deepspeed \
     --data_path $DATA_PATH/blip_laion_cc_sbu_558k.json \
     --image_folder $DATA_PATH/images \
     --vision_tower $VISION \
+    --finetune_ve False \
     --mm_projector_type mlp2x_gelu \
     --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \
