@@ -39,3 +39,5 @@ ckpts*
 
 .ipynb_checkpoints
 *.ipynb
+
+robin-[0-9]*_loss.png
