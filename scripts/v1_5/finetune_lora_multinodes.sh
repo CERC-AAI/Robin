@@ -16,7 +16,7 @@ source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
 
 TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
 CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/llava-v1.5-7b
-DATA_PATH=/lustre/orion/csc538/proj-shared/llava_finetune
+DATA_PATH=/lustre/orion/csc538/proj-shared/llava_finetune_2
 
 MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
 VISION=openai/clip-vit-large-patch14-336
@@ -34,8 +34,8 @@ deepspeed \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path $MODEL \
     --version v1 \
-    --data_path $DATA_PATH/blip_laion_cc_sbu_558k.json \
-    --image_folder $DATA_PATH/images \
+    --data_path $DATA_PATH/llava_v1_5_mix665k.json \
+    --image_folder $DATA_PATH \
     --vision_tower $VISION \
     --finetune_ve True \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
@@ -49,7 +49,7 @@ deepspeed \
     --fp16 True \
     --output_dir $CHECKPOINT_PATH/finetune \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 32 \
+    --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
