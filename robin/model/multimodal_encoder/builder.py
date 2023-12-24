@@ -7,10 +7,11 @@ def build_vision_tower(vision_tower_cfg, **kwargs):
     is_absolute_path_exists = os.path.exists(vision_tower)
     
     
-    if "siglip" in str(vision_tower) or "SigLIP" in str(vision_tower):
-        return OpenCLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
+    if is_absolute_path_exists or vision_tower.lower().startswith("openai") or vision_tower.lower().startswith("laion"):
+        return CLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
+    elif "dino" in str(vision_tower).lower():
+        return TimmVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
     else:
-        if is_absolute_path_exists or vision_tower.startswith("openai") or vision_tower.startswith("laion"):
-            return CLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
+        return OpenCLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
 
     raise ValueError(f'Unknown vision tower: {vision_tower}')

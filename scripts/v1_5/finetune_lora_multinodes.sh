@@ -15,7 +15,7 @@ module load rocm/5.4.3
 source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
 
 TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
-CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/llava-v1.5-7b
+CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/robin_v2
 DATA_PATH=/lustre/orion/csc538/proj-shared/llava_finetune_2
 
 MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
@@ -39,7 +39,7 @@ deepspeed \
     --vision_tower $VISION \
     --finetune_ve True \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
-    --pretrain_mm_mlp_adapter $CHECKPOINT_PATH/pretrain/mm_projector.bin \
+    --pretrain_mm_mlp_adapter $CHECKPOINT_PATH/pretrain/checkpoint-500/mm_projector.bin \
     --group_by_modality_length True \
     --image_aspect_ratio pad \
     --mm_projector_type mlp2x_gelu \
@@ -47,9 +47,9 @@ deepspeed \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
     --fp16 True \
-    --output_dir $CHECKPOINT_PATH/finetune \
+    --output_dir $CHECKPOINT_PATH/finetune_VEtrue \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 16 \
+    --per_device_train_batch_size 8 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
