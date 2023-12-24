@@ -21,7 +21,7 @@ class OpenCLIPVisionTower(nn.Module):
         else:
             pass
         
-        self.hidden_size = 1152 if "SO400M" in self.vision_tower_name else 768  # TODO: this is a hack, we should read this from config.embed_dim
+        # self.hidden_size = 1152 if "SO400M" in self.vision_tower_name else 768  # TODO: this is a hack, we should read this from config.embed_dim
 
         self.device = None
         self.dtype = None
@@ -32,7 +32,10 @@ class OpenCLIPVisionTower(nn.Module):
         self.vision_tower, self.image_processor = create_model_from_pretrained(self.vision_tower_name)
         
 
+        
         self.vision_tower = self.vision_tower.visual
+        self.hidden_size = self.vision_tower.trunk.embed_dim
+
         
         self.vision_tower.trunk.output_tokens = True
         
