@@ -37,6 +37,7 @@ from robin.mm_utils import tokenizer_image_token
 from PIL import Image
 from robin.model.multimodal_encoder.clip_encoder import CLIPVisionTower
 from robin.model.multimodal_encoder.open_clip import OpenCLIPVisionTower
+from robin.model.multimodal_encoder.timm_vision import TimmVisionTower
 
 local_rank = None
 
@@ -109,6 +110,7 @@ class TrainingArguments(transformers.TrainingArguments):
     group_by_modality_length: bool = field(default=False)
     finetune_ve: bool =  False
     only_save_model: bool = False
+    vision_lr: Optional[float] = 5e-5
 
 
 def maybe_zero_3(param, ignore_status=False, name=None):
@@ -919,6 +921,11 @@ def train():
             vision_tower.device = training_args.device
         elif isinstance(vision_tower, CLIPVisionTower):
             data_args.is_clip = True
+        elif isinstance(vision_tower, TimmVisionTower):
+            data_args.is_clip = False
+            vision_tower.dtype = d_type
+            vision_tower.device = training_args.device
+            #idk about this bro
         else:
             raise NotImplementedError
         data_args.is_multimodal = True

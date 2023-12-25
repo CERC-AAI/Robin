@@ -61,7 +61,7 @@ class TimmVisionTower(nn.Module):
             raise ValueError(f'Unexpected select feature: {self.select_feature}')
         return image_features
 
-    @torch.no_grad()
+    # @torch.no_grad()
     def forward(self, images):
         
         """
@@ -76,9 +76,7 @@ class TimmVisionTower(nn.Module):
                 cls_token, image_forward_out = self.vision_tower(image.to(device=self.device, dtype=self.dtype).unsqueeze(0))
                 image_features.append(image_forward_out)
         else:#This should always be unsqueezed, if we have multiple items just stack them before this
-            image_features = self.vision_tower(images.to(device=self.device, dtype=self.dtype))
-            print(image_features.shape)
-            exit()
+            cls_token, image_features = self.vision_tower(images.to(device=self.device, dtype=self.dtype))
         cls_token = cls_token.unsqueeze(1)
         image_features = torch.cat((cls_token, image_features), dim=1)
         return image_features
