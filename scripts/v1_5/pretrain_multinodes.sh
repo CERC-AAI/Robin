@@ -14,12 +14,13 @@ module load rocm/5.4.3
 
 source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
 
-TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
-CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/robin_v2
-DATA_PATH=/lustre/orion/csc538/proj-shared/llava_pretrain
-
+NAME=robin_v2_
 MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
 VISION=openai/clip-vit-large-patch14-336
+
+TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
+CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/$NAME
+DATA_PATH=/lustre/orion/csc538/proj-shared/llava_pretrain
 
 # clean the miopen cache before run.
 rm -rf /lustre/orion/csc538/scratch/$(whoami)/miopen/*

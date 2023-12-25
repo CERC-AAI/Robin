@@ -14,12 +14,15 @@ module load rocm/5.4.3
 
 source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
 
-TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
-CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/robin_v2
-DATA_PATH=/lustre/orion/csc538/proj-shared/llava_finetune_2
-
+NAME=robin_v2_
 MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
 VISION=openai/clip-vit-large-patch14-336
+
+TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
+CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/$NAME
+DATA_PATH=/lustre/orion/csc538/proj-shared/llava_finetune_2
+
+PRETRAIN=$(ls -d $CHECKPOINT_PATH/pretrain/checkpoint-* | tail -1)
 
 # clean the miopen cache before run.
 rm -rf /lustre/orion/csc538/scratch/$(whoami)/miopen/*
@@ -39,7 +42,7 @@ deepspeed \
     --vision_tower $VISION \
     --finetune_ve True \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
-    --pretrain_mm_mlp_adapter $CHECKPOINT_PATH/pretrain/checkpoint-500/mm_projector.bin \
+    --pretrain_mm_mlp_adapter $PRETRAIN/mm_projector.bin \
     --group_by_modality_length True \
     --image_aspect_ratio pad \
     --mm_projector_type mlp2x_gelu \
@@ -66,4 +69,5 @@ deepspeed \
     --gradient_checkpointing True \
     --dataloader_num_workers 4 \
     --lazy_preprocess True \
-    --report_to wandb
+    --report_to wandb \
+    --vision_lr 2e-4
