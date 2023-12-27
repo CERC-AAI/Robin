@@ -4,6 +4,7 @@ import torch
 import open_clip
 import timm
 import torch.nn.functional as F
+import os
 
 
 class TimmVisionTower(nn.Module):
@@ -27,15 +28,30 @@ class TimmVisionTower(nn.Module):
     def load_model(self):
         
         # print("VISION TOWER:", self.vision_tower_name)
-        
-        self.vision_tower = timm.create_model(
-            self.vision_tower_name,
-            pretrained=True,
-            num_classes=0,  # remove classifier nn.Linear
-        )
-        
-        data_config = timm.data.resolve_model_data_config(self.vision_tower)
-        
+        if os.path.exists(self.vision_tower_name):
+            name = self.vision_tower_name.split("/")[-1]
+
+            # config = OPENCLIP_CONFIG_MAP[name] if name in OPENCLIP_CONFIG_MAP.keys() else name
+
+            # self.vision_tower, self.image_processor = create_model_from_pretrained(config, pretrained=self.vision_tower_name+'/open_clip_pytorch_model.bin')
+
+            self.vision_tower = timm.create_model(
+                name,
+                checkpoint_path=self.vision_tower_name+'/pytorch_model.bin',
+                num_classes=0,  # remove classifier nn.Linear
+            )
+            
+            data_config = timm.data.resolve_model_data_config(self.vision_tower)
+
+        else:
+            self.vision_tower = timm.create_model(
+                self.vision_tower_name,
+                pretrained=True,
+                num_classes=0,  # remove classifier nn.Linear
+            )
+            
+            data_config = timm.data.resolve_model_data_config(self.vision_tower)
+            
         self.hidden_size = self.vision_tower.num_features#Can also use embed_dim
         
         #might need to change n shit. might not.

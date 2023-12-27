@@ -8,7 +8,7 @@ BASE_DIR=/lustre/orion/csc538/scratch/$(whoami)
 mkdir $BASE_DIR
 cd $BASE_DIR
 
-mkdir checkpoints hostfiles job_logs miopen wandb_cache
+mkdir hostfiles job_logs wandb_cache
 
 
 cat <<frontier_write_hostfile >> frontier_write_hostfile.sh

@@ -6,7 +6,7 @@ from open_clip import create_model_from_pretrained, get_tokenizer # works on ope
 import open_clip
 from torch import nn
 import os
-from .encoder_info import OPENCLIP_CONFIG_MAP
+from .encoder_info import OPENCLIP_CONFIG_MAP, TIMM_ON_OPENCLIP
 
 class OpenCLIPVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
@@ -29,9 +29,9 @@ class OpenCLIPVisionTower(nn.Module):
         self.dtype = None
         
     def load_model(self):
+        name = self.vision_tower_name.split("/")[-1]
         
         if os.path.exists(self.vision_tower_name):
-            name = self.vision_tower_name.split("/")[-1]
 
             config = OPENCLIP_CONFIG_MAP[name] if name in OPENCLIP_CONFIG_MAP.keys() else name
 
@@ -43,7 +43,7 @@ class OpenCLIPVisionTower(nn.Module):
         
         self.vision_tower = self.vision_tower.visual
 
-        if "timm" in self.vision_tower_name or "eva02_enormous_patch14_plus_clip_224.laion2b_s9b_b144k" in self.vision_tower_name or "ViT-SO400M-14-SigLIP-384" in self.vision_tower_name:
+        if "timm" in self.vision_tower_name or name in TIMM_ON_OPENCLIP:
             self.hidden_size = self.vision_tower.trunk.embed_dim
         else:
             # self.hidden_size = self.vision_tower.num_features
@@ -83,13 +83,7 @@ class OpenCLIPVisionTower(nn.Module):
                 cls_token, image_forward_out = self.vision_tower(image.to(device=self.device, dtype=self.dtype).unsqueeze(0))
                 image_features.append(image_feature)
         else:#This should always be unsqueezed, if we have multiple items just stack them before this
-            print('==========================')
-            # print('pshape', self.vision_tower.pshape)
-            print('hidden_size', self.hidden_size)
-            print('images.shape', images.shape)
             cls_token, image_features = self.vision_tower(images.to(device=self.device, dtype=self.dtype))
-            print('cls_token.shape', cls_token.shape)
-            print('image_features.shape', image_features.shape)
         cls_token = cls_token.unsqueeze(1)
 
         if 'eva' not in self.vision_tower_name.lower():

@@ -35,10 +35,15 @@ bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
 # fresh miopen cache before run (need 1 cache per node)
 mkdir -p /lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID
 
-while IFS= read -r node
-do
-    mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
-done < /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts
+if [ $SLURM_NNODES -gt 1 ]
+then
+    while IFS= read -r node
+    do
+        mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
+    done < /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts
+else
+    mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/$HOSTNAME"
+fi
 
 cd $TRAIN_PATH
 
