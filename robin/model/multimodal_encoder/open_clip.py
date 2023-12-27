@@ -91,7 +91,9 @@ class OpenCLIPVisionTower(nn.Module):
             print('cls_token.shape', cls_token.shape)
             print('image_features.shape', image_features.shape)
         cls_token = cls_token.unsqueeze(1)
-        image_features = torch.cat((cls_token, image_features), dim=1)
+
+        if 'eva' not in self.vision_tower_name.lower():
+            image_features = torch.cat((cls_token, image_features), dim=1)
         return image_features
 
     @property
