@@ -8,31 +8,42 @@
 #SBATCH -p batch
 #SBATCH -N 4
 
-# load rocm for AMD GPU and write hostfile for distribute environment discovery for Deepspeed
+DOWNLOADED_MODEL_PATH=/lustre/orion/csc538/proj-shared/downloaded_models
 
-module load rocm/5.4.3
+# only change this
+NAME=robin_v2
+MODEL=OpenHermes-2.5-Mistral-7B
+VISION=DFN5B-CLIP-ViT-H-14
 
-source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
 
-NAME=robin_v2_
-MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
-VISION=openai/clip-vit-large-patch14-336
+# don't change this
+MODEL=$DOWNLOADED_MODEL_PATH/$MODEL
+VISION=$DOWNLOADED_MODEL_PATH/$VISION
 
 TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
-CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/$NAME
+CHECKPOINT_PATH=/lustre/orion/csc538/proj-shared/checkpoints/$(whoami)/$NAME
 DATA_PATH=/lustre/orion/csc538/proj-shared/llava_finetune_2
+
+module load rocm/5.4.3
+source /lustre/orion/csc538/scratch/$(whoami)/miniconda3/etc/profile.d/conda.sh
+conda activate robin
 
 PRETRAIN=$(ls -d $CHECKPOINT_PATH/pretrain/checkpoint-* | tail -1)
 
-# clean the miopen cache before run.
-rm -rf /lustre/orion/csc538/scratch/$(whoami)/miopen/*
-
 bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
+
+# fresh miopen cache before run (need 1 cache per node)
+mkdir -p /lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID
+
+while IFS= read -r node
+do
+    mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
+done < /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts
 
 cd $TRAIN_PATH
 
-#deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
 deepspeed \
+    --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
     $TRAIN_PATH/robin/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path $MODEL \

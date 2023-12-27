@@ -91,7 +91,7 @@ class OpenCLIPVisionTower(nn.Module):
                 image_features.append(image_feature)
         else:#This should always be unsqueezed, if we have multiple items just stack them before this
             print('==========================')
-            print('pshape', self.vision_tower.pshape)
+            # print('pshape', self.vision_tower.pshape)
             print('hidden_size', self.hidden_size)
             print('images.shape', images.shape)
             cls_token, image_features = self.vision_tower(images.to(device=self.device, dtype=self.dtype))
