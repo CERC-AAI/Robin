@@ -8,7 +8,6 @@
 #SBATCH -p batch
 #SBATCH -N 4
 
-DOWNLOADED_MODEL_PATH=/lustre/orion/csc538/proj-shared/downloaded_models
 
 # only change this
 NAME=robin_v2
@@ -17,6 +16,7 @@ VISION=DFN5B-CLIP-ViT-H-14
 
 
 # don't change this
+DOWNLOADED_MODEL_PATH=/lustre/orion/csc538/proj-shared/downloaded_models
 MODEL=$DOWNLOADED_MODEL_PATH/$MODEL
 VISION=$DOWNLOADED_MODEL_PATH/$VISION
 

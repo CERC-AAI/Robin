@@ -6,6 +6,7 @@ from open_clip import create_model_from_pretrained, get_tokenizer # works on ope
 import open_clip
 from torch import nn
 import os
+from .encoder_info import OPENCLIP_CONFIG_MAP
 
 class OpenCLIPVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
@@ -32,15 +33,7 @@ class OpenCLIPVisionTower(nn.Module):
         if os.path.exists(self.vision_tower_name):
             name = self.vision_tower_name.split("/")[-1]
 
-            map_name_config = {
-                'eva02_enormous_patch14_plus_clip_224.laion2b_s9b_b144k': 'EVA02-E-14-plus',
-                'ViT-SO400M-14-SigLIP-384': 'ViT-SO400M-14-SigLIP-384',
-                'ViT-bigG-14-CLIPA-336-datacomp1B': 'ViT-bigG-14-CLIPA-336',
-                'ViT-bigG-14-CLIPA-datacomp1B': 'ViT-bigG-14-CLIPA',
-                'DFN5B-CLIP-ViT-H-14': 'ViT-H-14' 
-            }
-
-            config = map_name_config[name] if name in map_name_config.keys() else name
+            config = OPENCLIP_CONFIG_MAP[name] if name in OPENCLIP_CONFIG_MAP.keys() else name
 
             self.vision_tower, self.image_processor = create_model_from_pretrained(config, pretrained=self.vision_tower_name+'/open_clip_pytorch_model.bin')
         else:
