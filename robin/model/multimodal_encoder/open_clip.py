@@ -43,7 +43,7 @@ class OpenCLIPVisionTower(nn.Module):
         
         self.vision_tower = self.vision_tower.visual
 
-        if "timm" in self.vision_tower_name or name in TIMM_ON_OPENCLIP:
+        if "timm" in self.vision_tower_name or name.lower() in TIMM_ON_OPENCLIP:
             self.hidden_size = self.vision_tower.trunk.embed_dim
         else:
             # self.hidden_size = self.vision_tower.num_features

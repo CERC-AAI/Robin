@@ -28,27 +28,25 @@ module load rocm/5.4.3
 source /lustre/orion/csc538/scratch/$(whoami)/miniconda3/etc/profile.d/conda.sh
 conda activate robin
 
-bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
-
 mkdir -p $CHECKPOINT_PATH
 
 # fresh miopen cache before run (need 1 cache per node)
-mkdir -p /lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID
-
+# important to generate hostfile in condition otherwise deepspeed will crash when only 1 node
 if [ $SLURM_NNODES -gt 1 ]
 then
+    bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
     while IFS= read -r node
     do
-        mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
+        mkdir -p "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
     done < /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts
 else
-    mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/$HOSTNAME"
+    mkdir -p "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/$HOSTNAME"
 fi
 
 cd $TRAIN_PATH
 
-#    --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
 deepspeed \
+    --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
     $TRAIN_PATH/robin/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path $MODEL \

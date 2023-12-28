@@ -30,19 +30,17 @@ conda activate robin
 
 PRETRAIN=$(ls -d $CHECKPOINT_PATH/pretrain/checkpoint-* | tail -1)
 
-bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
-
 # fresh miopen cache before run (need 1 cache per node)
-mkdir -p /lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID
-
+# important to generate hostfile in condition otherwise deepspeed will crash when only 1 node
 if [ $SLURM_NNODES -gt 1 ]
 then
+    bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
     while IFS= read -r node
     do
-        mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
+        mkdir -p "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
     done < /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts
 else
-    mkdir "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/$HOSTNAME"
+    mkdir -p "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/$HOSTNAME"
 fi
 
 cd $TRAIN_PATH

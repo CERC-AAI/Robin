@@ -32,7 +32,7 @@ from robin.train.llava_trainer import LLaVATrainer
 
 from robin import conversation as conversation_lib
 from robin.model import *
-from robin.mm_utils import tokenizer_image_token
+from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
 from robin.model.multimodal_encoder.clip_encoder import CLIPVisionTower
@@ -673,21 +673,9 @@ class LazySupervisedDataset(Dataset):
             image_file = self.list_data_dict[i]['image']
             image_folder = self.data_args.image_folder
             processor = self.data_args.image_processor
-            
+
             image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
             if self.data_args.image_aspect_ratio == 'pad':
-                def expand2square(pil_img, background_color):
-                    width, height = pil_img.size
-                    if width == height:
-                        return pil_img
-                    elif width > height:
-                        result = Image.new(pil_img.mode, (width, width), background_color)
-                        result.paste(pil_img, (0, (width - height) // 2))
-                        return result
-                    else:
-                        result = Image.new(pil_img.mode, (height, height), background_color)
-                        result.paste(pil_img, ((height - width) // 2, 0))
-                        return result
 
                 # TODO: Simon: we probably shouldn't hardcode this default value
                 image_mean = getattr(processor, "image_mean", (0.48145466, 0.4578275, 0.40821073))
@@ -723,7 +711,17 @@ class LazySupervisedDataset(Dataset):
             # image does not exist in the data, but the model is multimodal
 
             # TODO: Simon: we shouldn't hardcode this default value
-            crop_size = getattr(self.data_args.image_processor, 'crop_size', dict(width=384, height=384))
+            crop_size = getattr(self.data_args.image_processor, 'crop_size', None)
+            if crop_size == None:
+                crop_size = {}
+                size =  self.data_args.image_processor.transforms[0].size
+                if type(size) == int:
+                    crop_size["height"] = size
+                    crop_size["width"]  = size
+                else:
+                    crop_size["height"] = size[0]
+                    crop_size["width"]  = size[1]
+
             data_dict['image'] = torch.zeros(3, crop_size['height'], crop_size['width'])
         return data_dict
 
