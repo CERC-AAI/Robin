@@ -8,21 +8,33 @@ BASE_DIR=/lustre/orion/csc538/scratch/$(whoami)
 mkdir $BASE_DIR
 cd $BASE_DIR
 
-mkdir checkpoints hostfiles job_logs miopen wandb_cache
+mkdir hostfiles job_logs wandb_cache
 
 
 cat <<frontier_write_hostfile >> frontier_write_hostfile.sh
 #!/bin/bash
-numbers=$(echo "$SLURM_NODELIST" | grep -o '[0-9]\+')
 
 get_hostfiles() {
-for num in $numbers
-do
-    echo "frontier$num slots=8"
-done
+    numbers=\$(echo "\$SLURM_NODELIST")
+    numbers="\${numbers##*[}"
+    numbers="\${numbers%%]*}"
+
+    IFS=',' read -ra nodes <<< "\$numbers"
+
+    for node in "\${nodes[@]}"; do
+        if [[ \$node == *-* ]]; then
+            start=\$((10#\${node%-*}))
+            end=\$((10#\${node#*-}))
+            for ((i=start; i<=end; i++)); do
+                echo "frontier\$(printf "%05d" \$i) slots=8"
+            done
+        else
+            echo "frontier\$node slots=8"
+        fi
+    done
 }
 
-get_hostfiles > /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts
+get_hostfiles > /lustre/orion/csc538/scratch/\$(whoami)/hostfiles/\$SLURM_JOBID-hosts
 frontier_write_hostfile
 
 
@@ -78,7 +90,7 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
 
     echo
     echo Kindly ask Torch to not check the Flash_attn version:
-    echo Edit /lustre/orion/csc538/scratch/alexisroger/miniconda3/envs/robin2/lib/python3.10/site-packages/transformers/modeling_utils.py
+    echo Edit /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin2/lib/python3.10/site-packages/transformers/modeling_utils.py
     echo Remove lines 1272 - 1283 (if not is_flash_attn_2_available(): etc.)
 
 else
@@ -94,6 +106,24 @@ git checkout Frontier
 pip install -e ".[train]"
 pip uninstall bitsandbytes 
 
+# remove triton package
+mv /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin/lib/python3.10/site-packages/triton /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin/lib/python3.10/site-packages/triton_del
+
+
 ### Run
 echo Run the following to start training:
 echo sbatch scripts/v1_5/pretrain_multinodes.sh
+
+
+
+# for timm models:
+# modify /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin/lib/python3.10/site-packages/timm/models/eva.py
+    # def forward(self, x):
+    #     x = self.forward_features(x)
+    #     x = self.forward_head(x)
+    #     return x
+# to
+    # def forward(self, x):
+    #     image = self.forward_features(x)
+    #     cls = self.forward_head(image)
+    #     return cls, image

@@ -6,11 +6,12 @@ sys.path.append('.')  # TODO: is this really necessary?
 import os
 
 username = os.environ.get('USER')
+hostname = os.environ.get('HOSTNAME')
+jobid = os.environ.get('SLURM_JOB_ID')
 
 os.environ['WANDB_DIR'] = f'/lustre/orion/csc538/scratch/{username}/wandb_cache'
-os.environ['MIOPEN_USER_DB_PATH'] = f'/lustre/orion/csc538/scratch/{username}/miopen'
-os.environ['TRANSFORMERS_CACHE'] = f'/lustre/orion/csc538/scratch/{username}/hf_cache'
-# os.environ['TRANSFORMERS_CACHE'] = '/lustre/orion/csc538/proj-shared/hf_cache'
+os.environ['MIOPEN_USER_DB_PATH'] = f'/lustre/orion/csc538/scratch/{username}/miopen/{jobid}/{hostname}'
+os.environ['TRANSFORMERS_CACHE'] = '/lustre/orion/csc538/proj-shared/downloaded_models/hf_cache'
 os.environ['WANDB_MODE'] = 'offline'
 os.environ['TRANSFORMERS_OFFLINE'] = '1'
 os.environ['HF_DATASETS_OFFLINE'] = '1'

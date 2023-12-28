@@ -6,30 +6,47 @@
 #SBATCH -e /lustre/orion/csc538/scratch/%u/job_logs/%x-%j.err
 #SBATCH -t 2:00:00
 #SBATCH -p batch
-#SBATCH -N 4
+#SBATCH -N 1
 
-# load rocm for AMD GPU and write hostfile for distribute environment discovery for Deepspeed
 
-module load rocm/5.4.3
+# only change this
+NAME=robin_v2
+MODEL=OpenHermes-2.5-Mistral-7B
+VISION=DFN5B-CLIP-ViT-H-14
 
-source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
+
+# don't change this
+DOWNLOADED_MODEL_PATH=/lustre/orion/csc538/proj-shared/downloaded_models
+MODEL=$DOWNLOADED_MODEL_PATH/$MODEL
+VISION=$DOWNLOADED_MODEL_PATH/$VISION
 
 TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
-CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/robin_v2_DAN
+CHECKPOINT_PATH=/lustre/orion/csc538/proj-shared/checkpoints/$(whoami)/$NAME
 DATA_PATH=/lustre/orion/csc538/proj-shared/llava_pretrain
 
-MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
-VISION=timm/vit_large_patch14_dinov2.lvd142m
+module load rocm/5.4.3
+source /lustre/orion/csc538/scratch/$(whoami)/miniconda3/etc/profile.d/conda.sh
+conda activate robin
 
-# clean the miopen cache before run.
-rm -rf /lustre/orion/csc538/scratch/$(whoami)/miopen/*
+mkdir -p $CHECKPOINT_PATH
 
-bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
+# fresh miopen cache before run (need 1 cache per node)
+# important to generate hostfile in condition otherwise deepspeed will crash when only 1 node
+if [ $SLURM_NNODES -gt 1 ]
+then
+    bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
+    while IFS= read -r node
+    do
+        mkdir -p "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/${node%% *}"
+    done < /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts
+else
+    mkdir -p "/lustre/orion/csc538/scratch/$(whoami)/miopen/$SLURM_JOBID/$HOSTNAME"
+fi
 
 cd $TRAIN_PATH
 
-#deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
 deepspeed \
+    --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
     $TRAIN_PATH/robin/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path $MODEL \
@@ -46,7 +63,7 @@ deepspeed \
     --fp16 True \
     --output_dir $CHECKPOINT_PATH/pretrain \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 16 \
+    --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
