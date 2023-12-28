@@ -815,6 +815,13 @@ def train():
                 use_flash_attention_2 = True,
                 **bnb_model_from_pretrained_args
             )
+        elif 'neox' in model_args.model_name_or_path:
+            model = LlavaGPTNeoXForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                use_flash_attention_2 = True,
+                **bnb_model_from_pretrained_args
+            )
         else:
             # print(model_args)
             model = LlavaLlamaForCausalLM.from_pretrained(
