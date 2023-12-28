@@ -6,7 +6,7 @@
 #SBATCH -e /lustre/orion/csc538/scratch/%u/job_logs/%x-%j.err
 #SBATCH -t 2:00:00
 #SBATCH -p batch
-#SBATCH -N 4
+#SBATCH -N 2
 
 
 # only change this
@@ -86,4 +86,4 @@ deepspeed \
     --dataloader_num_workers 4 \
     --lazy_preprocess True \
     --report_to wandb \
-    --vision_lr 2e-4
+    --vision_lr 5e-5
