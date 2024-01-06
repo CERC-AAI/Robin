@@ -31,7 +31,7 @@ from torch.utils.data import Dataset
 from robin.train.llava_trainer import LLaVATrainer
 
 from robin import conversation as conversation_lib
-from robin.model import *
+from robin.model import LlavaMPTForCausalLM, LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM 
 from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
