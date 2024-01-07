@@ -1,7 +1,7 @@
 import unittest
 import torch
 from transformers import LlamaConfig, GPTNeoXConfig
-from robin.model import LlavaLlamaForCausalLM, LlavaGPTNeoXForCausalLM
+from robin.model import LlavaLlamaForCausalLM, LlavaGPTNeoXForCausalLM, LlavaMistralForCausalLM
 
 @unittest.skip('Need 300 second to Run LlavaLlama')
 class TestLlavaLlama(unittest.TestCase):
@@ -68,6 +68,12 @@ class TestLlavaNeox(unittest.TestCase):
 
     def test_llava_neox_from_pretrained(self):
         self.pretrain_model = LlavaGPTNeoXForCausalLM.from_pretrained("EleutherAI/pythia-410m")
+
+
+class TestLlavaMistral(unittest.TestCase):
+    def test_llava_mistral_from_pretrained(self):
+        pretrain_model = LlavaMistralForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
+        assert pretrain_model is not None
 
 
 if __name__ == '__main__':
