@@ -46,9 +46,9 @@ class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
 
     def __init__(self, config):
         super(GPTNeoXForCausalLM, self).__init__(config)
-        self.gpt_neox = LlavaGPTNeoXModel(config) # mimic the GPTNeoXForCausalLM name strategy
-        
-        self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
+        # mimic the GPTNeoXForCausalLM name strategy
+        self.gpt_neox = LlavaGPTNeoXModel(config) 
+        self.embed_out = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing
         self.post_init()
@@ -90,7 +90,7 @@ class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
         )
 
         hidden_states = outputs[0]
-        logits = self.lm_head(hidden_states)
+        logits = self.embed_out(hidden_states)
 
         loss = None
         if labels is not None:
