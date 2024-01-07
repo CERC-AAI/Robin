@@ -45,16 +45,16 @@ class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
     config_class = LlavaConfig
 
     def __init__(self, config):
-        # init using the super class of GPTNeoXForCausalLM
         super(GPTNeoXForCausalLM, self).__init__(config)
-        self.model = LlavaGPTNeoXModel(config)
+        self.gpt_neox = LlavaGPTNeoXModel(config) # mimic the GPTNeoXForCausalLM name strategy
+        
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing
         self.post_init()
 
     def get_model(self):
-        return self.model
+        return self.gpt_neox
 
     def forward(
         self,
@@ -78,7 +78,7 @@ class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
         input_ids, attention_mask, past_key_values, inputs_embeds, labels = self.prepare_inputs_labels_for_multimodal(input_ids, attention_mask, past_key_values, labels, images)
 
         # decoder outputs consists of (dec_features, layer_state, dec_hidden, dec_attn)
-        outputs = self.model(
+        outputs = self.gpt_neox(
             input_ids=input_ids,
             attention_mask=attention_mask,
             past_key_values=past_key_values,

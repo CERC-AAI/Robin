@@ -3,7 +3,7 @@ import torch
 from transformers import LlamaConfig, GPTNeoXConfig
 from robin.model import LlavaLlamaForCausalLM, LlavaGPTNeoXForCausalLM
 
-@unittest.skip('Need 300 second to Run, init llama 7b takes time')
+@unittest.skip('Need 300 second to Run LlavaLlama')
 class TestLlavaLlama(unittest.TestCase):
     def setUp(self):
         config = LlamaConfig.from_pretrained("meta-llama/Llama-2-7b-hf")
@@ -65,6 +65,9 @@ class TestLlavaNeox(unittest.TestCase):
         )
         
         assert output[0].shape == torch.Size([1, 7, 50304])
+
+    def test_llava_neox_from_pretrained(self):
+        self.pretrain_model = LlavaGPTNeoXForCausalLM.from_pretrained("EleutherAI/pythia-410m")
 
 
 if __name__ == '__main__':
