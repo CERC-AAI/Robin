@@ -29,8 +29,7 @@ bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
 
 cd $TRAIN_PATH
 
-#deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
-deepspeed \
+deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
     $TRAIN_PATH/robin/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path $MODEL \
