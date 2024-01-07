@@ -36,6 +36,9 @@ class LlavaGPTNeoXModel(LlavaMetaModel, GPTNeoXModel):
 
     def __init__(self, config: GPTNeoXConfig):
         super(LlavaGPTNeoXModel, self).__init__(config)
+    
+    def embed_tokens(self, x):
+        return self.embed_in(x)
 
 
 class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
@@ -45,7 +48,6 @@ class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
         # init using the super class of GPTNeoXForCausalLM
         super(GPTNeoXForCausalLM, self).__init__(config)
         self.model = LlavaGPTNeoXModel(config)
-        self.vocab_size = config.vocab_size
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing
