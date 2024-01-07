@@ -21,6 +21,7 @@ import json
 import logging
 import pathlib
 from typing import Dict, Optional, Sequence, List
+import glob
 
 import torch
 
@@ -985,9 +986,7 @@ def train():
     print(model)
     for name, param in model.named_parameters():
         print(name, param.requires_grad)
-    
-    
-    import glob
+
     checkpoints = sorted(glob.glob(f"{training_args.output_dir}/checkpoint-*"))
 
     if training_args.only_save_model:
