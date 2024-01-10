@@ -1,35 +1,20 @@
 #!/bin/bash
 
-#SBATCH -A CSC538
-#SBATCH -J robin 
-#SBATCH -o /lustre/orion/csc538/scratch/%u/job_logs/%x-%j.out
-#SBATCH -e /lustre/orion/csc538/scratch/%u/job_logs/%x-%j.err
-#SBATCH -t 2:00:00
-#SBATCH -p batch
-#SBATCH -N 4
+# This scripts is used for testing the feasibility of 
+# Training pythia-410m clip on local 4 gpus machine.
 
-# load rocm for AMD GPU and write hostfile for distribute environment discovery for Deepspeed
+# Gradient_checkpointing is set to False because I meet NotImplementedError 
+# When calling model.enable_input_require_grads() of pythia model instance
 
-module load rocm/5.4.3
+# FlashAttenion2 is disable as well at robin/train/train.py #824
 
-source activate /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin
-
-NAME=robin_v2_
-MODEL=/lustre/orion/csc538/scratch/alexisroger/hf_cache/OpenHermes-2.5-Mistral-7B
+MODEL='EleutherAI/pythia-410m'
 VISION=openai/clip-vit-large-patch14-336
+TRAIN_PATH=/home/lfsm/code/Robin/
+CHECKPOINT_PATH=/home/lfsm/code/Robin/robin/checkpoints
+DATA_PATH=/home/lfsm/code/Robin/playground-original/llava_pretrain
 
-TRAIN_PATH=/lustre/orion/csc538/scratch/$(whoami)/robin
-CHECKPOINT_PATH=/lustre/orion/csc538/scratch/$(whoami)/checkpoints/$NAME
-DATA_PATH=/lustre/orion/csc538/proj-shared/llava_pretrain
-
-# clean the miopen cache before run.
-rm -rf /lustre/orion/csc538/scratch/$(whoami)/miopen/*
-
-bash /lustre/orion/csc538/scratch/$(whoami)/frontier_write_hostfile.sh
-
-cd $TRAIN_PATH
-
-deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOBID-hosts \
+deepspeed \
     $TRAIN_PATH/robin/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
     --model_name_or_path $MODEL \
@@ -60,7 +45,7 @@ deepspeed --hostfile /lustre/orion/csc538/scratch/$(whoami)/hostfiles/$SLURM_JOB
     --logging_steps 1 \
     --tf32 False \
     --model_max_length 2048 \
-    --gradient_checkpointing True \
+    --gradient_checkpointing False \
     --dataloader_num_workers 4 \
     --lazy_preprocess True \
-    --report_to wandb
+    # --report_to wandb

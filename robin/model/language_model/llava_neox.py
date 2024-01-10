@@ -36,23 +36,25 @@ class LlavaGPTNeoXModel(LlavaMetaModel, GPTNeoXModel):
 
     def __init__(self, config: GPTNeoXConfig):
         super(LlavaGPTNeoXModel, self).__init__(config)
+    
+    def embed_tokens(self, x):
+        return self.embed_in(x)
 
 
 class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
     config_class = LlavaConfig
 
     def __init__(self, config):
-        # init using the super class of GPTNeoXForCausalLM
         super(GPTNeoXForCausalLM, self).__init__(config)
-        self.model = LlavaGPTNeoXModel(config)
-        self.vocab_size = config.vocab_size
-        self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
+        # mimic the GPTNeoXForCausalLM name strategy
+        self.gpt_neox = LlavaGPTNeoXModel(config) 
+        self.embed_out = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing
         self.post_init()
 
     def get_model(self):
-        return self.model
+        return self.gpt_neox
 
     def forward(
         self,
@@ -76,7 +78,7 @@ class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
         input_ids, attention_mask, past_key_values, inputs_embeds, labels = self.prepare_inputs_labels_for_multimodal(input_ids, attention_mask, past_key_values, labels, images)
 
         # decoder outputs consists of (dec_features, layer_state, dec_hidden, dec_attn)
-        outputs = self.model(
+        outputs = self.gpt_neox(
             input_ids=input_ids,
             attention_mask=attention_mask,
             past_key_values=past_key_values,
@@ -88,7 +90,7 @@ class LlavaGPTNeoXForCausalLM(GPTNeoXForCausalLM, LlavaMetaForCausalLM):
         )
 
         hidden_states = outputs[0]
-        logits = self.lm_head(hidden_states)
+        logits = self.embed_out(hidden_states)
 
         loss = None
         if labels is not None:

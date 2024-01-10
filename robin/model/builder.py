@@ -34,7 +34,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     
     if 'mistral' in model_name:
         model = LlavaMistralForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
-    elif 'neox' in model_name:
+    elif 'pythia' in model_name:
         model = LlavaGPTNeoXForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
     else:
         model = LlavaLlamaForCausalLM.from_pretrained(

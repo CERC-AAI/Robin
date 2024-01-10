@@ -21,6 +21,7 @@ import json
 import logging
 import pathlib
 from typing import Dict, Optional, Sequence, List
+import glob
 
 import torch
 
@@ -31,7 +32,7 @@ from torch.utils.data import Dataset
 from robin.train.llava_trainer import LLaVATrainer
 
 from robin import conversation as conversation_lib
-from robin.model import *
+from robin.model import LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM#, LlavaMPTForCausalLM [TODO] mpt is commented out at robin.model.__init__
 from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
@@ -816,15 +817,14 @@ def train():
                 use_flash_attention_2 = USE_FLASH_ATTN_2,
                 **bnb_model_from_pretrained_args
             )
-        elif 'neox' in model_args.model_name_or_path:
+        elif 'pythia' in model_args.model_name_or_path:
             model = LlavaGPTNeoXForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
-                use_flash_attention_2 = True,
+                use_flash_attention_2 = False, # The current architecture does not support Flash Attention 2.0
                 **bnb_model_from_pretrained_args
             )
         else:
-            # print(model_args)
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
@@ -986,9 +986,7 @@ def train():
     print(model)
     for name, param in model.named_parameters():
         print(name, param.requires_grad)
-    
-    
-    import glob
+
     checkpoints = sorted(glob.glob(f"{training_args.output_dir}/checkpoint-*"))
 
     if training_args.only_save_model:
