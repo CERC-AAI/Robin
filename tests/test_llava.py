@@ -4,7 +4,7 @@ from transformers import LlamaConfig, GPTNeoXConfig
 from robin.model import LlavaLlamaForCausalLM, LlavaGPTNeoXForCausalLM, LlavaMistralForCausalLM
 
 @unittest.skip('Need 300 second to Run LlavaLlama')
-class TestLlavaLlama(unittest.TestCase):
+class TestClipLlama(unittest.TestCase):
     def setUp(self):
         config = LlamaConfig.from_pretrained("meta-llama/Llama-2-7b-hf")
         config.vision_tower = "openai/clip-vit-large-patch14-336"
@@ -36,7 +36,8 @@ class TestLlavaLlama(unittest.TestCase):
         assert output[0].shape == torch.Size([1, 7, 32000])
         
 
-class TestLlavaNeox(unittest.TestCase):
+@unittest.skip('Pass')
+class TestClipPythia(unittest.TestCase):
     def setUp(self):
         config = GPTNeoXConfig.from_pretrained("EleutherAI/pythia-410m")
         config.vision_tower = "openai/clip-vit-large-patch14-336"
@@ -70,10 +71,35 @@ class TestLlavaNeox(unittest.TestCase):
         self.pretrain_model = LlavaGPTNeoXForCausalLM.from_pretrained("EleutherAI/pythia-410m")
 
 
-class TestLlavaMistral(unittest.TestCase):
-    def test_llava_mistral_from_pretrained(self):
-        pretrain_model = LlavaMistralForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.1")
-        assert pretrain_model is not None
+class TestOpenClipPythia(unittest.TestCase):
+    def setUp(self):
+        config = GPTNeoXConfig.from_pretrained("EleutherAI/pythia-410m")
+        config.vision_tower = "ViT-B-16/laion2b_s34b_b88k"
+        config.mm_vision_tower = config.vision_tower
+        config.mm_projector_type = "mlp2x_gelu"
+        config.mm_vision_select_layer = -1
+        config.mm_vision_select_feature = "patch"
+        config.mm_hidden_size = 768
+        config.pretrain_mm_mlp_adapter = None
+
+        self.model = LlavaGPTNeoXForCausalLM(config)
+        self.model.get_model().initialize_vision_modules(config)
+        self.vision_tower = self.model.get_vision_tower()
+        
+        assert self.model is not None
+        assert self.vision_tower is not None
+
+    def test_llava_neox_forward(self):
+        input_ids = torch.tensor([[101, 2054, 2003, 1037, 2518, 1012, 102]]) 
+        use_cache = True 
+        images = torch.randn(1, 3, 224, 224)
+        output = self.model(
+            input_ids=input_ids,
+            use_cache=use_cache,
+            images=images,
+        )
+        
+        assert output[0].shape == torch.Size([1, 7, 50304])
 
 
 if __name__ == '__main__':

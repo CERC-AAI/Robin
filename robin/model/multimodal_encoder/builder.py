@@ -4,8 +4,8 @@ from .open_clip import OpenCLIPVisionTower
 from .timm_vision import TimmVisionTower
 
 OPEN_CLIP_MODELS = [
-    'ViT-B-16/laion2b_s34b_b88k',
-    'ViT-g-14/laion2B-s34B-b88K',
+    'vit-b-16/laion2b_s34b_b88k',
+    'vit-g-14/laion2B-s34B-b88K',
 ]
 
 CLIP_MODELS = [

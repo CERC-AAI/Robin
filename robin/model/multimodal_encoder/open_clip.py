@@ -15,8 +15,6 @@ class OpenCLIPVisionTower(nn.Module):
 
         if not delay_load:
             self.load_model()
-        else:
-            raise ValueError("delay_load is not supported in OpenCLIPVisionTower") 
         
     def load_model(self):
         assert "/" in self.vision_tower_name, """
@@ -65,13 +63,6 @@ class OpenCLIPVisionTower(nn.Module):
     @property
     def device(self):
         return next(self.vision_tower.parameters()).device
-
-    @property
-    def config(self):
-        if self.is_loaded:
-            return self.vision_tower.config
-        else:
-            return self.cfg_only
 
     def hidden_size(self):
         return self.hidden_size
