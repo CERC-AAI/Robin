@@ -922,15 +922,10 @@ def train():
         # check if type is OpenCLIPVisionTower or CLIPVisionTower and add param in config
         if isinstance(vision_tower, OpenCLIPVisionTower):
             data_args.is_clip = False
-            vision_tower.dtype = d_type
-            vision_tower.device = training_args.device
         elif isinstance(vision_tower, CLIPVisionTower):
             data_args.is_clip = True
         elif isinstance(vision_tower, TimmVisionTower):
             data_args.is_clip = False
-            vision_tower.dtype = d_type
-            vision_tower.device = training_args.device
-            #idk about this bro
         else:
             raise NotImplementedError
         data_args.is_multimodal = True

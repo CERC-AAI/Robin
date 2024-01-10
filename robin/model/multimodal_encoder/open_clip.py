@@ -12,7 +12,8 @@ class OpenCLIPVisionTower(nn.Module):
         self.vision_tower_name = vision_tower
         self.select_layer = args.mm_vision_select_layer
         self.select_feature = getattr(args, 'mm_vision_select_feature', 'patch')
-
+        self.hidden_size = None # Place Holder get this value in load_model function
+        self.dtype = None # Place Holder get this value in train function
         if not delay_load:
             self.load_model()
         
@@ -21,9 +22,9 @@ class OpenCLIPVisionTower(nn.Module):
             model name and pretrained must be split with / in open clip eg: ViT-B-16/laion2b_s34b_b88k"""
         
         model_name, pretrained = self.vision_tower_name.split("/")
-        self.open_clip = create_model_from_pretrained(model_name, pretrained,
-                                                      return_transform=False)
+        self.open_clip, self.image_processor = create_model_from_pretrained(model_name, pretrained)
         self.vision_tower = self.open_clip.visual
+        self.hidden_size = self.vision_tower.proj.shape[0] # find the dim before the final proj
         self.vision_tower.output_tokens = True
         self.vision_tower.proj = None # Avoid cls and image patch token dim mismatch
         # self.vision_tower.requires_grad_(False) # BUG, freeze the vision tower?
@@ -57,15 +58,8 @@ class OpenCLIPVisionTower(nn.Module):
         return torch.zeros(1, self.hidden_size, device=self.device, dtype=self.dtype)
 
     @property
-    def dtype(self):
-        return next(self.vision_tower.parameters()).dtype
-
-    @property
     def device(self):
         return next(self.vision_tower.parameters()).device
-
-    def hidden_size(self):
-        return self.hidden_size
 
     @property
     def num_patches(self):
