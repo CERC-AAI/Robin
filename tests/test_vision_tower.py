@@ -11,6 +11,7 @@ class Args:
     mm_vision_select_layer: int = 0
     mm_vision_select_feature: str = 'patch'
 
+
 @unittest.skip('Pass')
 class TestClip(unittest.TestCase):
     def setUp(self):
