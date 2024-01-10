@@ -7,7 +7,6 @@ from transformers import CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
 class CLIPVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
         super().__init__()
-
         self.is_loaded = False
 
         self.vision_tower_name = vision_tower
@@ -29,7 +28,7 @@ class CLIPVisionTower(nn.Module):
     def feature_select(self, image_forward_outs):
         image_features = image_forward_outs.hidden_states[self.select_layer]
         if self.select_feature == 'patch':
-            image_features = image_features[:, 0:]
+            image_features = image_features[:, 1:]
         elif self.select_feature == 'cls_patch':
             image_features = image_features
         else:
