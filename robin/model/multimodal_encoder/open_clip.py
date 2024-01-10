@@ -2,8 +2,7 @@ import torch
 from torch import nn
 
 from open_clip import create_model_from_pretrained
-import os
-from .encoder_info import OPENCLIP_CONFIG_MAP, TIMM_ON_OPENCLIP
+
 
 class OpenCLIPVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
