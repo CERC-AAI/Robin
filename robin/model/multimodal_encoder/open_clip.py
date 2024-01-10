@@ -25,7 +25,7 @@ class OpenCLIPVisionTower(nn.Module):
                                                       return_transform=False)
         self.vision_tower = self.open_clip.visual
         self.vision_tower.output_tokens = True
-        self.vision_tower.proj=None # Avoid cls and image patch token dim mismatch
+        self.vision_tower.proj = None # Avoid cls and image patch token dim mismatch
         # self.vision_tower.requires_grad_(False) # BUG, freeze the vision tower?
         
     def feature_select(self, image_forward_outs):
