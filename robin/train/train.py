@@ -42,11 +42,10 @@ from robin.model.multimodal_encoder.timm_vision import TimmVisionTower
 
 local_rank = None
 
-USE_FLASH_ATTN_2 = False
 
-def rank0_print(*args):
+def rank0_print(*args, **kwargs):
     if local_rank == 0:
-        print(*args)
+        print(*args, **kwargs)
 
 
 @dataclass
@@ -773,7 +772,7 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                 data_collator=data_collator)
 
 
-def train():
+def train(USE_FLASH_ATTN_2=False):
     global local_rank
 
     parser = transformers.HfArgumentParser(
@@ -801,7 +800,10 @@ def train():
         ))
 
     if model_args.vision_tower is not None:
-        if 'mpt' in model_args.model_name_or_path:
+        model_name = model_args.model_name_or_path.lower()
+        rank0_print("Loading model of type:", end=' ')
+        if 'mpt' in model_name:
+            rank0_print("MPT")
             config = transformers.AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
             config.attn_config['attn_impl'] = training_args.mpt_attn_impl
             model = LlavaMPTForCausalLM.from_pretrained(
@@ -810,21 +812,24 @@ def train():
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
             )
-        elif 'mistral' in model_args.model_name_or_path:
+        elif 'mistral' in model_name:
+            rank0_print("Mistral")
             model = LlavaMistralForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
                 use_flash_attention_2 = USE_FLASH_ATTN_2,
                 **bnb_model_from_pretrained_args
             )
-        elif 'pythia' in model_args.model_name_or_path:
+        elif 'neox' in model_name or 'pythia' in model_name:
+            rank0_print("NeoX")
             model = LlavaGPTNeoXForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
-                use_flash_attention_2 = False, # The current architecture does not support Flash Attention 2.0
+                use_flash_attention_2 = USE_FLASH_ATTN_2, # The current architecture does not support Flash Attention 2.0
                 **bnb_model_from_pretrained_args
             )
         else:
+            rank0_print("Llama")
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
