@@ -27,7 +27,7 @@ class OpenCLIPVisionTower(nn.Module):
         self.hidden_size = self.vision_tower.proj.shape[0] # find the dim before the final proj
         self.vision_tower.output_tokens = True
         self.vision_tower.proj = None # Avoid cls and image patch token dim mismatch
-        # self.vision_tower.requires_grad_(False) # BUG, freeze the vision tower?
+        # self.vision_tower.requires_grad_(False) # TODO, freeze the vision tower?
         
     def feature_select(self, image_forward_outs):
         cls_token, patch = image_forward_outs

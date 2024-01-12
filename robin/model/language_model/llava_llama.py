@@ -136,5 +136,5 @@ class LlavaLlamaForCausalLM(LlamaForCausalLM, LlavaMetaForCausalLM):
         )
         return model_inputs
 
-AutoConfig.register("llava", LlavaConfig)
+# AutoConfig.register("llava", LlavaConfig)
 AutoModelForCausalLM.register(LlavaConfig, LlavaLlamaForCausalLM)
