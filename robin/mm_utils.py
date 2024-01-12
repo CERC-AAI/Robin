@@ -108,8 +108,6 @@ def get_model_name_from_path(model_path):
         return model_paths[-1]
 
 
-
-
 class KeywordsStoppingCriteria(StoppingCriteria):
     def __init__(self, keywords, tokenizer, input_ids):
         self.keywords = keywords

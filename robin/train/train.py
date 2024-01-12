@@ -32,7 +32,7 @@ from torch.utils.data import Dataset
 from robin.train.llava_trainer import LLaVATrainer
 
 from robin import conversation as conversation_lib
-from robin.model import LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM#, LlavaMPTForCausalLM [TODO] mpt is commented out at robin.model.__init__
+from robin.model import LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM#, LlavaMPTForCausalLM [TODO] mpt is commented out in robin.model
 from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
@@ -461,6 +461,7 @@ def preprocess_v1(
         cur_len = 1
         target[:cur_len] = IGNORE_INDEX
         for i, rou in enumerate(rounds):
+            breakpoint()
             if rou == "":
                 break
 
@@ -488,6 +489,70 @@ def preprocess_v1(
                     f"WARNING: tokenization mismatch: {cur_len} vs. {total_len}."
                     f" (ignored)"
                 )
+
+    return dict(
+        input_ids=input_ids,
+        labels=targets,
+    )
+
+def preprocess_neox(
+    sources,
+    tokenizer: transformers.PreTrainedTokenizer,
+    has_image: bool = False
+) -> Dict:
+    conv = conversation_lib.default_conversation.copy()
+    roles = {"human": conv.roles[0], "gpt": conv.roles[1]}
+
+    # Apply prompt templates
+    conversations = []
+    for i, source in enumerate(sources):
+        if roles[source[0]["from"]] != conv.roles[0]:
+            # Skip the first one if it is not from human
+            source = source[1:]
+
+        conv.messages = []
+        for j, sentence in enumerate(source):
+            role = roles[sentence["from"]]
+            assert role == conv.roles[j % 2], f"{i}"
+            conv.append_message(role, sentence["value"])
+        conversations.append(conv.get_prompt())
+
+    assert conv.sep_style == conversation_lib.SeparatorStyle.TWO
+
+    input_ids = []
+    targets = []
+    # Tokenize the user prompt and model answer seperately 
+    sep = conv.sep + conv.roles[1] + ": "
+    for conversation in conversations:
+        input_id = []
+        target = []
+        rounds = conversation.split(conv.sep2)
+        for i, rou in enumerate(rounds):
+            if rou == "":
+                break
+
+            parts = rou.split(sep)
+            if len(parts) != 2:
+                break
+            parts[0] += sep
+            parts[1] += conv.sep2 # put eod token back
+
+            if has_image:
+                t_prompt = tokenizer_image_token(parts[0], tokenizer)
+                t_answer = tokenizer_image_token(parts[1], tokenizer)
+            else:
+                t_prompt = tokenizer(parts[0]).input_ids
+                t_answer = tokenizer(parts[1]).input_ids
+
+            input_id += t_prompt + t_answer
+            target += [IGNORE_INDEX] * len(t_prompt) + t_answer
+
+        assert len(input_id) == len(target)
+        input_ids.append(input_id)
+        targets.append(target)
+
+    input_ids = torch.tensor(input_ids)
+    targets = torch.tensor(targets)
 
     return dict(
         input_ids=input_ids,
@@ -601,6 +666,8 @@ def preprocess(
         return preprocess_llama_2(sources, tokenizer, has_image=has_image)
     if conversation_lib.default_conversation.version.startswith("v1"):
         return preprocess_v1(sources, tokenizer, has_image=has_image)
+    if conversation_lib.default_conversation.version.startswith("neox"):
+        return preprocess_neox(sources, tokenizer, has_image=has_image)
     if conversation_lib.default_conversation.version == "mpt":
         return preprocess_mpt(sources, tokenizer)
     # add end signal and concatenate together
@@ -821,7 +888,8 @@ def train():
             model = LlavaGPTNeoXForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
                 cache_dir=training_args.cache_dir,
-                use_flash_attention_2 = False, # The current architecture does not support Flash Attention 2.0
+                torch_dtype=compute_dtype,
+                attn_implementation="flash_attention_2", # use flash attention
                 **bnb_model_from_pretrained_args
             )
         else:
@@ -973,9 +1041,8 @@ def train():
                     args=training_args,
                     **data_module)
 
-
     if training_args.finetune_ve:
-        for name, param in model.base_model.model.model.vision_tower.named_parameters():#This is required for lora, and training without lora will not work on this line.
+        for name, param in model.base_model.get_vision_tower().named_parameters():#This is required for lora, and training without lora will not work on this line.
             param.requires_grad = True
     
     print(model)
@@ -997,7 +1064,6 @@ def train():
             trainer.train(resume_from_checkpoint=True)
         else:
             trainer.train()
-
 
     print("saving model")
     trainer.save_state()
