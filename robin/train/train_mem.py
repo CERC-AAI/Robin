@@ -34,6 +34,17 @@ if __name__ == "__main__":
 
         case x if 'icewindale' in x:
             print('Icewindale')
+            USE_FLASH_ATTN_2 = True
+
+            username = os.environ.get('USER')
+            os.environ['WANDB_DIR'] = f'/localdisks/{username}/wandb_cache'
+            os.environ['TRANSFORMERS_CACHE'] = f'/localdisks/{username}/downloaded_models/hf_cache'
+            os.environ['WANDB_MODE'] = 'offline'
+            os.environ['TRANSFORMERS_OFFLINE'] = '1'
+            os.environ['HF_DATASETS_OFFLINE'] = '1'
+
+        case x if 'neverwinter' in x:
+            print('Neverwinter')
             USE_FLASH_ATTN_2 = False
 
             username = os.environ.get('USER')
