@@ -113,17 +113,3 @@ mv /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin/lib/python3.10/s
 ### Run
 echo Run the following to start training:
 echo sbatch scripts/v1_5/pretrain_multinodes.sh
-
-
-
-# for timm models:
-# modify /lustre/orion/csc538/scratch/$(whoami)/miniconda3/envs/robin/lib/python3.10/site-packages/timm/models/eva.py
-    # def forward(self, x):
-    #     x = self.forward_features(x)
-    #     x = self.forward_head(x)
-    #     return x
-# to
-    # def forward(self, x):
-    #     image = self.forward_features(x)
-    #     cls = self.forward_head(image)
-    #     return cls, image
