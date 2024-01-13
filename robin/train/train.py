@@ -820,7 +820,7 @@ def train(USE_FLASH_ATTN_2=False):
                 use_flash_attention_2 = USE_FLASH_ATTN_2,
                 **bnb_model_from_pretrained_args
             )
-        elif 'neox' in model_name or 'pythia' in model_name:
+        elif any(x in model_name for x in ['neox', 'pythia', 'hi-nolin']):
             rank0_print("NeoX")
             model = LlavaGPTNeoXForCausalLM.from_pretrained(
                 model_args.model_name_or_path,

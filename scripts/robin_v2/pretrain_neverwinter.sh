@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # only change this
-NAME=robin_v2_1
+NAME=robin_v2_2
 MODEL=OpenHermes-2.5-Mistral-7B
-VISION=DFN2B-CLIP-ViT-L-14
+VISION=ViT-SO400M-14-SigLIP-384
 
 
 # don't change this
@@ -11,9 +11,11 @@ DOWNLOADED_MODEL_PATH=/localdisks/$(whoami)/downloaded_models
 MODEL=$DOWNLOADED_MODEL_PATH/$MODEL
 VISION=$DOWNLOADED_MODEL_PATH/$VISION
 
-TRAIN_PATH=/localdisks/$(whoami)/robin
+TRAIN_PATH=/home/$(whoami)/robin
 CHECKPOINT_PATH=/localdisks/$(whoami)/checkpoints/$NAME
 DATA_PATH=/localdisks/$(whoami)/robin_data/LLaVA-Pretrain
+
+module load cuda/12.2
 
 source /opt/anaconda/anaconda3/etc/profile.d/conda.sh
 conda activate robin
@@ -39,9 +41,9 @@ deepspeed \
     --fp16 True \
     --output_dir $CHECKPOINT_PATH/pretrain \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 128 \
+    --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 1 \
+    --gradient_accumulation_steps 4 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 100 \

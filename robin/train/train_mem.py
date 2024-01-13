@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
         case x if 'neverwinter' in x:
             print('Neverwinter')
-            USE_FLASH_ATTN_2 = False
+            USE_FLASH_ATTN_2 = True
 
             username = os.environ.get('USER')
             os.environ['WANDB_DIR'] = f'/localdisks/{username}/wandb_cache'
