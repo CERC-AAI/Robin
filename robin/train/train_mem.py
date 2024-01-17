@@ -54,6 +54,17 @@ if __name__ == "__main__":
             os.environ['TRANSFORMERS_OFFLINE'] = '1'
             os.environ['HF_DATASETS_OFFLINE'] = '1'
 
+        case x if 'cedar' in x or 'cdr' in x:
+            print('Cedar')
+            USE_FLASH_ATTN_2 = False
+            
+            username = os.environ.get('USER')
+            os.environ['WANDB_DIR'] = f'/scratch/{username}/wandb_cache'
+            os.environ['WANDB_MODE'] = 'offline'
+            os.environ['TRANSFORMERS_CACHE'] = f'/scratch/{username}/downloaded_models/hf_cache'
+            os.environ['TRANSFORMERS_OFFLINE'] = '1'
+            os.environ['HF_DATASETS_OFFLINE'] = '1'
+        
         case _:
             print(hostname)
             print('No cluster specific config, no enviroment variables set.')
