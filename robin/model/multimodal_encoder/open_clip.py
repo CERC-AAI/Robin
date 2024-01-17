@@ -14,6 +14,7 @@ class OpenCLIPVisionTower(nn.Module):
         self.select_feature = getattr(args, 'mm_vision_select_feature', 'patch')
         self.hidden_size = None # Place Holder get this value in load_model function
         self.dtype = None # Place Holder get this value in train function
+        self.is_loaded = False
         if not delay_load:
             self.load_model()
         
@@ -22,12 +23,14 @@ class OpenCLIPVisionTower(nn.Module):
             model name and pretrained must be split with / in open clip eg: ViT-B-16/laion2b_s34b_b88k"""
         
         model_name, pretrained = self.vision_tower_name.split("/")
-        self.open_clip, self.image_processor = create_model_from_pretrained(model_name, pretrained)
-        self.vision_tower = self.open_clip.visual
+        open_clip, self.image_processor = create_model_from_pretrained(model_name, pretrained)
+        self.vision_tower = open_clip.visual
+
         self.hidden_size = self.vision_tower.proj.shape[0] # find the dim before the final proj
         self.vision_tower.output_tokens = True
         self.vision_tower.proj = None # Avoid cls and image patch token dim mismatch
         # self.vision_tower.requires_grad_(False) # TODO, freeze the vision tower?
+        self.is_loaded = True
         
     def feature_select(self, image_forward_outs):
         cls_token, patch = image_forward_outs
