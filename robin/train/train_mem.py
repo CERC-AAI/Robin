@@ -9,7 +9,7 @@ from robin.train.train import train
 USE_FLASH_ATTN_2 = False
 
 if __name__ == "__main__":
-    hostname = os.environ.get('HOSTNAME')
+    hostname = os.environ.get('HOSTNAME') if os.environ.get('HOSTNAME') != None else os.uname()[1]
 
     print('Running on cluster:', end=' ')
     match hostname.lower():
@@ -27,8 +27,8 @@ if __name__ == "__main__":
             os.environ['MIOPEN_CUSTOM_CACHE_DIR'] = os.environ['MIOPEN_USER_DB_PATH']
 
             os.environ['WANDB_DIR'] = f'/lustre/orion/csc538/scratch/{username}/wandb_cache'
-            os.environ['TRANSFORMERS_CACHE'] = '/lustre/orion/csc538/proj-shared/downloaded_models/hf_cache'
             os.environ['WANDB_MODE'] = 'offline'
+            os.environ['TRANSFORMERS_CACHE'] = '/lustre/orion/csc538/proj-shared/downloaded_models/hf_cache'
             os.environ['TRANSFORMERS_OFFLINE'] = '1'
             os.environ['HF_DATASETS_OFFLINE'] = '1'
 
@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
             username = os.environ.get('USER')
             os.environ['WANDB_DIR'] = f'/localdisks/{username}/wandb_cache'
-            os.environ['TRANSFORMERS_CACHE'] = f'/localdisks/{username}/downloaded_models/hf_cache'
             os.environ['WANDB_MODE'] = 'offline'
+            os.environ['TRANSFORMERS_CACHE'] = f'/localdisks/{username}/downloaded_models/hf_cache'
             os.environ['TRANSFORMERS_OFFLINE'] = '1'
             os.environ['HF_DATASETS_OFFLINE'] = '1'
 
@@ -49,9 +49,13 @@ if __name__ == "__main__":
 
             username = os.environ.get('USER')
             os.environ['WANDB_DIR'] = f'/localdisks/{username}/wandb_cache'
-            os.environ['TRANSFORMERS_CACHE'] = f'/localdisks/{username}/downloaded_models/hf_cache'
             os.environ['WANDB_MODE'] = 'offline'
+            os.environ['TRANSFORMERS_CACHE'] = f'/localdisks/{username}/downloaded_models/hf_cache'
             os.environ['TRANSFORMERS_OFFLINE'] = '1'
             os.environ['HF_DATASETS_OFFLINE'] = '1'
+
+        case _:
+            print(hostname)
+            print('No cluster specific config, no enviroment variables set.')
 
     train(USE_FLASH_ATTN_2=USE_FLASH_ATTN_2)

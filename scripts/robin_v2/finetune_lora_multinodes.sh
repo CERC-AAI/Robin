@@ -28,7 +28,10 @@ module load rocm/5.4.3
 source /lustre/orion/csc538/scratch/$(whoami)/miniconda3/etc/profile.d/conda.sh
 conda activate robin
 
-PRETRAIN=$(ls -dv $CHECKPOINT_PATH/pretrain/checkpoint-* | tail -1)
+PRETRAIN="$CHECKPOINT_PATH/pretrain"
+if [ ! -f "$PRETRAIN/mm_projector.bin" ]; then
+    PRETRAIN=$(ls -dv $PRETRAIN/checkpoint-* | tail -1)
+fi
 
 # fresh miopen cache before run (need 1 cache per node)
 # important to generate hostfile in condition otherwise deepspeed will crash when only 1 node
