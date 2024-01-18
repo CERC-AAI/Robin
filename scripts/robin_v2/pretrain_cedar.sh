@@ -5,7 +5,7 @@
 #SBATCH -o /scratch/%u/job_logs/%x-%j.out
 #SBATCH -e /scratch/%u/job_logs/%x-%j.err
 #SBATCH --gpus-per-node=v100l:4
-#SBATCH -t 30:00
+#SBATCH -t 1:00:00
 #SBATCH -N 1
 #SBATCH --mem=128G
 #SBATCH --exclusive
