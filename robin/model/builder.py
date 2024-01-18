@@ -32,9 +32,9 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     tokenizer = AutoTokenizer.from_pretrained(model_base)
     print('Loading LLaVA from base model...')
     
-    if 'mistral' in model_name:
+    if 'mistral' in model_name.lower():
         model = LlavaMistralForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
-    elif 'pythia' in model_name:
+    elif any(x in model_name.lower() for x in ['neox', 'pythia', 'hi-nolin']):
         model = LlavaGPTNeoXForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
     else:
         model = LlavaLlamaForCausalLM.from_pretrained(
