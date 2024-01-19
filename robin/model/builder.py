@@ -45,10 +45,11 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             # use_flash_attention_2 = True,
         )
     
-    token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features
-    if model.lm_head.weight.shape[0] != token_num:
-        model.lm_head.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
-        model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
+    # TODO this for what?
+    # token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features
+    # if model.lm_head.weight.shape[0] != token_num:
+    #     model.lm_head.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
+    #     model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
 
     print('Loading additional LLaVA weights...')
     if os.path.exists(os.path.join(model_path, 'non_lora_trainables.bin')):
@@ -64,12 +65,10 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 subfolder=subfolder)
             return torch.load(cache_file, map_location='cpu')
         non_lora_trainables = load_from_hf(model_path, 'non_lora_trainables.bin')
-
     non_lora_trainables = {(k[11:] if k.startswith('base_model.') else k): v for k, v in non_lora_trainables.items()}
-    if any(k.startswith('model.model.') for k in non_lora_trainables):
+    if any(k.startswith('model.model.') for k in non_lora_trainables) or any(k.startswith('model.gpt_neox.') for k in non_lora_trainables):
         non_lora_trainables = {(k[6:] if k.startswith('model.') else k): v for k, v in non_lora_trainables.items()}
-        
-    model.load_state_dict(non_lora_trainables, strict=False)
+    model.load_state_dict(non_lora_trainables, strict=False) # load the mm projector.
 
     from peft import PeftModel
     print('Loading LoRA weights...')
@@ -100,7 +99,6 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     
     finetuned_ve = False if "frozen" in model_name.lower() else True
     if finetuned_ve:
-        
         if os.path.exists(os.path.join(model_path, 'non_lora_trainables.bin')):
             print("Found lora_trainables")
             original_weights = torch.load(os.path.join(model_path, 'non_lora_trainables.bin'))
@@ -118,18 +116,16 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
         #Convert names
         new_weights = {}
         for key in original_weights.keys():
-            new_key = str(key).replace("base_model.model.model.vision_tower.","")
-            new_weights[new_key] = original_weights[key]
+            if 'pythia' in model_name:
+                new_key = str(key).replace("base_model.model.gpt_neox.vision_tower.","")
+            else:
+                new_key = str(key).replace("base_model.model.model.vision_tower.","")
+
+            if 'mm_projector' not in new_key:
+                new_weights[new_key] = original_weights[key]
+
         del original_weights
-        
-        
-        #This is so that we can load strict
-        projection = {}
-        projections = ["base_model.model.model.mm_projector.0.weight", "base_model.model.model.mm_projector.0.bias", "base_model.model.model.mm_projector.2.weight", "base_model.model.model.mm_projector.2.bias"]
-        for key in projections:
-            projection[key] = new_weights.pop(key)
-        
-        
+               
         result = vision_tower.load_state_dict(new_weights, strict = True)   
         print("Loading strict resuts:", result)
         
