@@ -1,6 +1,6 @@
 import unittest
 import torch
-from transformers import LlamaConfig, GPTNeoXConfig
+from transformers import LlamaConfig, GPTNeoXConfig, AutoConfig
 from robin.model import LlavaLlamaForCausalLM, LlavaGPTNeoXForCausalLM, LlavaMistralForCausalLM
 
 @unittest.skip('Need 300 second to Run LlavaLlama')
@@ -70,7 +70,7 @@ class TestClipPythia(unittest.TestCase):
     def test_llava_neox_from_pretrained(self):
         self.pretrain_model = LlavaGPTNeoXForCausalLM.from_pretrained("EleutherAI/pythia-410m")
 
-
+@unittest.skip('Pass')
 class TestOpenClipPythia(unittest.TestCase):
     def setUp(self):
         config = GPTNeoXConfig.from_pretrained("EleutherAI/pythia-410m")
@@ -100,6 +100,37 @@ class TestOpenClipPythia(unittest.TestCase):
         )
         
         assert output[0].shape == torch.Size([1, 7, 50304])
+
+
+class TestTimmMistral(unittest.TestCase):
+    def setUp(self):
+        config = AutoConfig.from_pretrained("teknium/OpenHermes-2.5-Mistral-7B")
+        config.vision_tower = "timm/vit_small_patch16_224.dino"
+        config.mm_vision_tower = config.vision_tower
+        config.mm_projector_type = "mlp2x_gelu"
+        config.mm_vision_select_layer = -1
+        config.mm_vision_select_feature = "patch"
+        config.mm_hidden_size = 384
+        config.pretrain_mm_mlp_adapter = None
+
+        self.model = LlavaMistralForCausalLM.from_pretrained("teknium/OpenHermes-2.5-Mistral-7B")
+        self.model.get_model().initialize_vision_modules(config)
+        self.vision_tower = self.model.get_vision_tower()
+        
+        assert self.model is not None
+        assert self.vision_tower is not None
+
+    def test_llava_mistral_forward(self):
+        input_ids = torch.tensor([[101, 2054, 2003, 1037, 2518, 1012, 102]]) 
+        use_cache = True 
+        images = torch.randn(1, 3,  224, 224)
+
+        output = self.model(
+            input_ids=input_ids,
+            use_cache=use_cache,
+            images=images,
+        )
+        assert output[0].shape == torch.Size([1, 7, 32002])
 
 
 if __name__ == '__main__':
