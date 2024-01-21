@@ -45,12 +45,24 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             # use_flash_attention_2 = True,
         )
     
-    # TODO this for what?
+    ## Below two paragraph of code are commented out because we don't actually
+    ## Expand the tokenzier in current experiemnt setting TODO.
+        
+    ## Expand the lm_head size if we add extra image token to the tokenizer
     # token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features
     # if model.lm_head.weight.shape[0] != token_num:
     #     model.lm_head.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
     #     model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
-
+    
+    ## Add extra image token to the tokenizer
+    # mm_use_im_start_end = getattr(model.config, "mm_use_im_start_end", False)
+    # mm_use_im_patch_token = getattr(model.config, "mm_use_im_patch_token", True)
+    # if mm_use_im_patch_token:
+    #     tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
+    # if mm_use_im_start_end:
+    #     tokenizer.add_tokens([DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN], special_tokens=True)
+    # model.resize_token_embeddings(len(tokenizer))
+        
     print('Loading additional LLaVA weights...')
     if os.path.exists(os.path.join(model_path, 'non_lora_trainables.bin')):
         print("Found non_lora_trainables")
@@ -65,10 +77,32 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 subfolder=subfolder)
             return torch.load(cache_file, map_location='cpu')
         non_lora_trainables = load_from_hf(model_path, 'non_lora_trainables.bin')
+
     non_lora_trainables = {(k[11:] if k.startswith('base_model.') else k): v for k, v in non_lora_trainables.items()}
+    # Clean the names of keys and llama and neox have different naming stratgy.
     if any(k.startswith('model.model.') for k in non_lora_trainables) or any(k.startswith('model.gpt_neox.') for k in non_lora_trainables):
         non_lora_trainables = {(k[6:] if k.startswith('model.') else k): v for k, v in non_lora_trainables.items()}
+
+    # Loosely load the non lora trainables parameters: llm, mm_projector
+    # TODO we should make this determistic later
     model.load_state_dict(non_lora_trainables, strict=False) # load the mm projector.
+
+    # Strictly load the mm projector
+    print('Loading MM_projector weights...')
+    mm_projector_weights = {}
+    for param_name in non_lora_trainables.keys():
+        if 'mm_projector' in param_name:
+            # Convert name from 'model.mm_projector.0.bias' into '0.bias'
+            # To directly load parameter into mm_projector
+            new_name = param_name.split('.')[-2] + '.' + param_name.split('.')[-1]
+            mm_projector_weights[new_name] = non_lora_trainables[param_name]
+
+    if any(k.startswith('model.') for k in non_lora_trainables):
+        model.model.mm_projector.load_state_dict(mm_projector_weights, strict=True)
+    elif any(k.startswith('gpt_neox.') for k in non_lora_trainables):
+        model.gpt_neox.mm_projector.load_state_dict(mm_projector_weights, strict=True)
+    else:
+        raise ValueError("Unknow name of parameter, please check the loaded weight match model")
 
     from peft import PeftModel
     print('Loading LoRA weights...')
@@ -78,14 +112,6 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     print('Model is loaded...')
 
     image_processor = None
-
-    mm_use_im_start_end = getattr(model.config, "mm_use_im_start_end", False)
-    mm_use_im_patch_token = getattr(model.config, "mm_use_im_patch_token", True)
-    if mm_use_im_patch_token:
-        tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=True)
-    if mm_use_im_start_end:
-        tokenizer.add_tokens([DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN], special_tokens=True)
-    model.resize_token_embeddings(len(tokenizer))
 
     #This actually adds the vision tower to the model.
     vision_tower = model.get_vision_tower()
@@ -100,7 +126,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     finetuned_ve = False if "frozen" in model_name.lower() else True
     if finetuned_ve:
         if os.path.exists(os.path.join(model_path, 'non_lora_trainables.bin')):
-            print("Found lora_trainables")
+            print("Found non lora_trainables")
             original_weights = torch.load(os.path.join(model_path, 'non_lora_trainables.bin'))
         else:
             # this is probably from HF Hub
