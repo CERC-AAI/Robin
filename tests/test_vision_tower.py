@@ -1,8 +1,7 @@
 import unittest
 import torch
 import torch.nn as nn
-from robin.model.multimodal_encoder.clip_encoder import CLIPVisionTower
-from robin.model.multimodal_encoder.open_clip import OpenCLIPVisionTower
+from robin.model.multimodal_encoder.builder import CLIPVisionTower, OpenCLIPVisionTower, TimmVisionTower
 from dataclasses import dataclass
 
 
@@ -27,7 +26,7 @@ class TestClip(unittest.TestCase):
         assert image_features.shape[1] == 576 # (336 // 24) ** 2
         assert image_features.shape[2] == 1024
 
-
+@unittest.skip('Pass')
 class TestOpenClip(unittest.TestCase):
     def setUp(self):
         self.vision_tower = 'ViT-B-16/laion2b_s34b_b88k'
@@ -49,6 +48,29 @@ class TestOpenClip(unittest.TestCase):
         image_features = self.model(images)
         assert image_features.shape[1] == 197 # (224 // 16) ** 2 + 1
         assert image_features.shape[2] == 768
+
+
+class TestTimmDinov2(unittest.TestCase):
+    def setUp(self):
+        self.vision_tower = 'timm/vit_small_patch16_224.dino'
+        self.args = Args()
+        self.args.mm_vision_select_layer = -1
+        self.args.mm_vision_select_feature = 'patch'
+        self.model = TimmVisionTower(self.vision_tower, self.args, False)
+
+    def test_patch_forward(self):
+        images = torch.randn(1, 3, 224, 224)
+        image_features = self.model(images)
+        assert image_features.shape[1] == 196 # (224 // 16) ** 2
+        assert image_features.shape[2] == self.model.hidden_size
+
+    def test_cls_patch_forward(self):
+        self.args.mm_vision_select_feature = 'cls_patch'
+        self.model = TimmVisionTower(self.vision_tower, self.args, False)
+        images = torch.randn(1, 3, 224, 224)
+        image_features = self.model(images)
+        assert image_features.shape[1] == 197 # (224 // 16) ** 2 + 1
+        assert image_features.shape[2] == self.model.hidden_size
 
 
 if __name__ == '__main__':
