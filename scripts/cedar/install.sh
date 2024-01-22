@@ -60,3 +60,17 @@ rm -rf $BASE_DIR/robin_venv/lib/python3.10/site-packages/sklearn
 
 # If you want to try using Flash Attention:
 # pip install flash-attn==2.3.3
+
+# downloading models
+cd $BASE_DIR/downloaded_models
+module load git-lfs
+git lfs install
+git clone https://huggingface.co/teknium/OpenHermes-2.5-Mistral-7B
+git clone https://huggingface.co/apple/DFN2B-CLIP-ViT-L-14
+
+# removing git files due to space and number of files limitations
+rm -rf OpenHermes-2.5-Mistral-7B/.git* 
+rm -rf DFN2B-CLIP-ViT-L-14/.git*
+
+# download data
+echo "download data"

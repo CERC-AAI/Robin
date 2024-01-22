@@ -61,6 +61,7 @@ if __name__ == "__main__":
             username = os.environ.get('USER')
             os.environ['WANDB_DIR'] = f'/scratch/{username}/wandb_cache'
             os.environ['WANDB_MODE'] = 'offline'
+            os.environ['WANDB__SERVICE_WAIT'] = '150'
             os.environ['TRANSFORMERS_CACHE'] = f'/scratch/{username}/downloaded_models/hf_cache'
             os.environ['TRANSFORMERS_OFFLINE'] = '1'
             os.environ['HF_DATASETS_OFFLINE'] = '1'
