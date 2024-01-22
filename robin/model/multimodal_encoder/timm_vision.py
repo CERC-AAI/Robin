@@ -8,7 +8,11 @@ class TimmVisionTower(nn.Module):
         super().__init__()
         assert args.mm_vision_select_layer == -1, "timm support output tokens of last layer only"
         if vision_tower == 'vit_so400m_patch14_siglip_384':
+            # Siglip support patch model only, there seems no cls token
             assert args.mm_vision_select_feature == 'patch' 
+            # Patch model will drop the first token of image feature
+            # Siglip don't have cls one, therefore we use cls_patch model to convserve all patch tokens
+            args.mm_vision_select_feature = 'cls_patch'
 
         self.vision_tower_name = vision_tower
         self.select_layer = args.mm_vision_select_layer

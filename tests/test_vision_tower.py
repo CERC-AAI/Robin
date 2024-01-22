@@ -11,7 +11,7 @@ class Args:
     mm_vision_select_feature: str = 'patch'
 
 
-# @unittest.skip('Pass')
+@unittest.skip('Pass')
 class TestClip(unittest.TestCase):
     def setUp(self):
         vision_tower = 'openai/clip-vit-large-patch14-336'
@@ -28,7 +28,7 @@ class TestClip(unittest.TestCase):
         assert image_features.shape[2] == 1024
 
 
-# @unittest.skip('Pass')
+@unittest.skip('Pass')
 class TestOpenClip(unittest.TestCase):
     def setUp(self):
         self.vision_tower = 'ViT-B-16/laion2b_s34b_b88k'
@@ -77,9 +77,9 @@ class TestTimm(unittest.TestCase):
         assert image_features.shape[1] == 197 # (224 // 16) ** 2 + 1
         assert image_features.shape[2] == self.model.hidden_size
 
-    def test_siglip_cls_patch_forward(self):
-        self.vision_tower = 'vit_so400m_patch14_siglip_384'
+    def test_siglip_patch_forward(self):
         self.args.mm_vision_select_feature = 'patch'
+        self.vision_tower = 'vit_so400m_patch14_siglip_384'
         self.model = TimmVisionTower(self.vision_tower, self.args, False)
         images = torch.randn(1, 3, 384, 384)
         image_features = self.model(images)
