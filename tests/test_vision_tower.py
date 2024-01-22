@@ -11,13 +11,14 @@ class Args:
     mm_vision_select_feature: str = 'patch'
 
 
-@unittest.skip('Pass')
+# @unittest.skip('Pass')
 class TestClip(unittest.TestCase):
     def setUp(self):
         vision_tower = 'openai/clip-vit-large-patch14-336'
         args = Args()
         args.mm_vision_select_layer = -2
         args.mm_vision_select_feature = 'patch'
+        args.vision_tower_type = 'clip'
         self.model = CLIPVisionTower(vision_tower, args, False)
     
     def test_patch_forward(self):
@@ -26,13 +27,15 @@ class TestClip(unittest.TestCase):
         assert image_features.shape[1] == 576 # (336 // 24) ** 2
         assert image_features.shape[2] == 1024
 
-@unittest.skip('Pass')
+
+# @unittest.skip('Pass')
 class TestOpenClip(unittest.TestCase):
     def setUp(self):
         self.vision_tower = 'ViT-B-16/laion2b_s34b_b88k'
         self.args = Args()
         self.args.mm_vision_select_layer = -1
         self.args.mm_vision_select_feature = 'patch'
+        self.args.vision_tower_type = 'open_clip'
         self.model = OpenCLIPVisionTower(self.vision_tower, self.args, False)
 
     def test_patch_forward(self):
@@ -52,10 +55,12 @@ class TestOpenClip(unittest.TestCase):
 
 class TestTimmDinov2(unittest.TestCase):
     def setUp(self):
-        self.vision_tower = 'timm/vit_small_patch16_224.dino'
+        # self.vision_tower = 'vit_large_patch14_reg4_dinov2.lvd142m'
+        self.vision_tower = 'vit_small_patch16_224.dino'
         self.args = Args()
         self.args.mm_vision_select_layer = -1
         self.args.mm_vision_select_feature = 'patch'
+        self.args.vision_tower_type = 'timm'
         self.model = TimmVisionTower(self.vision_tower, self.args, False)
 
     def test_patch_forward(self):

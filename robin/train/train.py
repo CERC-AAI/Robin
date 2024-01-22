@@ -56,6 +56,7 @@ class ModelArguments:
     freeze_backbone: bool = field(default=False)
     tune_mm_mlp_adapter: bool = field(default=False)
     vision_tower: Optional[str] = field(default=None)
+    vision_tower_type: Optional[str] = field(default=None)
     mm_vision_select_layer: Optional[int] = field(default=-1)   # default to the last layer
     pretrain_mm_mlp_adapter: Optional[str] = field(default=None)
     mm_projector_type: Optional[str] = field(default='linear')
@@ -112,6 +113,7 @@ class TrainingArguments(transformers.TrainingArguments):
     finetune_ve: bool =  False
     only_save_model: bool = False
     vision_lr: Optional[float] = 5e-5
+    # max_steps: int = 5196 #[TODO] the last batch sometimes has data error
 
 
 def maybe_zero_3(param, ignore_status=False, name=None):
@@ -1045,12 +1047,7 @@ def train():
         for name, param in model.base_model.get_vision_tower().named_parameters():#This is required for lora, and training without lora will not work on this line.
             param.requires_grad = True
     
-    print(model)
-    for name, param in model.named_parameters():
-        print(name, param.requires_grad)
-
     checkpoints = sorted(glob.glob(f"{training_args.output_dir}/checkpoint-*"))
-
     if training_args.only_save_model:
         assert checkpoints, f"no checkpoints in {training_args.output_dir} to save model from"
         print(checkpoints)

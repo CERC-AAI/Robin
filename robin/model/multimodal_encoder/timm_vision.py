@@ -1,10 +1,6 @@
-from PIL import Image
-from torch import nn
-import torch
-import open_clip
 import timm
-import torch.nn.functional as F
-import os
+import torch
+from torch import nn
 
 
 class TimmVisionTower(nn.Module):
@@ -31,13 +27,11 @@ class TimmVisionTower(nn.Module):
         #         checkpoint_path=self.vision_tower_name+'/pytorch_model.bin', 
         #     )
         # else:
-
         self.vision_tower = timm.create_model(
             self.vision_tower_name,
             pretrained=True,
             num_classes=0,  # remove classifier nn.Linear
         )
-
         data_config = timm.data.resolve_model_data_config(self.vision_tower)
         self.hidden_size = self.vision_tower.num_features
         self.image_processor = timm.data.create_transform(**data_config, is_training=False)
@@ -53,7 +47,6 @@ class TimmVisionTower(nn.Module):
             raise ValueError(f'Unexpected select feature: {self.select_feature}')
         return image_features
 
-    # @torch.no_grad()
     def forward(self, images):
         """
         TODO this intermediate feature is experimential, we should use this once it's stable
