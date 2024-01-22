@@ -51,6 +51,7 @@ class OpenCLIPVisionTower(nn.Module):
                 image_features.append(image_feature)
         else:
             image_forward_outs = self.vision_tower(images.to(device=self.device, dtype=self.dtype))
+            # image_forward_outs = (cls, patch), we use feature_select to get patch or cls_patch
             image_features = self.feature_select(image_forward_outs).to(images.dtype)
 
         return image_features
