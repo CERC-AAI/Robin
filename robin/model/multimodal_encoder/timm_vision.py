@@ -55,13 +55,14 @@ class TimmVisionTower(nn.Module):
         if type(images) is list:
             image_features = []
             for image in images:
-                image_feature = self.vision_tower.forward_features(image.to(device=self.device, dtype=self.dtype))
-                image_feature = self.feature_select(image_feature).to(image.dtype)
+                image_forward_outs = self.vision_tower.forward_features(image.to(device=self.device, dtype=self.dtype))
+                # In timm, output of forward_feature is stack of ([cls, patch])
+                image_feature = self.feature_select(image_forward_outs).to(image.dtype)
                 image_features.append(image_feature)
         else:
             # This incl cls token
-            image_features = self.vision_tower.forward_features(images.to(device=self.device, dtype=self.dtype))
-            image_features = self.feature_select(image_features).to(images.dtype)
+            image_forward_outs = self.vision_tower.forward_features(images.to(device=self.device, dtype=self.dtype))
+            image_features = self.feature_select(image_forward_outs).to(images.dtype)
         
         return image_features
 

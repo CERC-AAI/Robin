@@ -36,9 +36,7 @@ from robin.model import LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaL
 from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
-from robin.model.multimodal_encoder.clip_encoder import CLIPVisionTower
-from robin.model.multimodal_encoder.open_clip import OpenCLIPVisionTower
-from robin.model.multimodal_encoder.timm_vision import TimmVisionTower
+from robin.model.multimodal_encoder.builder import CLIPVisionTower, OpenCLIPVisionTower, TimmVisionTower
 
 local_rank = None
 
@@ -1044,8 +1042,13 @@ def train():
                     **data_module)
 
     if training_args.finetune_ve:
-        for name, param in model.base_model.get_vision_tower().named_parameters():#This is required for lora, and training without lora will not work on this line.
+        # [TODO] Check whether base_model is introduced by lora
+        # This is required for lora, and training without lora will not work on this line.
+        for name, param in model.base_model.get_vision_tower().named_parameters():
             param.requires_grad = True
+    else:
+        for name, param in model.base_model.get_vision_tower().named_parameters():
+            param.requires_grad = False
     
     checkpoints = sorted(glob.glob(f"{training_args.output_dir}/checkpoint-*"))
     if training_args.only_save_model:

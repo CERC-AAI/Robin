@@ -45,16 +45,17 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             # use_flash_attention_2 = True,
         )
     
-    ## Below two paragraph of code are commented out because we don't actually
-    ## Expand the tokenzier in current experiemnt setting TODO.
+    # [TODO] Bring batch the expand tokenizer featureu
+    # Below two paragraph of code are commented out because we don't actually
+    # Expand the tokenzier in current experiemnt setting TODO.
         
-    ## Expand the lm_head size if we add extra image token to the tokenizer
+    # Expand the lm_head size if we add extra image token to the tokenizer
     # token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features
     # if model.lm_head.weight.shape[0] != token_num:
     #     model.lm_head.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
     #     model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
     
-    ## Add extra image token to the tokenizer
+    # Add extra image token to the tokenizer
     # mm_use_im_start_end = getattr(model.config, "mm_use_im_start_end", False)
     # mm_use_im_patch_token = getattr(model.config, "mm_use_im_patch_token", True)
     # if mm_use_im_patch_token:
