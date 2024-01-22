@@ -53,28 +53,37 @@ class TestOpenClip(unittest.TestCase):
         assert image_features.shape[2] == 768
 
 
-class TestTimmDinov2(unittest.TestCase):
+class TestTimm(unittest.TestCase):
     def setUp(self):
-        # self.vision_tower = 'vit_large_patch14_reg4_dinov2.lvd142m'
-        self.vision_tower = 'vit_small_patch16_224.dino'
         self.args = Args()
         self.args.mm_vision_select_layer = -1
-        self.args.mm_vision_select_feature = 'patch'
         self.args.vision_tower_type = 'timm'
-        self.model = TimmVisionTower(self.vision_tower, self.args, False)
 
-    def test_patch_forward(self):
+    def test_dinov2_patch_forward(self):
+        self.args.mm_vision_select_feature = 'patch'
+        self.vision_tower = 'vit_small_patch16_224.dino'
+        self.model = TimmVisionTower(self.vision_tower, self.args, False)
         images = torch.randn(1, 3, 224, 224)
         image_features = self.model(images)
         assert image_features.shape[1] == 196 # (224 // 16) ** 2
         assert image_features.shape[2] == self.model.hidden_size
 
-    def test_cls_patch_forward(self):
+    def test_dinov2_cls_patch_forward(self):
         self.args.mm_vision_select_feature = 'cls_patch'
+        self.vision_tower = 'vit_small_patch16_224.dino'
         self.model = TimmVisionTower(self.vision_tower, self.args, False)
         images = torch.randn(1, 3, 224, 224)
         image_features = self.model(images)
         assert image_features.shape[1] == 197 # (224 // 16) ** 2 + 1
+        assert image_features.shape[2] == self.model.hidden_size
+
+    def test_siglip_cls_patch_forward(self):
+        self.vision_tower = 'vit_so400m_patch14_siglip_384'
+        self.args.mm_vision_select_feature = 'patch'
+        self.model = TimmVisionTower(self.vision_tower, self.args, False)
+        images = torch.randn(1, 3, 384, 384)
+        image_features = self.model(images)
+        assert image_features.shape[1] == 729 # (384 // 14) ** 2
         assert image_features.shape[2] == self.model.hidden_size
 
 

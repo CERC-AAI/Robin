@@ -7,8 +7,10 @@ class TimmVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
         super().__init__()
         assert args.mm_vision_select_layer == -1, "timm support output tokens of last layer only"
-        
-        self.vision_tower_name = vision_tower  # timm/vit_large_patch14_dinov2.lvd142m
+        if vision_tower == 'vit_so400m_patch14_siglip_384':
+            assert args.mm_vision_select_feature == 'patch' 
+
+        self.vision_tower_name = vision_tower
         self.select_layer = args.mm_vision_select_layer
         self.select_feature = getattr(args, 'mm_vision_select_feature', 'patch')
         self.hidden_size = None # Place Holder get this value in load_model function
