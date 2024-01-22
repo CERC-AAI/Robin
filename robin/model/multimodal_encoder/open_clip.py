@@ -20,7 +20,7 @@ class OpenCLIPVisionTower(nn.Module):
         
     def load_model(self):
         assert "/" in self.vision_tower_name, """
-            model name and pretrained must be split with / in open clip eg: ViT-B-16/laion2b_s34b_b88k"""
+            vision tower name and pretrained must be split with / in open clip eg: ViT-B-16/laion2b_s34b_b88k"""
         
         model_name, pretrained = self.vision_tower_name.split("/")
         open_clip, self.image_processor = create_model_from_pretrained(model_name, pretrained)
@@ -42,7 +42,6 @@ class OpenCLIPVisionTower(nn.Module):
             raise ValueError(f'Unexpected select feature: {self.select_feature}')
         return image_features
 
-    # @torch.no_grad()
     def forward(self, images):
         if type(images) is list:
             image_features = []
