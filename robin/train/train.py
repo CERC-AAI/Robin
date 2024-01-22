@@ -1042,8 +1042,13 @@ def train():
                     **data_module)
 
     if training_args.finetune_ve:
-        for name, param in model.base_model.get_vision_tower().named_parameters():#This is required for lora, and training without lora will not work on this line.
+        # [TODO] Check whether base_model is introduced by lora
+        # This is required for lora, and training without lora will not work on this line.
+        for name, param in model.base_model.get_vision_tower().named_parameters():
             param.requires_grad = True
+    else:
+        for name, param in model.base_model.get_vision_tower().named_parameters():
+            param.requires_grad = False
     
     print(model)
     for name, param in model.named_parameters():
