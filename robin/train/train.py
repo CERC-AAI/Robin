@@ -36,9 +36,7 @@ from robin.model import LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaL
 from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
-from robin.model.multimodal_encoder.clip_encoder import CLIPVisionTower
-from robin.model.multimodal_encoder.open_clip import OpenCLIPVisionTower
-from robin.model.multimodal_encoder.timm_vision import TimmVisionTower
+from robin.model.multimodal_encoder.builder import CLIPVisionTower, OpenCLIPVisionTower, TimmVisionTower
 
 local_rank = None
 
