@@ -14,4 +14,6 @@ def build_vision_tower(vision_tower_cfg, **kwargs):
     elif vision_tower_type == 'timm':
         return TimmVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
     else:
-        raise ValueError(f'Unknown vision tower type: {vision_tower_type}')
+        print(f"""[Warning] Unknown vision tower type: {vision_tower_type} Use open_clip as default vision tower now.
+              """)
+        return OpenCLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)

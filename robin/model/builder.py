@@ -116,7 +116,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
 
     #This actually adds the vision tower to the model.
     vision_tower = model.get_vision_tower()
-    print("Loaded this vision tower")
+    print("Loaded vision tower")
     
     if not vision_tower.is_loaded:
         vision_tower.load_model()
