@@ -52,7 +52,7 @@ class TimmVisionTower(nn.Module):
 
     def forward(self, images):
         """
-        TODO this is intermediate feature, but it is experimential now, we switch to this once it's stable
+        TODO there is intermediate feature, but it's experimential now, we could switch to this once it's stable
         https://github.com/huggingface/pytorch-image-models/discussions/2068
         """
         if type(images) is list:
