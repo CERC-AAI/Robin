@@ -38,24 +38,21 @@ class TimmVisionTower(nn.Module):
         self.is_loaded = True
         
     def feature_select(self, head_forward_out, features_forward_out):
-        if self.select_feature == 'cls': # Sorry for the nesty if else
+        # Check if cls and patch features are concatenated
+        cls_concated_with_patch = torch.equal(head_forward_out[:], features_forward_out[:, 0])
+
+        if self.select_feature == 'cls':
             image_features = head_forward_out
         elif self.select_feature == 'patch':
-            # cls token is concated at beginging of features
-            if torch.equal(head_forward_out[:],features_forward_out[:,0]): 
-                image_features = features_forward_out[:, 1:]
-            else:
-                image_features = features_forward_out
+            # Drop the first cls token if already concatenated
+            image_features = features_forward_out[:, 1:] if cls_concated_with_patch else features_forward_out
         elif self.select_feature == 'cls_patch':
-            # cls token is concated at beginging of features
-            if torch.equal(head_forward_out[:],features_forward_out[:,0]): 
-                image_features = features_forward_out 
-            else:
-                assert head_forward_out.shape[1] == features_forward_out.shape[1], f"""
-                    this vision tower {self.vision_tower_name} does support cls_patch model
-                    as cls token dim {head_forward_out.shape[1]} mismatch with patch tokens dim {features_forward_out.shape[1]} """
-                
-                image_features = torch.cat([head_forward_out.unsqueeze(1), features_forward_out], dim=1)    
+            assert head_forward_out.shape[1] == features_forward_out.shape[1], (
+                f"Vision tower {self.vision_tower_name} does not support cls_patch model "
+                f"as cls token dim {head_forward_out.shape[1]} mismatch with patch tokens dim {features_forward_out.shape[1]}"
+            )
+            # Concatenate cls and patch features if not already concatenated
+            image_features = features_forward_out if cls_concated_with_patch else torch.cat([head_forward_out.unsqueeze(1), features_forward_out], dim=1)    
         else:
             raise ValueError(f'Unexpected select feature: {self.select_feature}')
         
@@ -70,12 +67,12 @@ class TimmVisionTower(nn.Module):
             image_features = []
             for image in images:
                 features_forward_out = self.vision_tower.forward_features(image.to(device=self.device, dtype=self.dtype))
-                head_forward_out = self.vision_tower.forward_head(features_forward_out)
+                head_forward_out = self.vision_tower.forward_head(features_forward_out, pre_logits=True)
                 image_feature = self.feature_select(head_forward_out, features_forward_out).to(images.dtype)
                 image_features.append(image_feature)
         else:
             features_forward_out = self.vision_tower.forward_features(images.to(device=self.device, dtype=self.dtype))
-            head_forward_out = self.vision_tower.forward_head(features_forward_out)
+            head_forward_out = self.vision_tower.forward_head(features_forward_out, pre_logits=True)
             image_features = self.feature_select(head_forward_out, features_forward_out).to(images.dtype)
         
         return image_features
