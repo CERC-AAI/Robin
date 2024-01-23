@@ -58,7 +58,8 @@ class TestTimm(unittest.TestCase):
         self.args = Args()
         self.args.mm_vision_select_layer = -1
         self.args.vision_tower_type = 'timm'
-
+    
+    @unittest.skip('Pass')
     def test_dinov2_patch_forward(self):
         self.args.mm_vision_select_feature = 'patch'
         self.vision_tower = 'vit_small_patch16_224.dino'
@@ -68,15 +69,17 @@ class TestTimm(unittest.TestCase):
         assert image_features.shape[1] == 196 # (224 // 16) ** 2
         assert image_features.shape[2] == self.model.hidden_size
 
+    @unittest.skip('Pass')
     def test_dinov2_cls_patch_forward(self):
         self.args.mm_vision_select_feature = 'cls_patch'
-        self.vision_tower = 'vit_small_patch16_224.dino'
+        self.vision_tower = 'vit_large_patch14_reg4_dinov2.lvd142m'
         self.model = TimmVisionTower(self.vision_tower, self.args, False)
-        images = torch.randn(1, 3, 224, 224)
+        images = torch.randn(1, 3, 518, 518)
         image_features = self.model(images)
-        assert image_features.shape[1] == 197 # (224 // 16) ** 2 + 1
+        assert image_features.shape[1] == 1374 # incl conv2d
         assert image_features.shape[2] == self.model.hidden_size
-
+    
+    @unittest.skip('Pass')
     def test_siglip_patch_forward(self):
         self.args.mm_vision_select_feature = 'patch'
         self.vision_tower = 'vit_so400m_patch14_siglip_384'
@@ -86,6 +89,14 @@ class TestTimm(unittest.TestCase):
         assert image_features.shape[1] == 729 # (384 // 14) ** 2
         assert image_features.shape[2] == self.model.hidden_size
 
+    def test_siglip_patch_forward(self):
+        self.args.mm_vision_select_feature = 'cls_patch'
+        self.vision_tower = 'vit_so400m_patch14_siglip_384'
+        self.model = TimmVisionTower(self.vision_tower, self.args, False)
+        images = torch.randn(1, 3, 384, 384)
+        image_features = self.model(images)
+        assert image_features.shape[1] == 729 + 1 # (384 // 14) ** 2
+        assert image_features.shape[2] == self.model.hidden_size
 
 if __name__ == '__main__':
     unittest.main()

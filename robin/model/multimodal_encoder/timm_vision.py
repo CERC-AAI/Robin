@@ -7,12 +7,6 @@ class TimmVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
         super().__init__()
         assert args.mm_vision_select_layer == -1, "timm support output tokens of last layer only"
-        if vision_tower == 'vit_so400m_patch14_siglip_384':
-            # Siglip support patch model only, there seems no cls token
-            assert args.mm_vision_select_feature == 'patch' 
-            # Patch model will drop the first token of image feature
-            # Siglip don't have cls one, therefore we use cls_patch model to convserve all patch tokens
-            args.mm_vision_select_feature = 'cls_patch'
 
         self.vision_tower_name = vision_tower
         self.select_layer = args.mm_vision_select_layer
@@ -43,14 +37,28 @@ class TimmVisionTower(nn.Module):
         self.image_processor = timm.data.create_transform(**data_config, is_training=False)
         self.is_loaded = True
         
-    def feature_select(self, image_forward_outs):
-        image_features = image_forward_outs
-        if self.select_feature == 'patch':
-            image_features = image_features[:, 1:]
+    def feature_select(self, head_forward_out, features_forward_out):
+        if self.select_feature == 'cls': # Sorry for the nesty if else
+            image_features = head_forward_out
+        elif self.select_feature == 'patch':
+            # cls token is concated at beginging of features
+            if torch.equal(head_forward_out[:],features_forward_out[:,0]): 
+                image_features = features_forward_out[:, 1:]
+            else:
+                image_features = features_forward_out
         elif self.select_feature == 'cls_patch':
-            image_features = image_features
+            # cls token is concated at beginging of features
+            if torch.equal(head_forward_out[:],features_forward_out[:,0]): 
+                image_features = features_forward_out 
+            else:
+                assert head_forward_out.shape[1] == features_forward_out.shape[1], f"""
+                    this vision tower {self.vision_tower_name} does support cls_patch model
+                    as cls token dim {head_forward_out.shape[1]} mismatch with patch tokens dim {features_forward_out.shape[1]} """
+                
+                image_features = torch.cat([head_forward_out.unsqueeze(1), features_forward_out], dim=1)    
         else:
             raise ValueError(f'Unexpected select feature: {self.select_feature}')
+        
         return image_features
 
     def forward(self, images):
@@ -61,14 +69,14 @@ class TimmVisionTower(nn.Module):
         if type(images) is list:
             image_features = []
             for image in images:
-                image_forward_outs = self.vision_tower.forward_features(image.to(device=self.device, dtype=self.dtype))
-                # In timm, output of forward_feature is stack of ([cls, patch])
-                image_feature = self.feature_select(image_forward_outs).to(image.dtype)
+                features_forward_out = self.vision_tower.forward_features(image.to(device=self.device, dtype=self.dtype))
+                head_forward_out = self.vision_tower.forward_head(features_forward_out)
+                image_feature = self.feature_select(head_forward_out, features_forward_out).to(images.dtype)
                 image_features.append(image_feature)
         else:
-            # This incl cls token
-            image_forward_outs = self.vision_tower.forward_features(images.to(device=self.device, dtype=self.dtype))
-            image_features = self.feature_select(image_forward_outs).to(images.dtype)
+            features_forward_out = self.vision_tower.forward_features(images.to(device=self.device, dtype=self.dtype))
+            head_forward_out = self.vision_tower.forward_head(features_forward_out)
+            image_features = self.feature_select(head_forward_out, features_forward_out).to(images.dtype)
         
         return image_features
 
