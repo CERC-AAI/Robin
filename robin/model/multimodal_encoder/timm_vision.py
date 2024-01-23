@@ -18,15 +18,7 @@ class TimmVisionTower(nn.Module):
             self.load_model()
         
     def load_model(self):
-        # if os.path.exists(self.vision_tower_name):
-        #     # TODO support local cache
-        #     name = self.vision_tower_name.split("/")[-1]
-        #     self.vision_tower = timm.create_model(
-        #         name,
-        #         num_classes=0,  # remove classifier nn.Linear
-        #         checkpoint_path=self.vision_tower_name+'/pytorch_model.bin', 
-        #     )
-        # else:
+        # TODO support local cache
         self.vision_tower = timm.create_model(
             self.vision_tower_name,
             pretrained=True,
