@@ -45,7 +45,6 @@ class TimmVisionTower(nn.Module):
             )
             # Concatenate cls and patch features if not already concatenated  
             image_features = torch.cat([head_forward_out.unsqueeze(1), features_forward_out], dim=1) if not cls_concated_with_patch else features_forward_out
-
         else:
             raise ValueError(f'Unexpected select feature: {self.select_feature}')
         
