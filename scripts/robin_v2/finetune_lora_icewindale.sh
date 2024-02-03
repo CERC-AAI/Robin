@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # only change this
-NAME=robin_v2_1
+NAME=robin_v2_6
 MODEL=OpenHermes-2.5-Mistral-7B
-VISION=DFN2B-CLIP-ViT-L-14
-
+VISION=eva02_large_patch14_clip_224.merged2b_s4b_b131k
+GAS=4
 
 # don't change this
 DOWNLOADED_MODEL_PATH=/localdisks/$(whoami)/downloaded_models
@@ -16,6 +16,9 @@ CHECKPOINT_PATH=/localdisks/$(whoami)/checkpoints/$NAME
 DATA_PATH=/localdisks/$(whoami)/robin_data/LLaVA-Finetune
 
 module load cuda/12.2
+
+GPU_COUNT=$(nvidia-smi --list-gpus | wc -l)
+BATCH_SIZE=$(( 128 / GPU_COUNT / GAS ))
 
 source /opt/anaconda/anaconda3/etc/profile.d/conda.sh
 conda activate robin
@@ -47,9 +50,9 @@ deepspeed \
     --fp16 True \
     --output_dir $CHECKPOINT_PATH/finetune_VEtrue \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 32 \
+    --per_device_train_batch_size $BATCH_SIZE \
     --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 2 \
+    --gradient_accumulation_steps $GAS \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 100 \
