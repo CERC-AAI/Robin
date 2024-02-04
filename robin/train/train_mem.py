@@ -10,6 +10,7 @@ USE_FLASH_ATTN_2 = False
 
 if __name__ == "__main__":
     hostname = os.environ.get('HOSTNAME') if os.environ.get('HOSTNAME') != None else os.uname()[1]
+    if hostname == None: hostname = os.environ.get('HOST_NAME')
 
     print('Running on cluster:', end=' ')
     match hostname.lower():
@@ -66,6 +67,13 @@ if __name__ == "__main__":
             os.environ['TRANSFORMERS_OFFLINE'] = '1'
             os.environ['HF_DATASETS_OFFLINE'] = '1'
         
+        case x if 'docker' in x:
+            print('Docker')
+            USE_FLASH_ATTN_2 = True
+
+            os.environ['WANDB_DIR'] = '/app/wandb_cache'
+            os.environ['WANDB_MODE'] = 'offline'
+
         case _:
             print(hostname)
             print('No cluster specific config, no enviroment variables set.')
