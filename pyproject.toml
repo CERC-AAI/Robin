@@ -28,7 +28,7 @@ dependencies = [
     "open_clip_torch @ git+https://github.com/rmst/open-clip.git@01f8200c02c79f582d1189eda88e7459ac1994fe",
     
     # "timm==0.9.10",
-    "timm @ git+https://github.com/Alexis-BX/pytorch-image-models.git@e40252e17eb530b6e8baa86ec389ff39dfa3fb9d"
+    "timm @ git+https://github.com/Alexis-BX/pytorch-image-models.git@98e96c8ebd2356e7aca983e6a3adc1640b1ff8e3"
 ]
 
 [project.optional-dependencies]
