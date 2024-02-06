@@ -36,15 +36,15 @@ def load_pretrained_model(model_path, model_base, model_name, llm_type=None, loa
     # register llm_type from Enum
     if llm_type is not None:
         try:
-            llm_type = LlavaMetaModel.ModelType[llm_type]
+            llm_type = LlavaMetaModel.ModelType(llm_type)
         except KeyError as e:
-            raise ValueError(f"Invalid llm type provided {e}. Supported llm classes are {', '.join(LlavaMetaModel.get_model_type_list)}")
+            raise ValueError(f"Invalid llm type provided {e}. Supported llm classes are {', '.join(LlavaMetaModel.get_model_type_list())}")
     else:
         llm_type = LlavaMetaModel.get_model_type_from_model_name(model_name)
     
-    if llm_type == LlavaMetaModel.ModelType['llava_mistral']:
+    if llm_type == LlavaMetaModel.ModelType.LlavaMistralModel:
         model = LlavaMistralForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
-    elif llm_type == LlavaMetaModel.ModelType['llava_neox']:
+    elif llm_type == LlavaMetaModel.ModelType.LlavaGPTNeoXModel:
         model = LlavaGPTNeoXForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
     else:
         model = LlavaLlamaForCausalLM.from_pretrained(

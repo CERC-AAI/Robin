@@ -32,7 +32,8 @@ from torch.utils.data import Dataset
 from robin.train.llava_trainer import LLaVATrainer
 
 from robin import conversation as conversation_lib
-from robin.model import LlavaMetaModel, LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM#, LlavaMPTForCausalLM [TODO] mpt is commented out at robin.model.__init__
+from robin.model import LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM#, LlavaMPTForCausalLM [TODO] mpt is commented out at robin.model.__init__
+from robin.model.builder import LlavaMetaModel
 from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
@@ -784,7 +785,7 @@ def train(USE_FLASH_ATTN_2=False):
 
     # parse llm type input as an Enum
     # no need for error checking as HFArgumentParser does it for Enums
-    llm_type = LlavaMetaModel.ModelType[model_args.llm_type] if model_args.llm_type is not None else LlavaMetaModel.get_model_type_from_model_name(model_args.model_name_or_path)
+    llm_type = LlavaMetaModel.ModelType(model_args.llm_type) if model_args.llm_type is not None else LlavaMetaModel.get_model_type_from_model_name(model_args.model_name_or_path)
 
     bnb_model_from_pretrained_args = {}
     if training_args.bits in [4, 8]:
@@ -806,17 +807,17 @@ def train(USE_FLASH_ATTN_2=False):
 
     if model_args.vision_tower is not None:
         rank0_print("Loading model of type:", end=' ')
-        if llm_type == LlavaMetaModel.ModelType['llava_mpt']:
-            rank0_print("MPT")
-            config = transformers.AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
-            config.attn_config['attn_impl'] = training_args.mpt_attn_impl
-            model = LlavaMPTForCausalLM.from_pretrained(
-                model_args.model_name_or_path,
-                config=config,
-                cache_dir=training_args.cache_dir,
-                **bnb_model_from_pretrained_args
-            )
-        elif llm_type == LlavaMetaModel.ModelType['llava_mistral']:
+        # if llm_type == LlavaMetaModel.ModelType.LlavaMPTModel:
+        #     rank0_print("MPT")
+        #     config = transformers.AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
+        #     config.attn_config['attn_impl'] = training_args.mpt_attn_impl
+        #     model = LlavaMPTForCausalLM.from_pretrained(
+        #         model_args.model_name_or_path,
+        #         config=config,
+        #         cache_dir=training_args.cache_dir,
+        #         **bnb_model_from_pretrained_args
+        #     )
+        if llm_type == LlavaMetaModel.ModelType.LlavaMistralModel:
             rank0_print("Mistral")
             model = LlavaMistralForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -824,7 +825,7 @@ def train(USE_FLASH_ATTN_2=False):
                 use_flash_attention_2 = USE_FLASH_ATTN_2,
                 **bnb_model_from_pretrained_args
             )
-        elif llm_type == LlavaMetaModel.ModelType['llava_neox']:
+        elif llm_type == LlavaMetaModel.ModelType.LlavaGPTNeoXModel:
             rank0_print("NeoX")
             model = LlavaGPTNeoXForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -832,7 +833,7 @@ def train(USE_FLASH_ATTN_2=False):
                 use_flash_attention_2 = USE_FLASH_ATTN_2, # The current architecture does not support Flash Attention 2.0
                 **bnb_model_from_pretrained_args
             )
-        elif llm_type == LlavaMetaModel.ModelType['llava']:
+        elif llm_type == LlavaMetaModel.ModelType.LlavaLlamaModel:
             rank0_print("Llama")
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -884,21 +885,21 @@ def train(USE_FLASH_ATTN_2=False):
         rank0_print("Adding LoRA adapters...")
         model = get_peft_model(model, lora_config)
 
-    if llm_type == LlavaMetaModel.ModelType['llava_mpt']:
-        tokenizer = transformers.AutoTokenizer.from_pretrained(
-            model_args.model_name_or_path,
-            cache_dir=training_args.cache_dir,
-            model_max_length=training_args.model_max_length,
-            padding_side="right"
-        )
-    else:
-        #print(model_args.model_name_or_path)
-        tokenizer = transformers.AutoTokenizer.from_pretrained(
-            model_args.model_name_or_path,
-            cache_dir=training_args.cache_dir,
-            model_max_length=training_args.model_max_length,
-            padding_side="right",
-        )
+    # if llm_type == LlavaMetaModel.ModelType.LlavaMPTModel:
+    #     tokenizer = transformers.AutoTokenizer.from_pretrained(
+    #         model_args.model_name_or_path,
+    #         cache_dir=training_args.cache_dir,
+    #         model_max_length=training_args.model_max_length,
+    #         padding_side="right"
+    #     )
+    # else:
+    #print(model_args.model_name_or_path)
+    tokenizer = transformers.AutoTokenizer.from_pretrained(
+        model_args.model_name_or_path,
+        cache_dir=training_args.cache_dir,
+        model_max_length=training_args.model_max_length,
+        padding_side="right",
+    )
 
     if model_args.version == "v0":
         if tokenizer.pad_token is None:

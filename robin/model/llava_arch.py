@@ -40,25 +40,25 @@ class LlavaMetaModel:
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
-        cls.registry[cls._subclass_type] = cls
-        LlavaMetaModel.ModelType = Enum('ModelType', [(subcls.config_class.model_type, subcls.__name__) for subcls in cls.registry.values()])
+        cls.registry[cls.__name__] = cls
+        LlavaMetaModel.ModelType = Enum('ModelType', [(subcls.__name__, subcls.config_class.model_type) for subcls in cls.registry.values()])
     
     # for when model_type is not passed for backwards compatibility
     @classmethod
     def get_model_type_from_model_name(cls, model_name: str) -> ModelType:
         model_name = model_name.lower()
         if 'mpt' in model_name:
-            return cls.ModelType['llava_mpt']
+            return cls.ModelType.LlavaMPTModel
         elif 'mistral' in model_name:
-            return cls.ModelType['llava_mistral']
+            return cls.ModelType.LlavaMistralModel
         elif any(x in model_name for x in ['neox', 'pythia', 'hi-nolin']):
-            return cls.ModelType['llava_neox']
+            return cls.ModelType.LlavaGPTNeoXModel
         else:
-            return cls.ModelType['llava']
+            return cls.ModelType.LlavaLlamaModel
     
     @classmethod
     def get_model_type_list(cls):
-        return [m.name for m in LlavaMetaModel.ModelType]
+        return [m.value for m in LlavaMetaModel.ModelType]
 
 
     def get_vision_tower(self):
