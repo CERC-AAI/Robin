@@ -32,7 +32,7 @@ from torch.utils.data import Dataset
 from robin.train.llava_trainer import LLaVATrainer
 
 from robin import conversation as conversation_lib
-from robin.model import LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM#, LlavaMPTForCausalLM [TODO] mpt is commented out at robin.model.__init__
+from robin.model import LlavaMetaModel, LlavaMistralForCausalLM, LlavaGPTNeoXForCausalLM, LlavaLlamaForCausalLM#, LlavaMPTForCausalLM [TODO] mpt is commented out at robin.model.__init__
 from robin.mm_utils import tokenizer_image_token, expand2square
 
 from PIL import Image
@@ -51,6 +51,7 @@ def rank0_print(*args, **kwargs):
 @dataclass
 class ModelArguments:
     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
+    llm_type: Optional[LlavaMetaModel.ModelType] = field(default=None)
     version: Optional[str] = field(default="v0")
     freeze_backbone: bool = field(default=False)
     tune_mm_mlp_adapter: bool = field(default=False)
@@ -781,6 +782,10 @@ def train(USE_FLASH_ATTN_2=False):
     local_rank = training_args.local_rank
     compute_dtype = (torch.float16 if training_args.fp16 else (torch.bfloat16 if training_args.bf16 else torch.float32))
 
+    # parse llm type input as an Enum
+    # no need for error checking as HFArgumentParser does it for Enums
+    llm_type = LlavaMetaModel.ModelType[model_args.llm_type] if model_args.llm_type is not None else LlavaMetaModel.get_model_type_from_model_name(model_args.model_name_or_path)
+
     bnb_model_from_pretrained_args = {}
     if training_args.bits in [4, 8]:
         from transformers import BitsAndBytesConfig
@@ -800,9 +805,8 @@ def train(USE_FLASH_ATTN_2=False):
         ))
 
     if model_args.vision_tower is not None:
-        model_name = model_args.model_name_or_path.lower()
         rank0_print("Loading model of type:", end=' ')
-        if 'mpt' in model_name:
+        if llm_type == LlavaMetaModel.ModelType['llava_mpt']:
             rank0_print("MPT")
             config = transformers.AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
             config.attn_config['attn_impl'] = training_args.mpt_attn_impl
@@ -812,7 +816,7 @@ def train(USE_FLASH_ATTN_2=False):
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
             )
-        elif 'mistral' in model_name:
+        elif llm_type == LlavaMetaModel.ModelType['llava_mistral']:
             rank0_print("Mistral")
             model = LlavaMistralForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -820,7 +824,7 @@ def train(USE_FLASH_ATTN_2=False):
                 use_flash_attention_2 = USE_FLASH_ATTN_2,
                 **bnb_model_from_pretrained_args
             )
-        elif any(x in model_name for x in ['neox', 'pythia', 'hi-nolin']):
+        elif llm_type == LlavaMetaModel.ModelType['llava_neox']:
             rank0_print("NeoX")
             model = LlavaGPTNeoXForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -828,7 +832,7 @@ def train(USE_FLASH_ATTN_2=False):
                 use_flash_attention_2 = USE_FLASH_ATTN_2, # The current architecture does not support Flash Attention 2.0
                 **bnb_model_from_pretrained_args
             )
-        else:
+        elif llm_type == LlavaMetaModel.ModelType['llava']:
             rank0_print("Llama")
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -836,6 +840,8 @@ def train(USE_FLASH_ATTN_2=False):
                 **bnb_model_from_pretrained_args,
                 use_flash_attention_2 = USE_FLASH_ATTN_2,
             )
+        else:
+            raise NotImplementedError
     else:
         model = transformers.LlamaForCausalLM.from_pretrained(
             model_args.model_name_or_path,
@@ -878,7 +884,7 @@ def train(USE_FLASH_ATTN_2=False):
         rank0_print("Adding LoRA adapters...")
         model = get_peft_model(model, lora_config)
 
-    if 'mpt' in model_args.model_name_or_path:
+    if llm_type == LlavaMetaModel.ModelType['llava_mpt']:
         tokenizer = transformers.AutoTokenizer.from_pretrained(
             model_args.model_name_or_path,
             cache_dir=training_args.cache_dir,

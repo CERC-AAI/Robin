@@ -3,7 +3,7 @@ import torch
 
 from robin.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 from robin.conversation import conv_templates, SeparatorStyle
-from robin.model.builder import load_pretrained_model
+from robin.model.builder import load_pretrained_model, LlavaMetaModel
 from robin.utils import disable_torch_init
 from robin.mm_utils import tokenizer_image_token, get_model_name_from_path, KeywordsStoppingCriteria
 
@@ -28,7 +28,7 @@ def eval_model(args):
     disable_torch_init()
 
     model_name = get_model_name_from_path(args.model_path)
-    tokenizer, model, image_processor, context_len = load_pretrained_model(args.model_path, args.model_base, model_name)
+    tokenizer, model, image_processor, context_len = load_pretrained_model(args.model_path, args.model_base, args.llm_type, model_name)
 
     qs = args.query
     if model.config.mm_use_im_start_end:
@@ -89,6 +89,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=str, default="facebook/opt-350m")
     parser.add_argument("--model-base", type=str, default=None)
+    parser.add_argument("--llm-type", type=str, default=None, choices=LlavaMetaModel.get_model_type_list())
     parser.add_argument("--image-file", type=str, required=True)
     parser.add_argument("--query", type=str, required=True)
     parser.add_argument("--conv-mode", type=str, default=None)

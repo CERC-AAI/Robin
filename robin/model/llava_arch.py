@@ -18,6 +18,8 @@ from abc import ABC, abstractmethod
 import torch
 import torch.nn as nn
 
+from enum import Enum
+
 from .multimodal_encoder.builder import build_vision_tower
 from .multimodal_projector.builder import build_vision_projector
 
@@ -26,12 +28,38 @@ from robin.constants import IGNORE_INDEX, IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_PATCH
 
 class LlavaMetaModel:
 
+    registry = {}
+    ModelType = None
+
     def __init__(self, config):
         super(LlavaMetaModel, self).__init__(config)
 
         if hasattr(config, "mm_vision_tower"):
             self.vision_tower = build_vision_tower(config, delay_load=True)
             self.mm_projector = build_vision_projector(config)
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        cls.registry[cls._subclass_type] = cls
+        LlavaMetaModel.ModelType = Enum('ModelType', [(subcls.config_class.model_type, subcls.__name__) for subcls in cls.registry.values()])
+    
+    # for when model_type is not passed for backwards compatibility
+    @classmethod
+    def get_model_type_from_model_name(cls, model_name: str) -> ModelType:
+        model_name = model_name.lower()
+        if 'mpt' in model_name:
+            return cls.ModelType['llava_mpt']
+        elif 'mistral' in model_name:
+            return cls.ModelType['llava_mistral']
+        elif any(x in model_name for x in ['neox', 'pythia', 'hi-nolin']):
+            return cls.ModelType['llava_neox']
+        else:
+            return cls.ModelType['llava']
+    
+    @classmethod
+    def get_model_type_list(cls):
+        return [m.name for m in LlavaMetaModel.ModelType]
+
 
     def get_vision_tower(self):
         vision_tower = getattr(self, 'vision_tower', None)
