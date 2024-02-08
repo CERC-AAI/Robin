@@ -18,7 +18,7 @@ from functools import partial
 from robin.constants import WORKER_HEART_BEAT_INTERVAL
 from robin.utils import (build_logger, server_error_msg,
     pretty_print_semaphore)
-from robin.model.builder import load_pretrained_model
+from robin.model.builder import load_pretrained_model, LlavaMetaModel
 from robin.mm_utils import process_images, load_image_from_base64, tokenizer_image_token, KeywordsStoppingCriteria
 from robin.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 from transformers import TextIteratorStreamer
@@ -44,7 +44,7 @@ def heart_beat_worker(controller):
 class ModelWorker:
     def __init__(self, controller_addr, worker_addr,
                  worker_id, no_register,
-                 model_path, model_base, model_name,
+                 model_path, model_base, model_name, llm_type,
                  load_8bit, load_4bit, device):
         self.controller_addr = controller_addr
         self.worker_addr = worker_addr
@@ -63,7 +63,7 @@ class ModelWorker:
         self.device = device
         logger.info(f"Loading the model {self.model_name} on worker {worker_id} ...")
         self.tokenizer, self.model, self.image_processor, self.context_len = load_pretrained_model(
-            model_path, model_base, self.model_name, load_8bit, load_4bit, device=self.device)
+            model_path, model_base, self.model_name, llm_type, load_8bit, load_4bit, device=self.device)
         self.is_multimodal = 'llava' in self.model_name.lower()
 
         if not no_register:
@@ -259,6 +259,7 @@ if __name__ == "__main__":
     parser.add_argument("--model-path", type=str, default="facebook/opt-350m")
     parser.add_argument("--model-base", type=str, default=None)
     parser.add_argument("--model-name", type=str)
+    parser.add_argument("--llm-type", type=str, default=None, choices=LlavaMetaModel.get_model_type_list())
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--multi-modal", action="store_true", help="Multimodal mode is automatically detected with model name, please make sure `llava` is included in the model path.")
     parser.add_argument("--limit-model-concurrency", type=int, default=5)
@@ -279,6 +280,7 @@ if __name__ == "__main__":
                          args.model_path,
                          args.model_base,
                          args.model_name,
+                         args.llm_type,
                          args.load_8bit,
                          args.load_4bit,
                          args.device)

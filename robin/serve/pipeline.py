@@ -28,10 +28,11 @@ import sys, os
 
 class LlavaMistralPipeline:
     
-    def __init__(self, model_path, model_base, device="cuda", load_8bit=False, load_4bit=False, temperature=.2, max_new_tokens=512):
+    def __init__(self, model_path, model_base, llm_type=None, device="cuda", load_8bit=False, load_4bit=False, temperature=.2, max_new_tokens=512):
         
         self.model_path = model_path
         self.model_base = model_base
+        self.llm_type = llm_type 
         self.device = device
         self.load_8bit = load_8bit
         self.load_4bit = load_4bit
@@ -48,7 +49,7 @@ class LlavaMistralPipeline:
     
         model_name = get_model_name_from_path(self.model_path)
 
-        self.tokenizer, self.model, self.image_processor, context_len = load_pretrained_model(self.model_path, self.model_base, model_name, self.load_8bit, self.load_4bit, device=self.device)
+        self.tokenizer, self.model, self.image_processor, context_len = load_pretrained_model(self.model_path, self.model_base, model_name, self.llm_type, self.load_8bit, self.load_4bit, device=self.device)
         
 
     def _load_image_tensor(self, image_file):

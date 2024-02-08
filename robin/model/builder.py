@@ -5,10 +5,11 @@ import shutil
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, BitsAndBytesConfig
 import torch
 from robin.model import *
+from robin.model.llava_arch import LlavaMetaModel
 from robin.constants import DEFAULT_IMAGE_PATCH_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 
 
-def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, load_4bit=False, device_map="auto", device="cuda"):
+def load_pretrained_model(model_path, model_base, model_name, llm_type=None, load_8bit=False, load_4bit=False, device_map="auto", device="cuda"):
     kwargs = {"device_map": device_map}
 
     if load_8bit:
@@ -31,10 +32,19 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     lora_cfg_pretrained = AutoConfig.from_pretrained(model_path)
     tokenizer = AutoTokenizer.from_pretrained(model_base)
     print('Loading LLaVA from base model...')
+
+    # register llm_type from Enum
+    if llm_type is not None:
+        try:
+            llm_type = LlavaMetaModel.ModelType(llm_type)
+        except KeyError as e:
+            raise ValueError(f"Invalid llm type provided {e}. Supported llm classes are {', '.join(LlavaMetaModel.get_model_type_list())}")
+    else:
+        llm_type = LlavaMetaModel.get_model_type_from_model_name(model_name)
     
-    if 'mistral' in model_name.lower():
+    if llm_type == LlavaMetaModel.ModelType.LlavaMistralModel:
         model = LlavaMistralForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
-    elif any(x in model_name.lower() for x in ['neox', 'pythia', 'hi-nolin']):
+    elif llm_type == LlavaMetaModel.ModelType.LlavaGPTNeoXModel:
         model = LlavaGPTNeoXForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, **kwargs)
     else:
         model = LlavaLlamaForCausalLM.from_pretrained(
