@@ -5,32 +5,33 @@ IFS=',' read -ra GPULIST <<< "$gpu_list"
 
 CHUNKS=${#GPULIST[@]}
 
-CKPT="llava-v1.5-13b"
+CKPT="llava-v1.5-7b-lora3"
 SPLIT="llava_vqav2_mscoco_test-dev2015"
 
 for IDX in $(seq 0 $((CHUNKS-1))); do
-    CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python -m robin.eval.model_vqa_loader \
-        --model-path liuhaotian/llava-v1.5-13b \
-        --question-file ./playground/data/eval/vqav2/$SPLIT.jsonl \
-        --image-folder ./playground/data/eval/vqav2/test2015 \
-        --answers-file ./playground/data/eval/vqav2/answers/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl \
+    CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python -m llava.eval.model_vqa_loader \
+        --model-path $1 \
+        --question-file /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/$SPLIT.jsonl \
+        --image-folder /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/test2015 \
+        --answers-file /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/answers/$3/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl \
         --num-chunks $CHUNKS \
         --chunk-idx $IDX \
         --temperature 0 \
+        --model-base $2 \
         --conv-mode vicuna_v1 &
 done
 
 wait
 
-output_file=./playground/data/eval/vqav2/answers/$SPLIT/$CKPT/merge.jsonl
+output_file=/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/answers/$SPLIT/$CKPT/merge.jsonl
 
 # Clear out the output file if it exists.
 > "$output_file"
 
 # Loop through the indices and concatenate each file.
 for IDX in $(seq 0 $((CHUNKS-1))); do
-    cat ./playground/data/eval/vqav2/answers/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl >> "$output_file"
+    cat /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/answers/$3/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl >> "$output_file"
 done
 
-python scripts/convert_vqav2_for_submission.py --split $SPLIT --ckpt $CKPT
+python /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/daniel/simon_llaba/scripts/convert_vqav2_for_submission.py --split $SPLIT --ckpt $CKPT --dir /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2
 
