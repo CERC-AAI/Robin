@@ -8,9 +8,9 @@
 # --model-path /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/checkpoints/llava-v1.5-7b-lora3 \
 # --model-base /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/vicuna-7b
 
-model_path="/app/models/mistral-7b-oh-siglip-so400m-finetune-lora"
+model_path="/app/downloaded_models/mistral-7b-oh-siglip-so400m-finetune-lora"
 #apple/DFN5B-CLIP-ViT-H-14
-model_base="/app/models/OpenHermes-2.5-Mistral-7B"
+model_base="/app/downloaded_models/OpenHermes-2.5-Mistral-7B"
 
 version=""
 ./sqa.sh $model_path $model_base $version 
