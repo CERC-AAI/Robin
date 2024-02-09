@@ -8,11 +8,8 @@ import urllib.request as ureq
 BASE_PATH = "/app/LLaVA-Finetune"
 
 def download_dataset(folder_name, urls):
-    if folder_name == "ocr_vqa":
-        download_ocr_data()
-        return
     if folder_name == "json":
-        os.system(f"wget -q https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/resolve/main/llava_v1_5_mix665k.jso -P {BASE_PATH}")
+        os.system(f"wget -q https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/resolve/main/llava_v1_5_mix665k.json -P {BASE_PATH}")
         return
 
     if isinstance(urls, str):
@@ -58,7 +55,7 @@ def download_ocr_data():
     pool.close()
     pool.join()
 
-    os.system(f"mogrify -format jpg {BASE_PATH}/{folder_name}/images/*.svg")
+    os.system(f"mogrify -format jpg {BASE_PATH}/{folder_name}/images/*.gif")
     os.system(f"mogrify -format jpg {BASE_PATH}/{folder_name}/images/*.png")
 
 if __name__ == "__main__":
