@@ -12,7 +12,7 @@ model_path="/app/models/mistral-7b-oh-siglip-so400m-finetune-lora"
 #apple/DFN5B-CLIP-ViT-H-14
 model_base="/app/models/OpenHermes-2.5-Mistral-7B"
 
-version="unknownstuff"
+version=""
 ./sqa.sh $model_path $model_base $version 
 
 
