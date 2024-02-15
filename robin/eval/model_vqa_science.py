@@ -44,12 +44,12 @@ def eval_model(args):
         question = line['conversations'][0]
         qs = question['value'].replace('<image>', '').strip()
 
-        if 'image' in line.kys():
+        if 'image' in line.keys():
             image_file = line["image"]
             image = Image.open(os.path.join(args.image_folder, image_file))
         else:
             image = None
-             
+
         if args.single_pred_prompt:
             qs = qs + '\n' + "Answer with the option's letter from the given choices directly."
 
