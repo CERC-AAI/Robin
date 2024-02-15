@@ -25,8 +25,7 @@ def expand2square(pil_img, background_color):
         return result
 
 
-def process_images(images, image_processor, model_cfg):
-    image_aspect_ratio = getattr(model_cfg, "image_aspect_ratio", None)
+def process_images(images, image_processor, image_aspect_ratio):
     new_images = []
     
     #Hardcoded because reasons.
