@@ -45,8 +45,7 @@ def eval_model(args):
         qs = question['value'].replace('<image>', '').strip()
 
         if 'image' in line.keys():
-            image_file = line["image"]
-            image = Image.open(os.path.join(args.image_folder, image_file))
+            image = os.path.join(args.image_folder, line["image"])
         else:
             image = None
 

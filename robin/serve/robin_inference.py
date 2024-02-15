@@ -105,6 +105,7 @@ class Robin:
                 image_tensor = [image.to(self.model.device, dtype=torch.float16) for image in image_tensor]
             else:
                 image_tensor = image_tensor.to(self.model.device, dtype=torch.float16)
+                
             if self.model.config.mm_use_im_start_end:
                 prompt = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + prompt
             else:
