@@ -26,15 +26,12 @@ def eval_model(args):
     # Model
     robin = Robin(args.model_path, 
           model_base = args.model_base,
-          device = args.device, 
+          device = "cuda", 
           conv_mode = args.conv_mode, 
           temperature = args.temperature, 
-          max_new_tokens = 1024, 
-          load_8bit = args.load_8bit, 
-          load_4bit = args.load_4bit, 
-          debug = args.debug, 
-          image_aspect_ratio = args.image_aspect_ratio,
-          lazy_load = False)
+          max_new_tokens = 1024,
+          lazy_load = False
+        )
 
     questions = json.load(open(os.path.expanduser(args.question_file), "r"))
     questions = get_chunk(questions, args.num_chunks, args.chunk_idx)
