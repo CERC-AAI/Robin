@@ -122,7 +122,7 @@ class Robin:
         input_ids = tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
         stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
         keywords = [stop_str]
-        stopping_criteria = KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)
+        stopping_criteria = [KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)] if conv.version == "v0" else None
         streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
 
         with torch.inference_mode():
@@ -134,7 +134,7 @@ class Robin:
                 max_new_tokens=self.max_new_tokens,
                 streamer=streamer,
                 use_cache=True,
-                stopping_criteria=[stopping_criteria])
+                stopping_criteria=stopping_criteria)
 
         outputs = self.tokenizer.decode(output_ids[0, input_ids.shape[1]:]).strip()
         outputs = outputs.strip()
