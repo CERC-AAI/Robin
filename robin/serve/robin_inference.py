@@ -96,14 +96,17 @@ class Robin:
         conv = conv_templates[self.conv_mode].copy()
         roles = conv.roles
 
-        image = self.load_image(img_url)
+        if img_url is not None:
+            image = self.load_image(img_url)
 
-        # Similar operation in model_worker.py
-        image_tensor = process_images([image], self.image_processor, self.image_aspect_ratio)
-        if type(image_tensor) is list:
-            image_tensor = [image.to(self.model.device, dtype=torch.float16) for image in image_tensor]
+            # Similar operation in model_worker.py
+            image_tensor = process_images([image], self.image_processor, self.image_aspect_ratio)
+            if type(image_tensor) is list:
+                image_tensor = [image.to(self.model.device, dtype=torch.float16) for image in image_tensor]
+            else:
+                image_tensor = image_tensor.to(self.model.device, dtype=torch.float16)
         else:
-            image_tensor = image_tensor.to(self.model.device, dtype=torch.float16)
+            image_tensor = None
 
         if self.debug: print(f"{roles[1]}: ", end="")
 
@@ -111,6 +114,7 @@ class Robin:
             prompt = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + prompt
         else:
             prompt = DEFAULT_IMAGE_TOKEN + '\n' + prompt
+
         conv.append_message(conv.roles[0], prompt)
         conv.append_message(conv.roles[1], None)
         prompt = conv.get_prompt()

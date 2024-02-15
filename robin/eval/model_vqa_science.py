@@ -39,18 +39,17 @@ def eval_model(args):
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
     ans_file = open(answers_file, "w")
     for i, line in enumerate(tqdm(questions)):
-        print("Line:", line)
-        print("Line keys:", line.keys())
-        print("Question:", questions[i])
-        
+
         idx = line["id"]
         question = line['conversations'][0]
         qs = question['value'].replace('<image>', '').strip()
 
-        if 'image' in line:
+        if 'image' in line.kys():
             image_file = line["image"]
             image = Image.open(os.path.join(args.image_folder, image_file))
-            
+        else:
+            image = None
+             
         if args.single_pred_prompt:
             qs = qs + '\n' + "Answer with the option's letter from the given choices directly."
 
