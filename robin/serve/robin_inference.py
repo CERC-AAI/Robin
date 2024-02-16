@@ -89,7 +89,7 @@ class Robin:
             image = Image.open(image_file).convert('RGB')
         return image
 
-    def __call__(self, img_url, prompt):
+    def __call__(self, img_url, prompt, streamer=False):
         if not self.loaded:
             self.load_model()
 
@@ -127,19 +127,31 @@ class Robin:
         stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
         keywords = [stop_str]
         stopping_criteria = [KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)]
-        streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
+        if streamer: 
+            streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
 
-        with torch.inference_mode():
-            output_ids = self.model.generate(
-                input_ids,
-                images=image_tensor,
-                do_sample=True if self.temperature > 0 else False,
-                temperature=self.temperature,
-                max_new_tokens=self.max_new_tokens,
-                streamer=streamer,
-                use_cache=True,
-                stopping_criteria=stopping_criteria
-            )
+            with torch.inference_mode():
+                output_ids = self.model.generate(
+                    input_ids,
+                    images=image_tensor,
+                    do_sample=True if self.temperature > 0 else False,
+                    temperature=self.temperature,
+                    max_new_tokens=self.max_new_tokens,
+                    streamer=streamer,
+                    use_cache=True,
+                    stopping_criteria=stopping_criteria
+                )
+        else:
+            with torch.inference_mode():
+                output_ids = self.model.generate(
+                    input_ids,
+                    images=image_tensor,
+                    do_sample=True if self.temperature > 0 else False,
+                    temperature=self.temperature,
+                    max_new_tokens=self.max_new_tokens,
+                    use_cache=True,
+                    stopping_criteria=stopping_criteria
+                )
 
         outputs = self.tokenizer.decode(output_ids[0, input_ids.shape[1]:])
         outputs = outputs.strip()

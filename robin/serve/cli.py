@@ -31,6 +31,7 @@ if __name__ == "__main__":
 
     img_url = input("Enter the image URL: ")
     prompt = input("Enter the prompt: ")
-    robin(img_url, prompt) 
-    prompt = input("Enter the prompt: ")
-    robin(img_url, prompt) 
+    ouput = robin(img_url, prompt)
+    print(ouput) 
+    prompt2 = input("Enter the prompt: ")
+    print(robin(img_url, prompt+ouput+prompt2))
