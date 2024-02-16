@@ -39,18 +39,20 @@ def eval_model(args):
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
     ans_file = open(answers_file, "w")
     for i, line in enumerate(tqdm(questions)):
-
         idx = line["id"]
         question = line['conversations'][0]
         qs = question['value'].replace('<image>', '').strip()
+        cur_prompt = qs
 
         if 'image' in line.keys():
             image = os.path.join(args.image_folder, line["image"])
+            cur_prompt = '<image>' + '\n' + cur_prompt
         else:
             image = None
 
         if args.single_pred_prompt:
             qs = qs + '\n' + "Answer with the option's letter from the given choices directly."
+            cur_prompt = cur_prompt + '\n' + "Answer with the option's letter from the given choices directly."
 
         outputs = robin(image, qs)
 
@@ -62,7 +64,7 @@ def eval_model(args):
 
         ans_id = shortuuid.uuid()
         ans_file.write(json.dumps({"question_id": idx,
-                                   "prompt": qs,
+                                   "prompt": cur_prompt,
                                    "text": outputs,
                                    "answer_id": ans_id,
                                    "model_id": robin.model_name,

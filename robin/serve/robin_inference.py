@@ -97,6 +97,10 @@ class Robin:
         roles = conv.roles
 
         if img_url is not None:
+            if len(img_url.strip()) == 0:
+                img_url = None
+
+        if img_url is not None:
             image = self.load_image(img_url)
 
             # Similar operation in model_worker.py
@@ -122,7 +126,7 @@ class Robin:
         input_ids = tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
         stop_str = conv.sep if conv.sep_style != SeparatorStyle.TWO else conv.sep2
         keywords = [stop_str]
-        stopping_criteria = [KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)] if conv.version == "v0" else None
+        stopping_criteria = [KeywordsStoppingCriteria(keywords, self.tokenizer, input_ids)]
         streamer = TextStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
 
         with torch.inference_mode():

@@ -17,7 +17,7 @@ model_path="agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora"
 model_base="teknium/OpenHermes-2.5-Mistral-7B"
 
 version="unknownstuff"
-./sqa.sh $model_path $model_base $version 
+./sqa_daniel.sh $model_path $model_base $version 
 
 
 #Base
