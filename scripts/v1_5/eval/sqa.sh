@@ -20,7 +20,7 @@ python /app/robin/robin/eval/eval_science_qa.py \
     --output-result $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b_result.json
 
 model_name=$(basename $1)
-mkdir -p /export/$1/scienceqa
+mkdir -p /export/$model_name/scienceqa
 mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b.jsonl /export/$model_name/scienceqa/llava-v1.5-13b.jsonl
 mv $path/data/eval/scienceqa/$3/llava-v1.5-13b_output.jsonl /export/$model_name/scienceqa/llava-v1.5-13b_output.jsonl
 mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b_result.json /export/$model_name/scienceqa/llava-v1.5-13b_result.json
