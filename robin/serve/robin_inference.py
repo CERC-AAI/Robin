@@ -105,7 +105,7 @@ class Robin:
                 image_tensor = [image.to(self.model.device, dtype=torch.float16) for image in image_tensor]
             else:
                 image_tensor = image_tensor.to(self.model.device, dtype=torch.float16)
-                
+
             if self.model.config.mm_use_im_start_end:
                 prompt = DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_TOKEN + DEFAULT_IM_END_TOKEN + '\n' + prompt
             else:
@@ -129,18 +129,19 @@ class Robin:
             output_ids = self.model.generate(
                 input_ids,
                 images=image_tensor,
-                do_sample=True if self.temperature > 0 else False,
+                do_sample=True if self.temperature == 0 else False,
                 temperature=self.temperature,
                 max_new_tokens=self.max_new_tokens,
                 streamer=streamer,
                 use_cache=True,
-                stopping_criteria=stopping_criteria)
+                stopping_criteria=stopping_criteria
+            )
 
-        outputs = self.tokenizer.decode(output_ids[0, input_ids.shape[1]:]).strip()
+        outputs = self.tokenizer.decode(output_ids[0, input_ids.shape[1]:])
         outputs = outputs.strip()
         if outputs.endswith(stop_str):
             outputs = outputs[:-len(stop_str)]
-        outputs = outputs.strip()
+            outputs = outputs.strip()
 
         conv.messages[-1][-1] = outputs
 
