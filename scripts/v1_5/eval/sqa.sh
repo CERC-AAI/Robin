@@ -1,8 +1,8 @@
 #!/bin/bash
 
-path="/localdisks/rogeralexis/robin_eval/playground"
+path="/app/playground"
 
-python /localdisks/rogeralexis/robin_eval/Robin/robin/eval/model_vqa_science.py \
+python /app/robin/robin/eval/model_vqa_science.py \
     --model-path $1 \
     --question-file  $path/data/eval/scienceqa/llava_test_CQM-A.json \
     --image-folder  $path/data/eval/scienceqa/images/test \
@@ -13,7 +13,7 @@ python /localdisks/rogeralexis/robin_eval/Robin/robin/eval/model_vqa_science.py 
     --model-base $2
 
 
-python /localdisks/rogeralexis/robin_eval/Robin/robin/eval/eval_science_qa.py \
+python /app/robin/robin/eval/eval_science_qa.py \
     --base-dir $path/data/eval/scienceqa/ \
     --result-file $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b.jsonl \
     --output-file $path/data/eval/scienceqa/$3/llava-v1.5-13b_output.jsonl \
