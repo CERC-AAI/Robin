@@ -29,7 +29,7 @@ def eval_model(args):
           device = "cuda", 
           conv_mode = args.conv_mode, 
           temperature = args.temperature, 
-          max_new_tokens = 1024,
+          max_new_tokens = 1,
           lazy_load = False
         )
 
