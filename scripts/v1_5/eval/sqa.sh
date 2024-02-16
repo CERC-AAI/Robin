@@ -19,7 +19,8 @@ python /app/robin/robin/eval/eval_science_qa.py \
     --output-file $path/data/eval/scienceqa/$3/llava-v1.5-13b_output.jsonl \
     --output-result $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b_result.json
 
+model_name=$(basename $1)
 mkdir -p /export/$1/scienceqa
-mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b.jsonl /export/$1/scienceqa/llava-v1.5-13b.jsonl
-mv $path/data/eval/scienceqa/$3/llava-v1.5-13b_output.jsonl /export/$1/scienceqa/llava-v1.5-13b_output.jsonl
-mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b_result.json /export/$1/scienceqa/llava-v1.5-13b_result.json
+mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b.jsonl /export/$model_name/scienceqa/llava-v1.5-13b.jsonl
+mv $path/data/eval/scienceqa/$3/llava-v1.5-13b_output.jsonl /export/$model_name/scienceqa/llava-v1.5-13b_output.jsonl
+mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b_result.json /export/$model_name/scienceqa/llava-v1.5-13b_result.json
