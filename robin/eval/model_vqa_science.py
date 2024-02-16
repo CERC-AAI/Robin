@@ -55,6 +55,7 @@ def eval_model(args):
             cur_prompt = cur_prompt + '\n' + "Answer with the option's letter from the given choices directly."
 
         outputs = robin(image, qs)
+        outputs = outputs[0]
 
         # prompt for answer
         if args.answer_prompter:
