@@ -129,7 +129,7 @@ class Robin:
             output_ids = self.model.generate(
                 input_ids,
                 images=image_tensor,
-                do_sample=True if self.temperature == 0 else False,
+                do_sample=True if self.temperature > 0 else False,
                 temperature=self.temperature,
                 max_new_tokens=self.max_new_tokens,
                 streamer=streamer,
