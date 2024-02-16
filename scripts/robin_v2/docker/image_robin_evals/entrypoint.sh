@@ -27,7 +27,4 @@ mkdir -p $EXPORT_PATH
 
 # launch training
 cd /app/robin/scripts/v1_5/eval
-./sqa.sh $MODEL $BASE $version
-
-# export results
-# mv $CHECKPOINT_PATH/pretrain/*.* $EXPORT_PATH/pretrain/
+./docker_sqa.sh $MODEL $BASE $version
