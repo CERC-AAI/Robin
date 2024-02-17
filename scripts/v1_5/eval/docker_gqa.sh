@@ -17,9 +17,9 @@ python /app/robin/robin/eval/model_vqa_loader.py \
     --conv-mode vicuna_v1
 
 
-output_file=$GQADIR/answers/$3/$SPLIT/$MODEL/answers.jsonl
-
-python /app/robin/scripts/convert_gqa_for_eval.py --src $output_file --dst $GQADIR/data/testdev_balanced_predictions.json
-
-cd $GQADIR
-python eval.py --tier data/testdev_balanced
+# output_file=$GQADIR/answers/$3/$SPLIT/$MODEL/answers.jsonl
+# 
+# python /app/robin/scripts/convert_gqa_for_eval.py --src $output_file --dst $GQADIR/data/testdev_balanced_predictions.json
+# 
+# cd $GQADIR
+# python eval.py --tier data/testdev_balanced
