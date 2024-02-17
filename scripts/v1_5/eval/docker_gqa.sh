@@ -17,16 +17,17 @@ GQADIR="/app/playground/data/eval/gqa"
 #     --model-base $BASE \
 #     --conv-mode vicuna_v1
 
-mkdir -p /export/$MODEL_NAME/gqa
+# mkdir -p /export/$MODEL_NAME/gqa
 # cp $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl /export/$MODEL_NAME/gqa/answers.jsonl
 
+mkdir -p $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/
 cp /export/$MODEL_NAME/gqa/answers.jsonl $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl
 
 output_file=$GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl
 
 python /app/robin/scripts/convert_gqa_for_eval.py --src $output_file --dst $GQADIR/data/testdev_balanced_predictions.json
 
-mv $GQADIR/data/testdev_balanced_predictions.json /export/$MODEL_NAME/gqa/testdev_balanced_predictions.json
+cp $GQADIR/data/testdev_balanced_predictions.json /export/$MODEL_NAME/gqa/testdev_balanced_predictions.json
 
 cd $GQADIR
 python eval.py --tier data/testdev_balanced
