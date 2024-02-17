@@ -31,6 +31,6 @@ echo "Launching SQA"
 ./docker_sqa.sh $MODEL $BASE $version > $EXPORT_PATH/scienceqa/results.log 2>&1
 
 echo "Launching QGA"
-./docker_gqa.sh $MODEL $BASE $version > $EXPORT_PATH/qga/results.log 2>&1
+./docker_gqa.sh $MODEL $BASE $version > $EXPORT_PATH/gqa/results.log 2>&1
 
 echo "Finished evals!"
