@@ -24,6 +24,7 @@ class Robin:
                  device="cuda",
                  conv_mode="vicuna_v1",
                  temperature=0.2,
+                 top_p=None,
                  max_new_tokens=512,
                  load_8bit=False,
                  load_4bit=False,
@@ -36,6 +37,7 @@ class Robin:
         self.device = device
         self.conv_mode = conv_mode
         self.temperature = temperature
+        self.top_p = top_p
         self.max_new_tokens = max_new_tokens
         self.load_8bit = load_8bit
         self.load_4bit = load_4bit
@@ -136,6 +138,7 @@ class Robin:
                     images=image_tensor,
                     do_sample=True if self.temperature > 0 else False,
                     temperature=self.temperature,
+                    top_p=self.top_p,
                     max_new_tokens=self.max_new_tokens,
                     streamer=streamer,
                     use_cache=True,
