@@ -8,20 +8,17 @@ BASE=$2
 SPLIT="llava_gqa_testdev_balanced"
 GQADIR="/app/playground/data/eval/gqa"
 
-# python /app/robin/robin/eval/model_vqa_loader.py \
-#     --model-path $MODEL_PATH \
-#     --question-file $GQADIR/data/$SPLIT.jsonl \
-#     --image-folder $GQADIR/data/images \
-#     --answers-file $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl \
-#     --temperature 0 \
-#     --model-base $BASE \
-#     --conv-mode vicuna_v1
+python /app/robin/robin/eval/model_vqa_loader.py \
+    --model-path $MODEL_PATH \
+    --question-file $GQADIR/data/$SPLIT.jsonl \
+    --image-folder $GQADIR/data/images \
+    --answers-file $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl \
+    --temperature 0 \
+    --model-base $BASE \
+    --conv-mode vicuna_v1
 
-# mkdir -p /export/$MODEL_NAME/gqa
-# cp $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl /export/$MODEL_NAME/gqa/answers.jsonl
-
-mkdir -p $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/
-cp /export/$MODEL_NAME/gqa/answers.jsonl $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl
+mkdir -p /export/$MODEL_NAME/gqa
+cp $GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl /export/$MODEL_NAME/gqa/answers.jsonl
 
 output_file=$GQADIR/answers/$3/$SPLIT/$MODEL_NAME/answers.jsonl
 
