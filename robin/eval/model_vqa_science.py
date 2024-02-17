@@ -1,5 +1,4 @@
 import argparse
-import torch
 import os
 import json
 from tqdm import tqdm
@@ -7,7 +6,6 @@ import shortuuid
 
 from robin.serve.robin_inference import Robin
 
-from PIL import Image
 import math
 
 

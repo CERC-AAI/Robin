@@ -1,21 +1,10 @@
 import argparse
-import torch
 import os
 import json
 from tqdm import tqdm
 import shortuuid
 
-from robin.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
-from robin.conversation import conv_templates, SeparatorStyle
-from robin.model.builder import load_pretrained_model
-from robin.utils import disable_torch_init
-from robin.mm_utils import tokenizer_image_token, process_images, get_model_name_from_path
-from torch.utils.data import Dataset, DataLoader
 from robin.serve.robin_inference import Robin
-
-from PIL import Image
-import math
-
 
 def eval_model(args):
     # Model
