@@ -45,3 +45,4 @@ scripts/robin_v2/pretrain_multinodes_[0-9]*.sh
 scripts/robin_v2/finetune_lora_multinodes_[0-9]*.sh
 
 playground-original/
+*.tar.gz

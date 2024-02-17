@@ -27,4 +27,10 @@ mkdir -p $EXPORT_PATH
 
 # launch training
 cd /app/robin/scripts/v1_5/eval
-./docker_sqa.sh $MODEL $BASE $version
+echo "Launching SQA"
+./docker_sqa.sh $MODEL $BASE $version > $EXPORT_PATH/scienceqa/results.log 2>&1
+
+echo "Launching QGA"
+./docker_gqa.sh $MODEL $BASE $version > $EXPORT_PATH/qga/results.log 2>&1
+
+echo "Finished evals!"
