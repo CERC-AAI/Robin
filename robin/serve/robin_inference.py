@@ -74,8 +74,9 @@ class Robin:
 
         self.model_name = get_model_name_from_path(self.model_path)
 
-        if len(self.model_base) == 0:
-            self.find_base()
+        if self.model_base is not None:
+            if len(self.model_base) == 0:
+                self.find_base()
         
         print(f"Loading model {self.model_name} from {self.model_base}...")
 
