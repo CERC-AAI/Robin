@@ -107,9 +107,8 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
     vision_tower.to(device=device, dtype=torch.float16)
     image_processor = vision_tower.image_processor        
     
-    finetuned_ve = False if "frozen" in model_name.lower() else True
+    finetuned_ve = False if ("frozen" in model_name.lower() or "llava" in model_name.lower()) else True
     if finetuned_ve:
-        
         if os.path.exists(os.path.join(model_path, 'non_lora_trainables.bin')):
             print("Found lora_trainables")
             original_weights = torch.load(os.path.join(model_path, 'non_lora_trainables.bin'))
