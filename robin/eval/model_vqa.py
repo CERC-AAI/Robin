@@ -14,6 +14,7 @@ from robin.mm_utils import tokenizer_image_token, get_model_name_from_path, Keyw
 from PIL import Image
 import math
 
+from robin.serve.robin_inference import Robin
 
 def split_list(lst, n):
     """Split a list into n (roughly) equal-sized chunks"""
@@ -25,8 +26,46 @@ def get_chunk(lst, n, k):
     chunks = split_list(lst, n)
     return chunks[k]
 
-
 def eval_model(args):
+    # Model
+    robin = Robin(args.model_path,
+                 model_base=args.model_base,
+                 device="cuda",
+                 conv_mode=args.conv_mode,
+                 temperature=args.temperature,
+                 max_new_tokens=128
+                )
+
+#    print("questions", args.question_file)
+    questions = [json.loads(q) for q in open(os.path.expanduser(args.question_file), "r")]
+    #New
+    # questions = get_chunk(questions, args.num_chunks, args.chunk_idx)
+
+    answers_file = os.path.expanduser(args.answers_file)
+    os.makedirs(os.path.dirname(answers_file), exist_ok=True)
+    ans_file = open(answers_file, "w")
+
+    img_folder = os.path.expanduser(args.image_folder)
+
+    for line in tqdm(questions):
+        idx = line["question_id"]
+        cur_prompt = line["text"]
+        image_file = os.path.join(img_folder, line["image"])
+
+        outputs = robin(image_file, cur_prompt)
+
+        ans_id = shortuuid.uuid()
+        ans_file.write(json.dumps({"question_id": idx,
+                                   "prompt": cur_prompt,
+                                   "text": outputs,
+                                   "answer_id": ans_id,
+                                   "model_id": robin.model_name,
+                                   "metadata": {}}) + "\n")
+        ans_file.flush()
+    ans_file.close()
+
+
+def eval_model_old(args):
     # Model
     disable_torch_init()
     model_path = os.path.expanduser(args.model_path)

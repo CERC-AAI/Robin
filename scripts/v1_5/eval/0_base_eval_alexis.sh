@@ -17,8 +17,11 @@ model_path="agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora"
 model_base="teknium/OpenHermes-2.5-Mistral-7B"
 
 version="unknownstuff"
-./sqa_daniel.sh $model_path $model_base $version 
+#./sqa_daniel.sh $model_path $model_base $version
+#./textvqa.sh $model_path $model_base $version
 
+#./vqav2.sh $model_path $model_base $version
+./mmvet.sh $model_path $model_base $version
 
 #Base
 # ./sqa.sh /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/checkpoints/llava-v1.5-7b-lora3 /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/hf/vicuna-7b base_ve
