@@ -1,26 +1,30 @@
 #!/bin/bash
 
-path="/app/playground"
+MODEL_PATH=$1
+MODEL_NAME=$(basename $MODEL_PATH)
+BASE=$2
+#$3=""
+
+PATH_SQA="/app/playground/data/eval/scienceqa"
 
 python /app/robin/robin/eval/model_vqa_science.py \
-    --model-path $1 \
-    --question-file  $path/data/eval/scienceqa/llava_test_CQM-A.json \
-    --image-folder  $path/data/eval/scienceqa/images/test \
-    --answers-file  $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b.jsonl \
+    --model-path $MODEL_PATH \
+    --question-file  $PATH_SQA/llava_test_CQM-A.json \
+    --image-folder  $PATH_SQA/images/test \
+    --answers-file  $PATH_SQA/answers/$3/llava-v1.5-13b.jsonl \
     --single-pred-prompt \
     --temperature 0 \
     --conv-mode vicuna_v1 \
-    --model-base $2
+    --model-base $BASE
 
 
 python /app/robin/robin/eval/eval_science_qa.py \
-    --base-dir $path/data/eval/scienceqa/ \
-    --result-file $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b.jsonl \
-    --output-file $path/data/eval/scienceqa/$3/llava-v1.5-13b_output.jsonl \
-    --output-result $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b_result.json
+    --base-dir $PATH_SQA/ \
+    --result-file $PATH_SQA/answers/$3/llava-v1.5-13b.jsonl \
+    --output-file $PATH_SQA/$3/llava-v1.5-13b_output.jsonl \
+    --output-result $PATH_SQA/answers/$3/llava-v1.5-13b_result.json
 
-model_name=$(basename $1)
-mkdir -p /export/$model_name/scienceqa
-mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b.jsonl /export/$model_name/scienceqa/llava-v1.5-13b.jsonl
-mv $path/data/eval/scienceqa/$3/llava-v1.5-13b_output.jsonl /export/$model_name/scienceqa/llava-v1.5-13b_output.jsonl
-mv $path/data/eval/scienceqa/answers/$3/llava-v1.5-13b_result.json /export/$model_name/scienceqa/llava-v1.5-13b_result.json
+mkdir -p /export/$MODEL_NAME/scienceqa
+mv $PATH_SQA/answers/$3/llava-v1.5-13b.jsonl /export/$MODEL_NAME/scienceqa/llava-v1.5-13b.jsonl
+mv $PATH_SQA/$3/llava-v1.5-13b_output.jsonl /export/$MODEL_NAME/scienceqa/llava-v1.5-13b_output.jsonl
+mv $PATH_SQA/answers/$3/llava-v1.5-13b_result.json /export/$MODEL_NAME/scienceqa/llava-v1.5-13b_result.json

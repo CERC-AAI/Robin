@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MODEL_PATH=$1
-MODEL_NAME=$(basename $1)
+MODEL_NAME=$(basename $MODEL_PATH)
 BASE=$2
 #$3=""
 
