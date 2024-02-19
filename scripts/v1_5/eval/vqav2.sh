@@ -5,15 +5,24 @@ IFS=',' read -ra GPULIST <<< "$gpu_list"
 
 CHUNKS=${#GPULIST[@]}
 
+
+path="/localdisks/rogeralexis/robin_eval/playground"
+
+
+#$1 is model_path
+#$2 is model_base
+#$3 is chkpt for now
+
 CKPT="llava-v1.5-7b-lora3"
+
 SPLIT="llava_vqav2_mscoco_test-dev2015"
 
 for IDX in $(seq 0 $((CHUNKS-1))); do
-    CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python -m llava.eval.model_vqa_loader \
+    CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python -m robin.eval.model_vqa_loader \
         --model-path $1 \
-        --question-file /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/$SPLIT.jsonl \
-        --image-folder /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/test2015 \
-        --answers-file /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/answers/$3/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl \
+        --question-file $path/data/eval/vqav2/$SPLIT.jsonl \
+        --image-folder $path/data/eval/vqav2/test2015 \
+        --answers-file $path/data/eval/vqav2/answers/$3/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl \
         --num-chunks $CHUNKS \
         --chunk-idx $IDX \
         --temperature 0 \
@@ -23,15 +32,15 @@ done
 
 wait
 
-output_file=/pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/answers/$SPLIT/$CKPT/merge.jsonl
+output_file=$PATH/data/eval/vqav2/answers/$SPLIT/$CKPT/merge.jsonl
 
 # Clear out the output file if it exists.
 > "$output_file"
 
 # Loop through the indices and concatenate each file.
 for IDX in $(seq 0 $((CHUNKS-1))); do
-    cat /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2/answers/$3/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl >> "$output_file"
+    cat $path/data/eval/vqav2/answers/$3/$SPLIT/$CKPT/${CHUNKS}_${IDX}.jsonl >> "$output_file"
 done
 
-python /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/daniel/simon_llaba/scripts/convert_vqav2_for_submission.py --split $SPLIT --ckpt $CKPT --dir /pfss/mlde/workspaces/mlde_wsp_Ramstedt_Mila/datasets/playground/data/eval/vqav2
+python $path/../Robin/scripts/convert_vqav2_for_submission.py --split $SPLIT --ckpt $CKPT --dir $path/playground/data/eval/vqav2
 
