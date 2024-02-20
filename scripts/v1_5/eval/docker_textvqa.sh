@@ -5,7 +5,7 @@ MODEL_NAME=$(basename $MODEL_PATH)
 BASE=$2
 #$3=""
 
-path="/app/playground/data/eval/textvqa"
+PATH_TEXTVQA="/app/playground/data/eval/textvqa"
 
 python /app/robin/robin/eval/model_vqa_loader.py \
     --model-path $MODEL_PATH \
