@@ -14,7 +14,7 @@ python /app/robin/robin/eval/model_vqa_loader.py \
     --model-path $MODEL_PATH \
     --question-file $PATH_VQAv2/$SPLIT.jsonl \
     --image-folder $PATH_VQAv2/test2015 \
-    --answers-file $PATH_VQAv2/answers/$3/$SPLIT/$CKPT/merge.jsonl \
+    --answers-file $PATH_VQAv2/answers/$SPLIT/$CKPT/merge.jsonl \
     --temperature 0 \
     --model-base $BASE \
     --conv-mode vicuna_v1
