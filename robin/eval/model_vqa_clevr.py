@@ -18,7 +18,7 @@ from robin.serve.robin_inference import Robin
 
 # Note: We assuming that the question file passed in is the in the format provided in the CLEVR dataset downloaded from https://cs.stanford.edu/people/jcjohns/clevr/ 
 # https://dl.fbaipublicfiles.com/clevr/CLEVR_v1.0.zip
-# e.g. CLEVR_v1.0/questions/CLEVR_test_questions.json , which correspond to images in 
+# e.g. CLEVR_v1.0/questions/CLEVR_test_questions.json , which correspond to images in CLEVR_v1.0/images/test
 def eval_model(args):
     questions_file_path = os.path.expanduser(args.question_file)
     img_folder = os.path.expanduser(args.image_folder)
