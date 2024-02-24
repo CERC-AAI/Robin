@@ -30,7 +30,6 @@ class OpenCLIPVisionTower(nn.Module):
         
     def load_model(self):
         name = self.vision_tower_name.split("/")[-1]
-        
         if os.path.exists(self.vision_tower_name):
 
             config = OPENCLIP_CONFIG_MAP[name] if name in OPENCLIP_CONFIG_MAP.keys() else name
@@ -80,7 +79,7 @@ class OpenCLIPVisionTower(nn.Module):
         if type(images) is list:
             image_features = []
             for image in images:
-                cls_token, image_forward_out = self.vision_tower(image.to(device=self.device, dtype=self.dtype).unsqueeze(0))
+                cls_token, image_feature = self.vision_tower(image.to(device=self.device, dtype=self.dtype).unsqueeze(0))
                 image_features.append(image_feature)
         else:#This should always be unsqueezed, if we have multiple items just stack them before this
             cls_token, image_features = self.vision_tower(images.to(device=self.device, dtype=self.dtype))
