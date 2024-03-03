@@ -9,6 +9,7 @@ def build_vision_tower(vision_tower_cfg, **kwargs):
     
     if os.path.exists(vision_tower):
         name = vision_tower.split("/")[-1].lower()
+        name = name.replace("hf-hub:", "")
 
         if name in CLIP_COMPATIBLE_MODELS:
             return CLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
@@ -20,9 +21,14 @@ def build_vision_tower(vision_tower_cfg, **kwargs):
             print(f'Local model not handled in configs (might crash): {vision_tower}')
             return OpenCLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
     else:
-        if vision_tower.lower().startswith("openai") or vision_tower.lower().startswith("laion"):
+        vision_tower_tmp = vision_tower.lower()
+        if vision_tower_tmp.startswith("hf-hub:"):
+            vision_tower_tmp = vision_tower_tmp.replace("hf-hub:", "")
+
+        if vision_tower_tmp.startswith("openai") or vision_tower_tmp.startswith("laion") or vision_tower_tmp.startswith("facebook"):
+            vision_tower = vision_tower.replace("hf-hub:", "")
             return CLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
-        elif "dino" in str(vision_tower).lower():
+        elif "dino" in vision_tower_tmp:
             return TimmVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
         else:
             return OpenCLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
