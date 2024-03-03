@@ -1,20 +1,17 @@
-import argparse
 import torch
 import os
 import json
+import requests
+
+from PIL import Image
+from io import BytesIO
+from transformers import TextStreamer
 
 from robin.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 from robin.conversation import conv_templates, SeparatorStyle
 from robin.model.builder import load_pretrained_model
 from robin.utils import disable_torch_init
 from robin.mm_utils import process_images, tokenizer_image_token, get_model_name_from_path, KeywordsStoppingCriteria
-
-from PIL import Image
-
-import requests
-from PIL import Image
-from io import BytesIO
-from transformers import TextStreamer
 
 
 class Robin:
@@ -49,25 +46,32 @@ class Robin:
             self.load_model()
 
     def find_base(self):
-        # TODO
-        raise "Base model arg in config not implemented yet!"
         if os.path.exists(self.model_path):
-            with open(os.path.join(self.model_path, "config.json"), "r") as f:
-                config = json.load(f)
-                print("CONFIG ", config)
-                self.model_base = config["_name_or_path"]
+            if os.path.exists(os.path.join(self.model_path, 'non_lora_trainables.bin')):
+                with open(os.path.join(self.model_path, "adapter_config.json"), "r") as f:
+                    config = json.load(f)
+                    print("CONFIG ", config)
+                    self.model_base = config["base_model_name_or_path"]
+            else:
+                self.model_base = None
         else:
             print("No local model found, trying to download from Hugging Face")
             try:
                 print("Trying to download model from Hugging Face", self.model_path, '...')
-                from transformers import AutoConfig
-                config = AutoConfig.from_pretrained(self.model_path)
-                self.model_base = config._name_or_path
-                print("CONFIG ", config)
-                print("Model found at", self.model_base)
+                url = f"https://huggingface.co/{self.model_path}/raw/main/adapter_config.json"
+                response = requests.get(url)
+                if response.status_code != 200:
+                    response = requests.get(url, headers={"Authorization": "Bearer " + os.environ["HF_TOKEN"]})
+                if response.status_code != 200:
+                    print("No model base found for ", self.model_path)
+                    self.model_base = None
+                    return
+                config = json.loads(response.text)
+                self.model_base = config["base_model_name_or_path"]
+                print("Model base found at", self.model_base)
             except Exception as e:
-                print("Failed to download model from Hugging Face", self.model_path, e)
-                self.model_base = self.model_path
+                print("Failed to find base on Hugging Face", self.model_path, e)
+                self.model_base = None
 
     def load_model(self):
         disable_torch_init()
