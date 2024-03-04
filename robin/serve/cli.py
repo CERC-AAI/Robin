@@ -5,7 +5,7 @@ from robin.serve.robin_inference import Robin
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=str, default="agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora")
-    parser.add_argument("--model-base", type=str, default="teknium/OpenHermes-2.5-Mistral-7B")
+    parser.add_argument("--model-base", type=str, default="")
     parser.add_argument("--device", type=str, default="cuda:1")
     parser.add_argument("--conv-mode", type=str, default="vicuna_v1")
     parser.add_argument("--temperature", type=float, default=0.2)
