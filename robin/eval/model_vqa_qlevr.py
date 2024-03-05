@@ -33,7 +33,6 @@ def eval_model(args):
     ans_file = open(answers_file, "w")
 
     robin = Robin(args.model_path,
-                model_base=args.model_base,
                 device=args.device,
                 conv_mode=args.conv_mode,
                 temperature=args.temperature,
@@ -64,7 +63,6 @@ def eval_model(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=str, default="agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora")
-    parser.add_argument("--model-base", type=str, default="teknium/OpenHermes-2.5-Mistral-7B")
     parser.add_argument("--image-folder", type=str, default="2d_scene/test/full_images")
     parser.add_argument("--image-prefix", type=str, default="2d_full_test_", help="Qlevr dataset has prefixes '2d_full_test_' and '3d_test_' in front of the image id e.g. 2d_full_test_000001.png")
     parser.add_argument("--question-file", type=str, default="questions_test.json")
