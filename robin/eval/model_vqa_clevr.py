@@ -33,7 +33,6 @@ def eval_model(args):
     ans_file = open(answers_file, "w")
 
     robin = Robin(args.model_path,
-                model_base=args.model_base,
                 device=args.device,
                 conv_mode=args.conv_mode,
                 temperature=args.temperature,
@@ -64,7 +63,6 @@ def eval_model(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-path", type=str, default="agi-collective/mistral-7b-oh-siglip-so400m-finetune-lora")
-    parser.add_argument("--model-base", type=str, default="teknium/OpenHermes-2.5-Mistral-7B")
     parser.add_argument("--image-folder", type=str, default="CLEVR_v1.0/images/test")
     parser.add_argument("--question-file", type=str, default="CLEVR_v1.0/questions/CLEVR_test_questions.json")
     parser.add_argument("--answers-file", type=str, default="answers.jsonl")
