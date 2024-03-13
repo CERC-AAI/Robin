@@ -49,7 +49,6 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             token_num, tokem_dim = model.embed_out.out_features, model.embed_out.in_features
             if model.embed_out.weight.shape[0] != token_num:
                 model.embed_out.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
-                breakpoint()
                 model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
         else:
             token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features
@@ -143,7 +142,8 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
         projections = ["base_model.model.model.mm_projector.0.weight", "base_model.model.model.mm_projector.0.bias", "base_model.model.model.mm_projector.2.weight", "base_model.model.model.mm_projector.2.bias"]
         projections = [item.replace('model.mm_projector', 'gpt_neox.mm_projector') for item in projections]
         for key in projections:
-            projection[key] = new_weights.pop(key)
+            if key in new_weights:
+                projection[key] = new_weights.pop(key)
         
         result = vision_tower.load_state_dict(new_weights, strict = True)   
         print("Loading strict resuts:", result)
