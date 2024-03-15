@@ -132,19 +132,21 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
         new_weights = {}
         for key in original_weights.keys():
             new_key = str(key).replace("base_model.model.model.vision_tower.","")
-            new_key = str(key).replace("base_model.model.gpt_neox.vision_tower.","")
+            new_key = new_key.replace("base_model.model.gpt_neox.vision_tower.","")
             new_weights[new_key] = original_weights[key]
         del original_weights
-        
         
         #This is so that we can load strict
         projection = {}
         projections = ["base_model.model.model.mm_projector.0.weight", "base_model.model.model.mm_projector.0.bias", "base_model.model.model.mm_projector.2.weight", "base_model.model.model.mm_projector.2.bias"]
+        for key in projections:
+            if key in new_weights:
+                projection[key] = new_weights.pop(key)
         projections = [item.replace('model.mm_projector', 'gpt_neox.mm_projector') for item in projections]
         for key in projections:
             if key in new_weights:
                 projection[key] = new_weights.pop(key)
-        
+       
         result = vision_tower.load_state_dict(new_weights, strict = True)   
         print("Loading strict resuts:", result)
         
