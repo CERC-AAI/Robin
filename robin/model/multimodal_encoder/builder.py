@@ -22,8 +22,7 @@ def build_vision_tower(vision_tower_cfg, **kwargs):
             return OpenCLIPVisionTower(vision_tower, args=vision_tower_cfg, **kwargs)
     else:
         vision_tower_tmp = vision_tower.lower()
-        if vision_tower_tmp.startswith("hf-hub:"):
-            vision_tower_tmp = vision_tower_tmp.replace("hf-hub:", "")
+        vision_tower_tmp = vision_tower_tmp.replace("hf-hub:", "")
 
         if vision_tower_tmp.startswith("openai") or vision_tower_tmp.startswith("laion") or vision_tower_tmp.startswith("facebook"):
             vision_tower = vision_tower.replace("hf-hub:", "")
