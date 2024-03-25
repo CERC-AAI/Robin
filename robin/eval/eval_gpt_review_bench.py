@@ -5,6 +5,8 @@ import os
 import openai
 import time
 
+from tqdm.contrib import tzip
+
 NUM_SECONDS_TO_SLEEP = 0.5
 
 
@@ -12,7 +14,8 @@ def get_eval(content: str, max_tokens: int):
     while True:
         try:
             response = openai.ChatCompletion.create(
-                model='gpt-4-0314',
+                # model='gpt-4-0314', # model depreciated
+                model='gpt-4-0613', 
                 messages=[{
                     'role': 'system',
                     'content': 'You are a helpful and precise assistant for checking the quality of the answer.'
@@ -25,6 +28,8 @@ def get_eval(content: str, max_tokens: int):
             )
             break
         except openai.error.RateLimitError:
+            print("Rate limited. Sleeping for 30 seconds.")
+            time.sleep(30)
             pass
         except Exception as e:
             print(e)
@@ -76,7 +81,7 @@ if __name__ == '__main__':
 
     handles = []
     idx = 0
-    for ques_js, ans1_js, ans2_js in zip(f_q, f_ans1, f_ans2):
+    for ques_js, ans1_js, ans2_js in tzip(f_q, f_ans1, f_ans2):
         ques = json.loads(ques_js)
         ans1 = json.loads(ans1_js)
         ans2 = json.loads(ans2_js)
@@ -117,5 +122,5 @@ if __name__ == '__main__':
         else:
             print(f'Skipping {idx} as we already have it.')
         idx += 1
-        print(idx)
+        # print(idx)
     review_file.close()

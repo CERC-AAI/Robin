@@ -61,6 +61,8 @@ class Robin:
                 url = f"https://huggingface.co/{self.model_path}/raw/main/adapter_config.json"
                 response = requests.get(url)
                 if response.status_code != 200:
+                    response = requests.get(url, headers={"Authorization": "Bearer " + os.environ["HF_TOKEN"]})
+                if response.status_code != 200:
                     print("No model base found for ", self.model_path)
                     self.model_base = None
                     return
