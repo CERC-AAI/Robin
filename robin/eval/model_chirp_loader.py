@@ -13,10 +13,11 @@ def eval_model(args):
                  device="cuda",
                  conv_mode=args.conv_mode,
                  temperature=args.temperature,
-                 max_new_tokens=128
+                 max_new_tokens=512
                 )
     
-    questions = [json.loads(q) for q in open(os.path.expanduser(args.question_file), "r")]
+    questions = json.load(open(os.path.expanduser(args.question_file), "r"))
+
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
     ans_file = open(answers_file, "w")

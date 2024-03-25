@@ -26,6 +26,9 @@ OPENCLIP_CONFIG_MAP_tmp = {
     'DFN5B-CLIP-ViT-H-14': 'ViT-H-14',
     'DFN2B-CLIP-ViT-L-14': 'ViT-L-14',
     'CLIP-ViT-B-16-laion2B-s34B-b88K': 'ViT-B-16',
+    'CLIP-ViT-L-14-laion2B-s32B-b82K': 'ViT-L-14',
+    'CLIP-ViT-H-14-laion2B-s32B-b79K': 'ViT-H-14',
+    'CLIP-ViT-g-14-laion2B-s34B-b88K': 'ViT-g-14',
 }
 
 TIMM_ON_OPENCLIP = [

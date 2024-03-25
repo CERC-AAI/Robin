@@ -14,7 +14,7 @@ if __name__ == "__main__":
         hostname = os.environ.get('HOSTNAME') 
     if hostname == None: 
         hostname = os.uname()[1]
-        
+
     print('Running on cluster:', end=' ')
     match hostname.lower():
         case x if 'frontier' in x:
@@ -72,7 +72,7 @@ if __name__ == "__main__":
         
         case x if 'docker' in x:
             print('Docker')
-            USE_FLASH_ATTN_2 = True
+            USE_FLASH_ATTN_2 = False
 
             os.environ['WANDB_DIR'] = '/app/wandb_cache'
             os.environ['WANDB_MODE'] = 'offline'
