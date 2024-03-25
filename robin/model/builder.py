@@ -45,11 +45,16 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 **kwargs,
                 # use_flash_attention_2 = True,
             )
-        
-        token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features
-        if model.lm_head.weight.shape[0] != token_num:
-            model.lm_head.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
-            model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
+        if any(x in model_name.lower() for x in ['neox', 'pythia', 'hi-nolin']):  # neox has different names for modules
+            token_num, tokem_dim = model.embed_out.out_features, model.embed_out.in_features
+            if model.embed_out.weight.shape[0] != token_num:
+                model.embed_out.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
+                model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
+        else:
+            token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features
+            if model.lm_head.weight.shape[0] != token_num:
+                model.lm_head.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
+                model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))
 
         print('Loading additional LLaVA weights...')
         if os.path.exists(os.path.join(model_path, 'non_lora_trainables.bin')):
@@ -67,7 +72,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             non_lora_trainables = load_from_hf(model_path, 'non_lora_trainables.bin')
 
         non_lora_trainables = {(k[11:] if k.startswith('base_model.') else k): v for k, v in non_lora_trainables.items()}
-        if any(k.startswith('model.model.') for k in non_lora_trainables):
+        if any(k.startswith('model.model.') for k in non_lora_trainables) or any(k.startswith('model.gpt_neox.') for k in non_lora_trainables):
             non_lora_trainables = {(k[6:] if k.startswith('model.') else k): v for k, v in non_lora_trainables.items()}
             
         model.load_state_dict(non_lora_trainables, strict=False)
@@ -127,17 +132,21 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
         new_weights = {}
         for key in original_weights.keys():
             new_key = str(key).replace("base_model.model.model.vision_tower.","")
+            new_key = new_key.replace("base_model.model.gpt_neox.vision_tower.","")
             new_weights[new_key] = original_weights[key]
         del original_weights
-        
         
         #This is so that we can load strict
         projection = {}
         projections = ["base_model.model.model.mm_projector.0.weight", "base_model.model.model.mm_projector.0.bias", "base_model.model.model.mm_projector.2.weight", "base_model.model.model.mm_projector.2.bias"]
         for key in projections:
-            projection[key] = new_weights.pop(key)
-        
-        
+            if key in new_weights:
+                projection[key] = new_weights.pop(key)
+        projections = [item.replace('model.mm_projector', 'gpt_neox.mm_projector') for item in projections]
+        for key in projections:
+            if key in new_weights:
+                projection[key] = new_weights.pop(key)
+       
         result = vision_tower.load_state_dict(new_weights, strict = True)   
         print("Loading strict resuts:", result)
         

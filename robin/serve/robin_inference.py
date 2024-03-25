@@ -173,4 +173,3 @@ class Robin:
             print("\n", {"prompt": prompt, "outputs": outputs}, "\n")
 
         return outputs
-
