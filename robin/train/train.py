@@ -978,8 +978,8 @@ def train(USE_FLASH_ATTN_2=False):
     if tokenizer.pad_token is None and 'hi-nolin' in model_name:
         tokenizer.pad_token = '<|endoftext|>'
 
-    # if model_args.vision_tower is not None:
-    #     print(model_args)
+    if model_args.vision_tower is not None:
+        print(model_args)
         
         model.get_model().initialize_vision_modules(
             model_args=model_args,
