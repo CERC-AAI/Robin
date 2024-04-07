@@ -358,8 +358,7 @@ conv_llava_v1_mmtag = Conversation(
 )
 
 conv_neox = Conversation(
-    system="A chat between a curious user and an artificial intelligence assistant. "
-    "The assistant gives helpful, detailed, and polite answers to the user's questions.",
+    system="",
     roles=("USER", "ASSISTANT"),
     version="neox",
     messages=(),
