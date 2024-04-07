@@ -1060,7 +1060,6 @@ def train(USE_FLASH_ATTN_2=False):
     #     print(name, param.requires_grad)
 
     checkpoints = sorted(glob.glob(f"{training_args.output_dir}/checkpoint-*"))
-    training_args.max_steps = 3450 
 
     if training_args.only_save_model:
         assert checkpoints, f"no checkpoints in {training_args.output_dir} to save model from"
