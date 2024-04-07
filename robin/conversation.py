@@ -369,6 +369,17 @@ conv_neox = Conversation(
     sep2="<|endoftext|>",
 )
 
+conv_neox_hindi = Conversation(
+    system="",
+    roles=("USER", "ASSISTANT"),
+    version="neox_hindi",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.TWO,
+    sep = " ",
+    sep2="<|endoftext|>",
+)
+
 default_conversation = conv_vicuna_v1
 conv_templates = {
     "default": conv_vicuna_v0,
@@ -386,6 +397,7 @@ conv_templates = {
     "llava_llama_2": conv_llava_llama_2,
 
     "neox": conv_neox,
+    "neox_hindi": conv_neox_hindi,
     "mpt": conv_mpt,
 }
 

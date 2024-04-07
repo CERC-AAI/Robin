@@ -975,9 +975,11 @@ def train(USE_FLASH_ATTN_2=False):
         else:
             assert model_args.version in ["v1", "vicuna_v1"]
             conversation_lib.default_conversation = conversation_lib.conv_templates["vicuna_v1"]
+    if tokenizer.pad_token is None and 'hi-nolin' in model_name:
+        tokenizer.pad_token = '<|endoftext|>'
 
-    if model_args.vision_tower is not None:
-        print(model_args)
+    # if model_args.vision_tower is not None:
+    #     print(model_args)
         
         model.get_model().initialize_vision_modules(
             model_args=model_args,
@@ -1048,16 +1050,17 @@ def train(USE_FLASH_ATTN_2=False):
                     args=training_args,
                     **data_module)
 
-
     if training_args.finetune_ve:
-        for name, param in model.base_model.model.model.vision_tower.named_parameters():#This is required for lora, and training without lora will not work on this line.
+        vision_tower =  model.base_model.model.gpt_neox.vision_tower if any(x in model_name for x in ['neox', 'pythia', 'hi-nolin']) else model.base_model.model.model.vision_tower
+        for name, param in vision_tower.named_parameters():#This is required for lora, and training without lora will not work on this line.
             param.requires_grad = True
     
     print(model)
-    for name, param in model.named_parameters():
-        print(name, param.requires_grad)
+    # for name, param in model.named_parameters():
+    #     print(name, param.requires_grad)
 
     checkpoints = sorted(glob.glob(f"{training_args.output_dir}/checkpoint-*"))
+    training_args.max_steps = 3450 
 
     if training_args.only_save_model:
         assert checkpoints, f"no checkpoints in {training_args.output_dir} to save model from"
@@ -1067,6 +1070,7 @@ def train(USE_FLASH_ATTN_2=False):
         # deepspeed_load_checkpoint(trainer.model_wrapped, checkpoints[-1])
         trainer._load_from_checkpoint(checkpoints[-1])
 
+    
     else:
         if checkpoints:
             trainer.train(resume_from_checkpoint=True)
