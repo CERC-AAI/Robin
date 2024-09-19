@@ -104,11 +104,15 @@ class Robin:
         roles = conv.roles
 
         if img_url is not None:
-            if len(img_url.strip()) == 0:
-                img_url = None
+            if isinstance(img_url, str):
+                if len(img_url.strip()) == 0:
+                    img_url = None
 
         if img_url is not None:
-            image = self.load_image(img_url)
+            if isinstance(img_url, str):
+                image = self.load_image(img_url)
+            else:
+                image = img_url
 
             # Similar operation in model_worker.py
             image_tensor = process_images([image], self.image_processor, self.image_aspect_ratio)
