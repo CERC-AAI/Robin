@@ -121,18 +121,23 @@ class KeywordsStoppingCriteria(StoppingCriteria):
             if len(cur_keyword_ids) > self.max_keyword_len:
                 self.max_keyword_len = len(cur_keyword_ids)
             self.keyword_ids.append(torch.tensor(cur_keyword_ids))
+
+        self.keyword_ids = [keyword_id.to(input_ids.device) for keyword_id in self.keyword_ids]
+
         self.tokenizer = tokenizer
-        self.start_len = input_ids.shape[1]
+        self.batch_size = input_ids.shape[0]
+
+        # in batch generation, is used to ensure that all samples have reached the stopping criteria
+        self.matches = torch.zeros(self.batch_size, dtype=torch.int, device=input_ids.device)
 
     def __call__(self, output_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
-        assert output_ids.shape[0] == 1, "Only support batch size 1 (yet)"  # TODO
-        offset = min(output_ids.shape[1] - self.start_len, self.max_keyword_len)
-        self.keyword_ids = [keyword_id.to(output_ids.device) for keyword_id in self.keyword_ids]
+        matches = torch.zeros(self.batch_size, dtype=torch.bool, device=output_ids.device)
+
         for keyword_id in self.keyword_ids:
-            if (output_ids[0, -keyword_id.shape[0]:] == keyword_id).all():
-                return True
-        outputs = self.tokenizer.batch_decode(output_ids[:, -offset:], skip_special_tokens=True)[0]
-        for keyword in self.keywords:
-            if keyword in outputs:
-                return True
-        return False
+            matches |= (output_ids[:, -keyword_id.shape[0]:] == keyword_id).all(dim=1)
+
+        for i, local_match, global_match in zip(range(self.batch_size), matches, self.matches):
+            if not global_match and local_match:
+                self.matches[i] = output_ids.shape[1]
+                
+        return self.matches.all().item()
